@@ -1,1 +1,1 @@
-# SENLACourse
+# Maksim Naumovich
