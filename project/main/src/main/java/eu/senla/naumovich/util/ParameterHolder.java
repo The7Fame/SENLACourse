@@ -1,7 +1,7 @@
-package org.example.util;
+package eu.senla.naumovich.util;
 
-import org.example.Component;
-import org.example.Value;
+import eu.senla.naumovich.annotations.Component;
+import eu.senla.naumovich.annotations.Value;
 
 @Component
 public class ParameterHolder {

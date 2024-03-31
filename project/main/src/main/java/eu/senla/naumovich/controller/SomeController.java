@@ -1,8 +1,8 @@
-package org.example.controller;
+package eu.senla.naumovich.controller;
 
-import org.example.Autowired;
-import org.example.Component;
-import org.example.service.ServiceInterface;
+import eu.senla.naumovich.annotations.Autowired;
+import eu.senla.naumovich.annotations.Component;
+import eu.senla.naumovich.service.ServiceInterface;
 
 @Component
 public class SomeController {

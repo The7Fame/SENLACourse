@@ -1,8 +1,8 @@
-package org.example.database;
+package eu.senla.naumovich.database;
 
-import org.example.Autowired;
-import org.example.Component;
-import org.example.util.ParameterHolder;
+import eu.senla.naumovich.annotations.Autowired;
+import eu.senla.naumovich.annotations.Component;
+import eu.senla.naumovich.util.ParameterHolder;
 
 @Component
 public class DatabaseInterfaceImpl implements DatabaseInterface{

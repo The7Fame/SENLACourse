@@ -1,4 +1,4 @@
-package org.example;
+package eu.senla.naumovich.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

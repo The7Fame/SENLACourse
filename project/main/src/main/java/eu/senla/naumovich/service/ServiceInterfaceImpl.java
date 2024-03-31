@@ -1,8 +1,8 @@
-package org.example.service;
+package eu.senla.naumovich.service;
 
-import org.example.Autowired;
-import org.example.Component;
-import org.example.database.DatabaseInterface;
+import eu.senla.naumovich.annotations.Autowired;
+import eu.senla.naumovich.annotations.Component;
+import eu.senla.naumovich.database.DatabaseInterface;
 
 @Component
 public class ServiceInterfaceImpl implements ServiceInterface{

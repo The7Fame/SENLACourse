@@ -1,4 +1,4 @@
-package org.example.service;
+package eu.senla.naumovich.service;
 
 public interface ServiceInterface {
     String execute();
