@@ -7,5 +7,5 @@ import java.lang.reflect.InvocationTargetException;
 
 @FunctionalInterface
 public interface PostProcessor {
-    public Object process(Class<?> clazz, Context context) throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
+   void process(Object o, Context context) throws Exception;
 }

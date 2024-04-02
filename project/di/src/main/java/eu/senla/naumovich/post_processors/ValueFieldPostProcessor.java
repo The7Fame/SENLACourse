@@ -5,32 +5,24 @@ import eu.senla.naumovich.Context;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 public class ValueFieldPostProcessor implements PostProcessor{
     @Override
-    public Object process(Class<?> clazz, Context context) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Field field = valueField(clazz);
-        Object newInstance = clazz.getConstructor().newInstance();
-        valueHandler(newInstance, field, context);
-        return newInstance;
-    }
+    public void process(Object object, Context context) throws IOException, IllegalAccessException {
 
-    public Field valueField(Class<?> clazz) {
-        for (Field declaredField : clazz.getDeclaredFields()) {
+        for (Field declaredField : object.getClass().getDeclaredFields()) {
             if (declaredField.isAnnotationPresent(Value.class)) {
                 declaredField.setAccessible(true);
-                return declaredField;
+                valueHandler(object, declaredField, context);
+                declaredField.setAccessible(false);
             }
         }
-        return null;
     }
 
-    public void valueHandler(Object object, Field field, Context context) throws IOException, IllegalAccessException {
-        context.getProps().load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
-        Value annotation = field.getAnnotation(Value.class);
-        String annotationName = annotation.value().replaceAll("[{}$]", "");
-        String propValue = context.getProps().getProperty(annotationName);
-        field.set(object,propValue);
+    private void valueHandler(Object object, Field field, Context context) throws IOException, IllegalAccessException {
+        Value declaredValue = field.getAnnotation(Value.class);
+        String annotationValue = declaredValue.value().replaceAll("[{}$]", "");
+        String propValue = context.getProps().getProperty(annotationValue);
+        field.set(object, propValue);
     }
 }

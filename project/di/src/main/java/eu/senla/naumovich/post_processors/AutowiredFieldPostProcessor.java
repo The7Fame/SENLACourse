@@ -4,25 +4,18 @@ import eu.senla.naumovich.Context;
 import eu.senla.naumovich.annotations.Autowired;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 public class AutowiredFieldPostProcessor implements PostProcessor{
     @Override
-    public Object process(Class<?> clazz, Context context) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Field field = autowiredField(clazz);
-        Class<?> clazzType = field.getType();
-        Object newInstance = clazz.getConstructor().newInstance();
-        field.set(newInstance, context.getObject(clazzType));
-        return newInstance;
-    }
+    public void process(Object object, Context context) throws Exception {
 
-    public Field autowiredField(Class<?> clazz) {
-        for (Field declaredField : clazz.getDeclaredFields()) {
+        for (Field declaredField : object.getClass().getDeclaredFields()) {
             if (declaredField.isAnnotationPresent(Autowired.class)) {
                 declaredField.setAccessible(true);
-                return declaredField;
+                Class<?> clazzType = declaredField.getType();
+                declaredField.set(object, context.getObject(clazzType));
+                declaredField.setAccessible(false);
             }
         }
-        return null;
     }
 }

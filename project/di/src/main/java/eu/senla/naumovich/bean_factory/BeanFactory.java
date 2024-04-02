@@ -1,13 +1,14 @@
 package eu.senla.naumovich.bean_factory;
 
 import eu.senla.naumovich.Context;
+import eu.senla.naumovich.annotations.Autowired;
 import eu.senla.naumovich.post_processors.PostProcessor;
 import org.reflections.Reflections;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BeanFactory {
@@ -33,13 +34,28 @@ public class BeanFactory {
         return instance;
     }
 
-    public Object createObject(Class<?> clazz, Context context){
+    public Object createObject(Class<?> clazz, Context context) throws Exception {
+        final Object object = createInstance(clazz, context);
         for(PostProcessor processor : processors){
             try {
-                return processor.process(clazz, context);
+                processor.process(object, context);
             } catch (NullPointerException | NoSuchMethodException e){
             } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("Can not create instance of class: " + clazz.getName());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return object;
+    }
+
+    public <T> T  createInstance(Class<?> clazz, Context context) throws Exception {
+        for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
+            if (constructor.isAnnotationPresent(Autowired.class)) {
+                Class<?> clazzType = constructor.getParameterTypes()[0];
+                return (T) constructor.newInstance(context.getObject(clazzType));
+            }else {
+                return (T) constructor.newInstance();
             }
         }
         return null;

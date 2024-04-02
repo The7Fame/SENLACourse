@@ -4,6 +4,7 @@ import eu.senla.naumovich.annotations.Component;
 import eu.senla.naumovich.bean_factory.BeanFactory;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Context {
@@ -11,30 +12,54 @@ public class Context {
     private final static Context instance = new Context();
     Set<Class<?>> components = new HashSet<>();
     final Map<Class<?>, Object> class2object = new HashMap<>();
+    final Map<Class<?>, List<Class<?>>> interface2implementations = new HashMap<>();
     Properties props;
     Reflections reflection;
     public static Context getInstance(){
         return instance;
     }
 
-    public Context initContext(Class<?> startClazz) {
+    public Context initContext(Class<?> startClazz) throws Exception {
         reflection = new Reflections(startClazz.getPackageName());
         props = new Properties();
         components = reflection.getTypesAnnotatedWith(Component.class);
+        initInterface2Implementations(components);
         initBeans();
         return instance;
     }
-
     public <T> T getClass2Object(Class<T> clazz) {
         return (T) class2object.get(clazz);
     }
 
-    public Properties getProps() {
+    public Properties getProps() throws IOException {
+        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
         return props;
     }
-    private void initBeans() {
+
+    public Object getObject(Class<?> clazzType) throws Exception {
+        Class<?> clazz = getImplementation(clazzType);
+        if(clazz !=null){
+            class2object.get(clazz);
+        }
+        return beanFactory.createObject(clazz, this);
+    }
+
+    private void initBeans() throws Exception {
         for(Class<?> clazz : components){
             class2object.put(clazz, beanFactory.createObject(clazz, instance));
+        }
+    }
+
+    private void initInterface2Implementations(Set<Class<?>> components){
+        for (Class<?> impl : components) {
+            for (Class<?> intfc : impl.getInterfaces()) {
+                List<Class<?>> implementations = interface2implementations.get(intfc);
+                if (implementations == null) {
+                    implementations = new ArrayList<>();
+                    interface2implementations.put(intfc, implementations);
+                }
+                implementations.add(impl);
+            }
         }
     }
 
@@ -44,7 +69,7 @@ public class Context {
         }
 
         if(clazzType.isInterface()){
-            List<Class<?>> implementations = new ArrayList<>(reflection.getSubTypesOf(clazzType));
+            List<Class<?>> implementations = interface2implementations.get(clazzType);
             if(implementations.size() > 1)
             {
                 throw new InstantiationException("More than one implementation");
@@ -53,12 +78,5 @@ public class Context {
         }
         return null;
     }
-
-    public Object getObject(Class<?> clazzType) throws InstantiationException {
-        Class<?> clazz = getImplementation(clazzType);
-        if(clazz !=null){
-            class2object.get(clazz);
-        }
-        return beanFactory.createObject(clazz, this);
-    }
 }
+
