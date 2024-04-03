@@ -24,6 +24,7 @@ public class Context {
         props = new Properties();
         components = reflection.getTypesAnnotatedWith(Component.class);
         initInterface2Implementations(components);
+        initProps(props);
         initBeans();
         return instance;
     }
@@ -31,8 +32,8 @@ public class Context {
         return (T) class2object.get(clazz);
     }
 
-    public Properties getProps() throws IOException {
-        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
+
+    public Properties getProps() {
         return props;
     }
 
@@ -50,6 +51,9 @@ public class Context {
         }
     }
 
+    private void initProps(Properties props) throws IOException {
+        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
+    }
     private void initInterface2Implementations(Set<Class<?>> components){
         for (Class<?> impl : components) {
             for (Class<?> intfc : impl.getInterfaces()) {
