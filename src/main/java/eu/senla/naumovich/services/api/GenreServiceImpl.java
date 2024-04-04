@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<GenreDto> getAll() {
-        List<GenreDto> genresDto = new ArrayList<>();
         List<Genre> genres = genreRepository.getAll();
-        for(Genre genre : genres){
-            genresDto.add(modelMapper.map(genre, GenreDto.class));
-        }
+        List<GenreDto> genresDto = genres.stream()
+                .map(genre -> modelMapper.map(genre, GenreDto.class))
+                .collect(Collectors.toList());
         return genresDto;
     }
 

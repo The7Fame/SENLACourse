@@ -17,12 +17,10 @@ public class PublisherRepositoryImpl implements PublisherRepository {
 
     @Override
     public Publisher getById(Publisher publisher) {
-        for(Publisher p : publishers){
-            if(p.getId() == publisher.getId()){
-                return p;
-            }
-        }
-        return null;
+        return publishers.stream()
+                .filter(p -> p.getId() == publisher.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class PublisherRepositoryImpl implements PublisherRepository {
 
     @Override
     public void delete(Publisher publisher) {
-        for (int i = 0; i < publishers.size(); i++) {
-            if (publisher.getId() == publishers.get(i).getId()) {
-                publishers.remove(i);
-            }
-        }
+        publishers.removeIf(p -> p.getId() == publisher.getId());
     }
 }

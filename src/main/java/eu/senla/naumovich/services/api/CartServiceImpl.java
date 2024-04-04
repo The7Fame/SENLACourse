@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartDto> getAll() {
-        List<CartDto> cartsDto = new ArrayList<>();
         List<Cart> carts = cartRepository.getAll();
-        for(Cart cart : carts){
-            cartsDto.add(modelMapper.map(cart, CartDto.class));
-        }
+        List<CartDto> cartsDto = carts.stream()
+                .map(cart -> modelMapper.map(cart, CartDto.class))
+                .collect(Collectors.toList());
         return cartsDto;
     }
 

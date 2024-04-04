@@ -17,12 +17,10 @@ public class PromotionRepositoryImpl implements PromotionRepository {
 
     @Override
     public Promotion getById(Promotion promotion) {
-        for(Promotion p : promotions){
-            if(p.getId() == promotion.getId()){
-                return p;
-            }
-        }
-        return null;
+        return promotions.stream()
+                .filter(p -> p.getId() == promotion.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class PromotionRepositoryImpl implements PromotionRepository {
 
     @Override
     public void delete(Promotion promotion) {
-        for (int i = 0; i < promotions.size(); i++) {
-            if (promotion.getId() == promotions.get(i).getId()) {
-                promotions.remove(i);
-            }
-        }
+        promotions.removeIf(p -> p.getId() == promotion.getId());
     }
 }

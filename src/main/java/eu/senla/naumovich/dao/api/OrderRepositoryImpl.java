@@ -17,12 +17,10 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order getById(Order order) {
-        for(Order o : orders){
-            if(o.getId() == order.getId()){
-                return o;
-            }
-        }
-        return null;
+        return orders.stream()
+                .filter(o -> o.getId() == order.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void delete(Order order) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (order.getId() == orders.get(i).getId()) {
-                orders.remove(i);
-            }
-        }
+        orders.removeIf(o -> o.getId() == order.getId());
     }
 }

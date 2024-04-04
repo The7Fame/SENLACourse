@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public List<PrivilegeDto> getAll() {
-        List<PrivilegeDto> privilegesDto = new ArrayList<>();
         List<Privilege> privileges = privilegeRepository.getAll();
-        for(Privilege privilege : privileges){
-            privilegesDto.add(modelMapper.map(privilege, PrivilegeDto.class));
-        }
+        List<PrivilegeDto> privilegesDto = privileges.stream()
+                .map(privilege -> modelMapper.map(privilege, PrivilegeDto.class))
+                .collect(Collectors.toList());
         return privilegesDto;
     }
 

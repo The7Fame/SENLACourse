@@ -17,12 +17,10 @@ public class CartRepositoryImpl implements CartRepository {
 
     @Override
     public Cart getById(Cart cart) {
-        for(Cart c : carts){
-            if(c.getId() == cart.getId()){
-                return c;
-            }
-        }
-        return null;
+        return carts.stream()
+                .filter(c -> c.getId() == cart.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class CartRepositoryImpl implements CartRepository {
 
     @Override
     public void delete(Cart cart) {
-        for (int i = 0; i < carts.size(); i++) {
-            if (cart.getId() == carts.get(i).getId()) {
-                carts.remove(i);
-            }
-        }
+        carts.removeIf(c -> c.getId() == cart.getId());
     }
 }

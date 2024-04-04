@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public List<PromotionDto> getAll() {
-        List<PromotionDto> promotionsDto = new ArrayList<>();
         List<Promotion> promotions = promotionRepository.getAll();
-        for(Promotion promotion : promotions){
-            promotionsDto.add(modelMapper.map(promotion, PromotionDto.class));
-        }
+        List<PromotionDto> promotionsDto = promotions.stream()
+                .map(promotion -> modelMapper.map(promotion, PromotionDto.class))
+                .collect(Collectors.toList());
         return promotionsDto;
     }
 

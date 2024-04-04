@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        List<UserDto> usersDto = new ArrayList<>();
         List<User> users = userRepository.getAll();
-        for(User user : users){
-            usersDto.add(modelMapper.map(user, UserDto.class));
-        }
+        List<UserDto> usersDto = users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
         return usersDto;
     }
 

@@ -16,12 +16,10 @@ public class AddressRepositoryImpl implements AddressRepository {
 
     @Override
     public Address getById(Address address) {
-        for(Address a : addresses){
-            if(a.getId() == address.getId()){
-                return a;
-            }
-        }
-        return null;
+        return addresses.stream()
+                .filter(a -> a.getId() == address.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -43,10 +41,6 @@ public class AddressRepositoryImpl implements AddressRepository {
 
     @Override
     public void delete(Address address) {
-        for (int i = 0; i < addresses.size(); i++) {
-            if (address.getId() == addresses.get(i).getId()) {
-                addresses.remove(i);
-            }
-        }
+        addresses.removeIf(a -> a.getId() == address.getId());
     }
 }

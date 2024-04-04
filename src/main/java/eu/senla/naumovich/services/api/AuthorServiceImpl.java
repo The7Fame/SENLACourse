@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorDto> getAll() {
-        List<AuthorDto> authorsDto = new ArrayList<>();
         List<Author> authors = authorRepository.getAll();
-        for(Author author : authors){
-            authorsDto.add(modelMapper.map(author, AuthorDto.class));
-        }
+        List<AuthorDto> authorsDto = authors.stream()
+                .map(author -> modelMapper.map(author, AuthorDto.class))
+                .collect(Collectors.toList());
         return authorsDto;
     }
 

@@ -17,12 +17,10 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public Role getById(Role role) {
-        for(Role r : roles){
-            if(r.getId() == role.getId()){
-                return r;
-            }
-        }
-        return null;
+        return roles.stream()
+                .filter(r -> r.getId() == role.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public void delete(Role role) {
-        for (int i = 0; i < roles.size(); i++) {
-            if (role.getId() == roles.get(i).getId()) {
-                roles.remove(i);
-            }
-        }
+        roles.removeIf(r -> r.getId() == role.getId());
     }
 }

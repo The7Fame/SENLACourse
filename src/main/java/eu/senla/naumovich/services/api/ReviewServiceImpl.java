@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDto> getAll() {
-        List<ReviewDto> reviewsDto = new ArrayList<>();
         List<Review> reviews = reviewRepository.getAll();
-        for(Review review : reviews){
-            reviewsDto.add(modelMapper.map(review, ReviewDto.class));
-        }
+        List<ReviewDto> reviewsDto = reviews.stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
         return reviewsDto;
     }
 

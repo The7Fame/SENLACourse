@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> getAll() {
-        List<RoleDto> rolesDto = new ArrayList<>();
         List<Role> roles = roleRepository.getAll();
-        for(Role role : roles){
-            rolesDto.add(modelMapper.map(role, RoleDto.class));
-        }
+        List<RoleDto> rolesDto = roles.stream()
+                .map(role -> modelMapper.map(role, RoleDto.class))
+                .collect(Collectors.toList());
         return rolesDto;
     }
 

@@ -18,12 +18,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Author getById(Author author) {
-        for(Author a : authors){
-            if(a.getId() == author.getId()){
-                return a;
-            }
-        }
-        return null;
+        return authors.stream()
+                .filter(a -> a.getId() == author.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -45,11 +43,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void delete(Author author) {
-        for (int i = 0; i < authors.size(); i++) {
-            if (author.getId() == authors.get(i).getId()) {
-                authors.remove(i);
-            }
-        }
-
+        authors.removeIf(a -> a.getId() == author.getId());
     }
 }

@@ -17,12 +17,10 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public Review getById(Review review) {
-        for(Review r : reviews){
-            if(r.getId() == review.getId()){
-                return r;
-            }
-        }
-        return null;
+        return reviews.stream()
+                .filter(r -> r.getId() == review.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public void delete(Review review) {
-        for (int i = 0; i < reviews.size(); i++) {
-            if (review.getId() == reviews.get(i).getId()) {
-                reviews.remove(i);
-            }
-        }
+        reviews.removeIf(r -> r.getId() == review.getId());
     }
 }

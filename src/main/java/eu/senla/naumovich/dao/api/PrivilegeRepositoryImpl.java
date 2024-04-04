@@ -17,12 +17,10 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository {
 
     @Override
     public Privilege getById(Privilege privilege) {
-        for(Privilege p : privileges){
-            if(p.getId() == privilege.getId()){
-                return p;
-            }
-        }
-        return null;
+        return privileges.stream()
+                .filter(p -> p.getId() == privilege.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository {
 
     @Override
     public void delete(Privilege privilege) {
-        for (int i = 0; i < privileges.size(); i++) {
-            if (privilege.getId() == privileges.get(i).getId()) {
-                privileges.remove(i);
-            }
-        }
+        privileges.removeIf(p -> p.getId() == privilege.getId());
     }
 }

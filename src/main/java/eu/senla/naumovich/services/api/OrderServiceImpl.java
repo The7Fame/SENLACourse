@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAll() {
-        List<OrderDto> ordersDto = new ArrayList<>();
         List<Order> orders = orderRepository.getAll();
-        for(Order order : orders){
-            ordersDto.add(modelMapper.map(order, OrderDto.class));
-        }
+        List<OrderDto> ordersDto = orders.stream()
+                .map(order -> modelMapper.map(order, OrderDto.class))
+                .collect(Collectors.toList());
         return ordersDto;
     }
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<PaymentDto> getAll() {
-        List<PaymentDto> paymentsDto = new ArrayList<>();
         List<Payment> payments = paymentRepository.getAll();
-        for(Payment payment : payments){
-            paymentsDto.add(modelMapper.map(payment, PaymentDto.class));
-        }
+        List<PaymentDto> paymentsDto = payments.stream()
+                .map(payment -> modelMapper.map(payment, PaymentDto.class))
+                .collect(Collectors.toList());
         return paymentsDto;
     }
 

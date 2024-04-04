@@ -17,12 +17,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book getById(Book book) {
-        for(Book b : books){
-            if(b.getId() == book.getId()){
-                return b;
-            }
-        }
-        return null;
+        return books.stream()
+                .filter(b -> b.getId() == book.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,11 +42,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void delete(Book book) {
-        for (int i = 0; i < books.size(); i++) {
-            if (book.getId() == books.get(i).getId()) {
-                books.remove(i);
-            }
-        }
-
+        books.removeIf(b -> b.getId() == book.getId());
     }
 }

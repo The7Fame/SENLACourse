@@ -17,12 +17,10 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public Genre getById(Genre genre) {
-        for(Genre g : genres){
-            if(g.getId() == genre.getId()){
-                return g;
-            }
-        }
-        return null;
+        return genres.stream()
+                .filter(g -> g.getId() == genre.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public void delete(Genre genre) {
-        for (int i = 0; i < genres.size(); i++) {
-            if (genre.getId() == genres.get(i).getId()) {
-                genres.remove(i);
-            }
-        }
+        genres.removeIf(g -> g.getId() == genre.getId());
     }
 }

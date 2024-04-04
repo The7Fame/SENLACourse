@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +21,10 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public List<PublisherDto> getAll() {
-        List<PublisherDto> publishersDto = new ArrayList<>();
         List<Publisher> publishers = publisherRepository.getAll();
-        for(Publisher publisher : publishers){
-            publishersDto.add(modelMapper.map(publisher, PublisherDto.class));
-        }
+        List<PublisherDto> publishersDto = publishers.stream()
+                .map(publisher -> modelMapper.map(publisher, PublisherDto.class))
+                .collect(Collectors.toList());
         return publishersDto;
     }
 

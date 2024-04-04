@@ -17,12 +17,10 @@ public class PaymentRepositoryImpl implements PaymentRepository {
 
     @Override
     public Payment getById(Payment payment) {
-        for(Payment p : payments){
-            if(p.getId() == payment.getId()){
-                return p;
-            }
-        }
-        return null;
+        return payments.stream()
+                .filter(p -> p.getId() == payment.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class PaymentRepositoryImpl implements PaymentRepository {
 
     @Override
     public void delete(Payment payment) {
-        for (int i = 0; i < payments.size(); i++) {
-            if (payment.getId() == payments.get(i).getId()) {
-                payments.remove(i);
-            }
-        }
+        payments.removeIf(p -> p.getId() == payment.getId());
     }
 }

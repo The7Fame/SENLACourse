@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDto> getAll() {
-        List<AddressDto> addressesDto = new ArrayList<>();
         List<Address> addresses = addressRepository.getAll();
-        for(Address address : addresses){
-            addressesDto.add(modelMapper.map(address, AddressDto.class));
-        }
+        List<AddressDto> addressesDto = addresses.stream()
+                .map(address -> modelMapper.map(address, AddressDto.class))
+                .collect(Collectors.toList());
         return addressesDto;
     }
 

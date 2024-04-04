@@ -17,12 +17,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(User user) {
-        for(User u : users){
-            if(u.getId() == user.getId()){
-                return u;
-            }
-        }
-        return null;
+        return users.stream()
+                .filter(u -> u.getId() == user.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -44,10 +42,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(User user) {
-        for (int i = 0; i < users.size(); i++) {
-            if (user.getId() == users.get(i).getId()) {
-                users.remove(i);
-            }
-        }
+        users.removeIf(u -> u.getId() == user.getId());
     }
 }
