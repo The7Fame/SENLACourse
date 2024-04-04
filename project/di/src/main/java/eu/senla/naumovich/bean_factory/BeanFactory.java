@@ -49,15 +49,27 @@ public class BeanFactory {
         return object;
     }
 
-    public <T> T  createInstance(Class<?> clazz, Context context) throws Exception {
-        for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-            if (constructor.isAnnotationPresent(Autowired.class)) {
-                Class<?> clazzType = constructor.getParameterTypes()[0];
-                return (T) constructor.newInstance(context.getObject(clazzType));
-            }else {
-                return (T) constructor.newInstance();
-            }
+    public <T> T createInstance(Class<?> clazz, Context context) throws Exception {
+        Optional<Constructor<?>> autowiredConstructor = Arrays.stream(clazz.getDeclaredConstructors())
+                .filter(constructor -> constructor.isAnnotationPresent(Autowired.class))
+                .findFirst();
+
+        if (autowiredConstructor.isPresent()) {
+            Constructor<?> constructor = autowiredConstructor.get();
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            List<Object> parameters = Arrays.stream(parameterTypes)
+                    .map(clazzType -> {
+                        try {
+                            return context.getObject(clazzType);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).collect(Collectors.toList());
+
+            return (T) constructor.newInstance(parameters.toArray());
+        } else {
+            Constructor<?> defaultConstructor = clazz.getConstructor();
+            return (T) defaultConstructor.newInstance();
         }
-        return null;
     }
 }

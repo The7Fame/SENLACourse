@@ -13,7 +13,7 @@ public class Context {
     Set<Class<?>> components = new HashSet<>();
     final Map<Class<?>, Object> class2object = new HashMap<>();
     final Map<Class<?>, List<Class<?>>> interface2implementations = new HashMap<>();
-    Properties props;
+    final Properties props = new Properties();
     Reflections reflection;
     public static Context getInstance(){
         return instance;
@@ -21,14 +21,13 @@ public class Context {
 
     public Context initContext(Class<?> startClazz) throws Exception {
         reflection = new Reflections(startClazz.getPackageName());
-        props = new Properties();
         components = reflection.getTypesAnnotatedWith(Component.class);
         initInterface2Implementations(components);
         initProps(props);
         initBeans();
         return instance;
     }
-    public <T> T getClass2Object(Class<T> clazz) {
+    public <T> T getBean(Class<T> clazz) {
         return (T) class2object.get(clazz);
     }
 
