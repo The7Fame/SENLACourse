@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Address {
     Long id;
+    String city;
     String street;
     Long index;
     Publisher publisher;

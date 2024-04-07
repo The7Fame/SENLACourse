@@ -1,5 +1,6 @@
 package eu.senla.naumovich.services.api;
 
+import eu.senla.naumovich.annotation.Transaction;
 import eu.senla.naumovich.dao.repository.PublisherRepository;
 import eu.senla.naumovich.dto.PublisherDto;
 import eu.senla.naumovich.entities.Publisher;
@@ -46,5 +47,13 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void delete(PublisherDto publisher) {
         publisherRepository.delete(modelMapper.map(publisher, Publisher.class));
+    }
+
+    @Transaction
+    public PublisherDto testMethod() {
+        Publisher publisher = new Publisher();
+        publisher.setId(1L);
+        publisher.setPublisherName("publisherName");
+        return modelMapper.map(publisherRepository.getById(publisher), PublisherDto.class);
     }
 }

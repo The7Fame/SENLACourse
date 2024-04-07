@@ -38,6 +38,15 @@ public class PublisherController {
     public void delete(String addressJSON) {
         publisherService.delete(fromJSONToDto(addressJSON));
     }
+
+    public String testMethod(){
+        try {
+            return objectMapper.writeValueAsString(publisherService.testMethod());
+        }catch (JsonProcessingException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     private PublisherDto fromJSONToDto(String publisherJSON) {
         try {
             return objectMapper.readValue(publisherJSON, PublisherDto.class);

@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddressDto {
     Long id;
+    String city;
     String street;
     Long index;
 }

@@ -14,4 +14,5 @@ public interface PublisherService {
     PublisherDto create(PublisherDto publisher);
 
     void delete(PublisherDto publisher);
+    PublisherDto testMethod();
 }
