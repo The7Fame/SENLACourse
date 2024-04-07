@@ -31,11 +31,6 @@ ApplicationConfig {
     }
 
     @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
-
-    @Bean
     public DataSource dataSource(){
         DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
         managerDataSource.setDriverClassName(driverName);

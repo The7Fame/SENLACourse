@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.entities.Book;
+import eu.senla.naumovich.services.mapper.BookMapper;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private final ModelMapper modelMapper;
+    private final BookMapper bookMapper;
 
     @Override
     public List<BookDto> getAll() {
         List<Book> books = bookRepository.getAll();
         List<BookDto> booksDto = books.stream()
-                .map(book -> modelMapper.map(book, BookDto.class))
+                .map(bookMapper::toDto)
                 .collect(Collectors.toList());
         return booksDto;
     }
 
     @Override
     public BookDto getById(BookDto book) {
-        return modelMapper.map(bookRepository.getById(modelMapper.map(book, Book.class)), BookDto.class);
+        return bookMapper.toDto(bookRepository.getById(bookMapper.toEntity(book)));
     }
 
     @Override
     public BookDto update(BookDto book) {
-        return modelMapper.map(bookRepository.update(modelMapper.map(book, Book.class)), BookDto.class);
+        return bookMapper.toDto(bookRepository.update(bookMapper.toEntity(book)));
     }
 
     @Override
     public BookDto create(BookDto book) {
-        return modelMapper.map(bookRepository.create(modelMapper.map(book, Book.class)), BookDto.class);
+        return bookMapper.toDto(bookRepository.create(bookMapper.toEntity(book)));
     }
 
     @Override
     public void delete(BookDto book) {
-        bookRepository.delete(modelMapper.map(book, Book.class));
+        bookRepository.delete(bookMapper.toEntity(book));
     }
 }

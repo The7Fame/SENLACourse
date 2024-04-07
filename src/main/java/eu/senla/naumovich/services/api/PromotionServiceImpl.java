@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.PromotionRepository;
 import eu.senla.naumovich.dto.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;
+import eu.senla.naumovich.services.mapper.PromotionMapper;
 import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
-    private final ModelMapper modelMapper;
+    private final PromotionMapper promotionMapper;
 
     @Override
     public List<PromotionDto> getAll() {
         List<Promotion> promotions = promotionRepository.getAll();
         List<PromotionDto> promotionsDto = promotions.stream()
-                .map(promotion -> modelMapper.map(promotion, PromotionDto.class))
+                .map(promotionMapper::toDto)
                 .collect(Collectors.toList());
         return promotionsDto;
     }
 
     @Override
     public PromotionDto getById(PromotionDto promotion) {
-        return modelMapper.map(promotionRepository.getById(modelMapper.map(promotion, Promotion.class)), PromotionDto.class);
+        return promotionMapper.toDto(promotionRepository.getById(promotionMapper.toEntity(promotion)));
     }
 
     @Override
     public PromotionDto update(PromotionDto promotion) {
-        return modelMapper.map(promotionRepository.update(modelMapper.map(promotion, Promotion.class)), PromotionDto.class);
+        return promotionMapper.toDto(promotionRepository.update(promotionMapper.toEntity(promotion)));
     }
 
     @Override
     public PromotionDto create(PromotionDto promotion) {
-        return modelMapper.map(promotionRepository.create(modelMapper.map(promotion, Promotion.class)), PromotionDto.class);
+        return promotionMapper.toDto(promotionRepository.create(promotionMapper.toEntity(promotion)));
     }
 
     @Override
     public void delete(PromotionDto promotion) {
-        promotionRepository.delete(modelMapper.map(promotion, Promotion.class));
+        promotionRepository.delete(promotionMapper.toEntity(promotion));
     }
 }

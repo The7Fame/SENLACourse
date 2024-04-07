@@ -4,6 +4,7 @@ import eu.senla.naumovich.annotation.Transaction;
 import eu.senla.naumovich.dao.repository.PublisherRepository;
 import eu.senla.naumovich.dto.PublisherDto;
 import eu.senla.naumovich.entities.Publisher;
+import eu.senla.naumovich.services.mapper.PublisherMapper;
 import eu.senla.naumovich.services.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,35 +19,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
-    private final ModelMapper modelMapper;
+    private final PublisherMapper publisherMapper;
 
     @Override
     public List<PublisherDto> getAll() {
         List<Publisher> publishers = publisherRepository.getAll();
-        List<PublisherDto> publishersDto = publishers.stream()
-                .map(publisher -> modelMapper.map(publisher, PublisherDto.class))
-                .collect(Collectors.toList());
+        List<PublisherDto> publishersDto = publishers.stream().map(publisherMapper::toDto).collect(Collectors.toList());
         return publishersDto;
     }
 
     @Override
     public PublisherDto getById(PublisherDto publisher) {
-        return modelMapper.map(publisherRepository.getById(modelMapper.map(publisher, Publisher.class)), PublisherDto.class);
+        return publisherMapper.toDto(publisherRepository.getById(publisherMapper.toEntity(publisher)));
     }
 
     @Override
     public PublisherDto update(PublisherDto publisher) {
-        return modelMapper.map(publisherRepository.update(modelMapper.map(publisher, Publisher.class)), PublisherDto.class);
+        return publisherMapper.toDto(publisherRepository.update(publisherMapper.toEntity(publisher)));
     }
 
     @Override
     public PublisherDto create(PublisherDto publisher) {
-        return modelMapper.map(publisherRepository.create(modelMapper.map(publisher, Publisher.class)), PublisherDto.class);
+        return publisherMapper.toDto(publisherRepository.create(publisherMapper.toEntity(publisher)));
     }
 
     @Override
     public void delete(PublisherDto publisher) {
-        publisherRepository.delete(modelMapper.map(publisher, Publisher.class));
+        publisherRepository.delete(publisherMapper.toEntity(publisher));
     }
 
     @Transaction
@@ -54,6 +53,6 @@ public class PublisherServiceImpl implements PublisherService {
         Publisher publisher = new Publisher();
         publisher.setId(1L);
         publisher.setPublisherName("publisherName");
-        return modelMapper.map(publisherRepository.getById(publisher), PublisherDto.class);
+        return publisherMapper.toDto(publisherRepository.getById(publisher));
     }
 }

@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.AddressRepository;
 import eu.senla.naumovich.dto.AddressDto;
 import eu.senla.naumovich.entities.Address;
+import eu.senla.naumovich.services.mapper.AddressMapper;
 import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,34 +17,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
-    private final ModelMapper modelMapper;
+    private final AddressMapper addressMapper;
 
     @Override
     public List<AddressDto> getAll() {
         List<Address> addresses = addressRepository.getAll();
         List<AddressDto> addressesDto = addresses.stream()
-                .map(address -> modelMapper.map(address, AddressDto.class))
+                .map(addressMapper::toDto)
                 .collect(Collectors.toList());
         return addressesDto;
     }
 
     @Override
     public AddressDto getById(AddressDto address) {
-        return modelMapper.map(addressRepository.getById(modelMapper.map(address, Address.class)), AddressDto.class);
+        return addressMapper.toDto(addressRepository.getById(addressMapper.toEntity(address)));
     }
 
     @Override
     public AddressDto update(AddressDto address) {
-        return modelMapper.map(addressRepository.update(modelMapper.map(address, Address.class)), AddressDto.class);
+        return addressMapper.toDto(addressRepository.update(addressMapper.toEntity(address)));
     }
 
     @Override
     public AddressDto create(AddressDto address) {
-        return modelMapper.map(addressRepository.create(modelMapper.map(address, Address.class)), AddressDto.class);
+        return addressMapper.toDto(addressRepository.create(addressMapper.toEntity(address)));
     }
 
     @Override
     public void delete(AddressDto address) {
-        addressRepository.delete(modelMapper.map(address, Address.class));
+        addressRepository.delete(addressMapper.toEntity(address));
     }
 }
