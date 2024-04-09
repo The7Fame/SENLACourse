@@ -1,17 +1,7 @@
 package eu.senla.naumovich.services.service;
 
 import eu.senla.naumovich.dto.RoleDto;
+import eu.senla.naumovich.services.service.common.AbstractService;
 
-import java.util.List;
-
-public interface RoleService {
-    List<RoleDto> getAll();
-
-    RoleDto getById(RoleDto role);
-
-    RoleDto update(RoleDto role);
-
-    RoleDto create(RoleDto role);
-
-    void delete(RoleDto role);
+public interface RoleService extends AbstractService<RoleDto> {
 }

@@ -12,7 +12,6 @@ import java.sql.Connection;
 @Component
 public class TransactionAspect {
     private final ConnectionHolder connectionHolder;
-    private Connection conn;
 
     public TransactionAspect(ConnectionHolder connectionHolder){
         this.connectionHolder = connectionHolder;
@@ -20,6 +19,7 @@ public class TransactionAspect {
 
     @Around("@annotation(eu.senla.naumovich.annotation.Transaction)")
     public Object executeTransaction(ProceedingJoinPoint joinPoint){
+        Connection conn = null;
         try {
             conn = connectionHolder.getTransactionConn();
             Object res = joinPoint.proceed();

@@ -1,11 +1,9 @@
 package eu.senla.naumovich;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.senla.naumovich.configuration.ApplicationConfig;
 import eu.senla.naumovich.controllers.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 
 public class Application {
     public static void main(String[] args) {

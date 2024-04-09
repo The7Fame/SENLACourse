@@ -1,17 +1,7 @@
 package eu.senla.naumovich.services.service;
 
 import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.services.service.common.AbstractService;
 
-import java.util.List;
-
-public interface UserService {
-    List<UserDto> getAll();
-
-    UserDto getById(UserDto user);
-
-    UserDto update(UserDto user);
-
-    UserDto create(UserDto user);
-
-    void delete(UserDto user);
+public interface UserService extends AbstractService<UserDto> {
 }

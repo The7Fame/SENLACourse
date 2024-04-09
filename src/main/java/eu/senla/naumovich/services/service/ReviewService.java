@@ -1,17 +1,7 @@
 package eu.senla.naumovich.services.service;
 
 import eu.senla.naumovich.dto.ReviewDto;
+import eu.senla.naumovich.services.service.common.AbstractService;
 
-import java.util.List;
-
-public interface ReviewService {
-    List<ReviewDto> getAll();
-
-    ReviewDto getById(ReviewDto review);
-
-    ReviewDto update(ReviewDto review);
-
-    ReviewDto create(ReviewDto review);
-
-    void delete(ReviewDto review);
+public interface ReviewService extends AbstractService<ReviewDto> {
 }

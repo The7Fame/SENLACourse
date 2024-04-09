@@ -39,7 +39,7 @@ public class PublisherController {
         publisherService.delete(fromJSONToDto(addressJSON));
     }
 
-    public String testMethod(){
+    public synchronized String testMethod(){
         try {
             return objectMapper.writeValueAsString(publisherService.testMethod());
         }catch (JsonProcessingException e){

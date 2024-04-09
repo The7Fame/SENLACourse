@@ -21,7 +21,7 @@ public class ConnectionHolder {
         this.dataSource = dataSource;
     }
 
-    public Connection getConn(){
+    public synchronized Connection getConn(){
         String currThread = Thread.currentThread().getName();
         if(thread2connection.containsKey(currThread)){
             return thread2connection.get(currThread);
@@ -39,11 +39,7 @@ public class ConnectionHolder {
 
     public boolean isOpen(Connection conn){
         try {
-            if(conn.isClosed()){
-                return false;
-            }else {
-                return true;
-            }
+            return !conn.isClosed();
         }catch (SQLException e){}
         return false;
     }
@@ -57,7 +53,7 @@ public class ConnectionHolder {
         return null;
     }
 
-    public Connection getTransactionConn(){
+    public synchronized Connection getTransactionConn(){
         String currThread = Thread.currentThread().getName();
         if(thread2connection.containsKey(currThread)){
             Connection conn = thread2connection.get(currThread);
