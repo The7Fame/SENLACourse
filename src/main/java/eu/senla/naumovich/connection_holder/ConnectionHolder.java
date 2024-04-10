@@ -6,33 +6,30 @@ import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ConnectionHolder {
     private final DataSource dataSource;
     private final Map<String, Connection> thread2connection = new HashMap<>();
-    private final List<Connection> connections = new ArrayList<>();
+    private final Queue<Connection> connections = new LinkedList<>();
 
     public ConnectionHolder(DataSource dataSource){
         this.dataSource = dataSource;
     }
 
-    public synchronized Connection getConn(){
+    public Connection getConn(){
         String currThread = Thread.currentThread().getName();
         if(thread2connection.containsKey(currThread)){
             return thread2connection.get(currThread);
-        }else {
-            for(Connection conn : connections){
+        }
+        synchronized (this) {
+            Connection conn = connections.poll();
                 if (!thread2connection.containsValue(conn)){
-                    if (isOpen(conn)){
+                    if (conn != null && isOpen(conn)) {
                         return conn;
                     }
                 }
-            }
             return createConn();
         }
     }
@@ -62,7 +59,7 @@ public class ConnectionHolder {
             }else {
                 System.out.println("Can not connect");
             }
-        }else {
+        }synchronized (this){
             try {
                 Connection conn = createConn();
                 conn.setAutoCommit(false);
@@ -75,7 +72,8 @@ public class ConnectionHolder {
 
     public void releaseConn(){
         String currThread = Thread.currentThread().getName();
-        thread2connection.remove(currThread);
+        Connection conn = thread2connection.remove(currThread);
+        connections.add(conn);
     }
 
     public void commit(Connection conn){
