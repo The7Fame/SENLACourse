@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.ReviewRepository;
 import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.entities.Review;
+import eu.senla.naumovich.services.mapper.ReviewMapper;
 import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
-    private final ModelMapper modelMapper;
+    private final ReviewMapper reviewMapper;
 
     @Override
     public List<ReviewDto> getAll() {
         List<Review> reviews = reviewRepository.getAll();
         List<ReviewDto> reviewsDto = reviews.stream()
-                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .map(reviewMapper::toDto)
                 .collect(Collectors.toList());
         return reviewsDto;
     }
 
     @Override
     public ReviewDto getById(ReviewDto review) {
-        return modelMapper.map(reviewRepository.getById(modelMapper.map(review, Review.class)), ReviewDto.class);
+        return reviewMapper.toDto(reviewRepository.getById(reviewMapper.toEntity(review)));
     }
 
     @Override
     public ReviewDto update(ReviewDto review) {
-        return modelMapper.map(reviewRepository.update(modelMapper.map(review, Review.class)), ReviewDto.class);
+        return reviewMapper.toDto(reviewRepository.update(reviewMapper.toEntity(review)));
     }
 
     @Override
     public ReviewDto create(ReviewDto review) {
-        return modelMapper.map(reviewRepository.create(modelMapper.map(review, Review.class)), ReviewDto.class);
+        return reviewMapper.toDto(reviewRepository.create(reviewMapper.toEntity(review)));
     }
 
     @Override
     public void delete(ReviewDto review) {
-        reviewRepository.delete(modelMapper.map(review, Review.class));
+        reviewRepository.delete(reviewMapper.toEntity(review));
     }
 }

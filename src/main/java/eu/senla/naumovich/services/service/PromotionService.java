@@ -1,17 +1,7 @@
 package eu.senla.naumovich.services.service;
 
 import eu.senla.naumovich.dto.PromotionDto;
+import eu.senla.naumovich.services.service.common.AbstractService;
 
-import java.util.List;
-
-public interface PromotionService {
-    List<PromotionDto> getAll();
-
-    PromotionDto getById(PromotionDto promotion);
-
-    PromotionDto update(PromotionDto promotion);
-
-    PromotionDto create(PromotionDto promotion);
-
-    void delete(PromotionDto promotion);
+public interface PromotionService extends AbstractService<PromotionDto> {
 }

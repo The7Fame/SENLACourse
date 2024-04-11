@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.RoleRepository;
 import eu.senla.naumovich.dto.RoleDto;
 import eu.senla.naumovich.entities.Role;
+import eu.senla.naumovich.services.mapper.RoleMapper;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
-    private final ModelMapper modelMapper;
+    private final RoleMapper roleMapper;
 
     @Override
     public List<RoleDto> getAll() {
         List<Role> roles = roleRepository.getAll();
         List<RoleDto> rolesDto = roles.stream()
-                .map(role -> modelMapper.map(role, RoleDto.class))
+                .map(roleMapper::toDto)
                 .collect(Collectors.toList());
         return rolesDto;
     }
 
     @Override
     public RoleDto getById(RoleDto role) {
-        return modelMapper.map(roleRepository.getById(modelMapper.map(role, Role.class)), RoleDto.class);
+        return roleMapper.toDto(roleRepository.getById(roleMapper.toEntity(role)));
     }
 
     @Override
     public RoleDto update(RoleDto role) {
-        return modelMapper.map(roleRepository.update(modelMapper.map(role, Role.class)), RoleDto.class);
+        return roleMapper.toDto(roleRepository.update(roleMapper.toEntity(role)));
     }
 
     @Override
     public RoleDto create(RoleDto role) {
-        return modelMapper.map(roleRepository.create(modelMapper.map(role, Role.class)), RoleDto.class);
+        return roleMapper.toDto(roleRepository.create(roleMapper.toEntity(role)));
     }
 
     @Override
     public void delete(RoleDto role) {
-        roleRepository.delete(modelMapper.map(role, Role.class));
+        roleRepository.delete(roleMapper.toEntity(role));
     }
 }

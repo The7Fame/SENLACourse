@@ -1,17 +1,7 @@
 package eu.senla.naumovich.services.service;
 
 import eu.senla.naumovich.dto.OrderDto;
+import eu.senla.naumovich.services.service.common.AbstractService;
 
-import java.util.List;
-
-public interface OrderService {
-    List<OrderDto> getAll();
-
-    OrderDto getById(OrderDto order);
-
-    OrderDto update(OrderDto order);
-
-    OrderDto create(OrderDto order);
-
-    void delete(OrderDto order);
+public interface OrderService extends AbstractService<OrderDto> {
 }

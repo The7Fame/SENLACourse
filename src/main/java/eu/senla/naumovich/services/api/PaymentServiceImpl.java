@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.PaymentRepository;
 import eu.senla.naumovich.dto.PaymentDto;
 import eu.senla.naumovich.entities.Payment;
+import eu.senla.naumovich.services.mapper.PaymentMapper;
 import eu.senla.naumovich.services.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
-    private final ModelMapper modelMapper;
+    private final PaymentMapper paymentMapper;
 
     @Override
     public List<PaymentDto> getAll() {
         List<Payment> payments = paymentRepository.getAll();
         List<PaymentDto> paymentsDto = payments.stream()
-                .map(payment -> modelMapper.map(payment, PaymentDto.class))
+                .map(paymentMapper::toDto)
                 .collect(Collectors.toList());
         return paymentsDto;
     }
 
     @Override
     public PaymentDto getById(PaymentDto payment) {
-        return modelMapper.map(paymentRepository.getById(modelMapper.map(payment, Payment.class)), PaymentDto.class);
+        return paymentMapper.toDto(paymentRepository.getById(paymentMapper.toEntity(payment)));
     }
 
     @Override
     public PaymentDto update(PaymentDto payment) {
-        return modelMapper.map(paymentRepository.update(modelMapper.map(payment, Payment.class)), PaymentDto.class);
+        return paymentMapper.toDto(paymentRepository.update(paymentMapper.toEntity(payment)));
     }
 
     @Override
     public PaymentDto create(PaymentDto payment) {
-        return modelMapper.map(paymentRepository.create(modelMapper.map(payment, Payment.class)), PaymentDto.class);
+        return paymentMapper.toDto(paymentRepository.create(paymentMapper.toEntity(payment)));
     }
 
     @Override
     public void delete(PaymentDto payment) {
-        paymentRepository.delete(modelMapper.map(payment, Payment.class));
+        paymentRepository.delete(paymentMapper.toEntity(payment));
     }
 }

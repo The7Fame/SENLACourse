@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.api;
 import eu.senla.naumovich.dao.repository.GenreRepository;
 import eu.senla.naumovich.dto.GenreDto;
 import eu.senla.naumovich.entities.Genre;
+import eu.senla.naumovich.services.mapper.GenreMapper;
 import eu.senla.naumovich.services.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
-    private final ModelMapper modelMapper;
+    private final GenreMapper genreMapper;
 
     @Override
     public List<GenreDto> getAll() {
         List<Genre> genres = genreRepository.getAll();
         List<GenreDto> genresDto = genres.stream()
-                .map(genre -> modelMapper.map(genre, GenreDto.class))
+                .map(genreMapper::toDto)
                 .collect(Collectors.toList());
         return genresDto;
     }
 
     @Override
     public GenreDto getById(GenreDto genre) {
-        return modelMapper.map(genreRepository.getById(modelMapper.map(genre, Genre.class)), GenreDto.class);
+        return genreMapper.toDto(genreRepository.getById(genreMapper.toEntity(genre)));
     }
 
     @Override
     public GenreDto update(GenreDto genre) {
-        return modelMapper.map(genreRepository.update(modelMapper.map(genre, Genre.class)), GenreDto.class);
+        return genreMapper.toDto(genreRepository.update(genreMapper.toEntity(genre)));
     }
 
     @Override
     public GenreDto create(GenreDto genre) {
-        return modelMapper.map(genreRepository.create(modelMapper.map(genre, Genre.class)), GenreDto.class);
+        return genreMapper.toDto(genreRepository.create(genreMapper.toEntity(genre)));
     }
 
     @Override
     public void delete(GenreDto genre) {
-        genreRepository.delete(modelMapper.map(genre, Genre.class));
+        genreRepository.delete(genreMapper.toEntity(genre));
     }
 }
