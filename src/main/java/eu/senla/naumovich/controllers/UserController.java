@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +37,8 @@ public class UserController {
     public void delete(String addressJSON) {
         userService.delete(fromJSONToDto(addressJSON));
     }
-    private UserDto fromJSONToDto(String userJSON)  {
+
+    private UserDto fromJSONToDto(String userJSON) {
         try {
             return objectMapper.readValue(userJSON, UserDto.class);
         } catch (JsonProcessingException e) {
@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    private String fromDtoToJSON(UserDto userDto)  {
+    private String fromDtoToJSON(UserDto userDto) {
         try {
             return objectMapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {

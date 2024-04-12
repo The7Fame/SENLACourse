@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class AddressController {
         addressService.delete(fromJSONToDto(addressJSON));
     }
 
-    private AddressDto fromJSONToDto(String addressJSON)  {
+    private AddressDto fromJSONToDto(String addressJSON) {
         try {
             return objectMapper.readValue(addressJSON, AddressDto.class);
         } catch (JsonProcessingException e) {
@@ -47,7 +46,7 @@ public class AddressController {
         }
     }
 
-    private String fromDtoToJSON(AddressDto addressDto)  {
+    private String fromDtoToJSON(AddressDto addressDto) {
         try {
             return objectMapper.writeValueAsString(addressDto);
         } catch (JsonProcessingException e) {

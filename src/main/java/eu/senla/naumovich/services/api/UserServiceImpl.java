@@ -6,13 +6,10 @@ import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.services.mapper.UserMapper;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor

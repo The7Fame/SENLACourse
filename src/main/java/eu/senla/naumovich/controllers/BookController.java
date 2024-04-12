@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +37,7 @@ public class BookController {
     public void delete(String bookJSON) {
         bookService.delete(fromJSONToDto(bookJSON));
     }
+
     private BookDto fromJSONToDto(String bookJSON) {
         try {
             return objectMapper.readValue(bookJSON, BookDto.class);

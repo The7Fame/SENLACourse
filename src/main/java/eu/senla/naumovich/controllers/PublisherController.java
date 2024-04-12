@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,10 +38,10 @@ public class PublisherController {
         publisherService.delete(fromJSONToDto(addressJSON));
     }
 
-    public synchronized String testMethod(){
+    public synchronized String testMethod() {
         try {
             return objectMapper.writeValueAsString(publisherService.testMethod());
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }

@@ -11,8 +11,6 @@ public class Application {
 
         PublisherController publisherController = context.getBean(PublisherController.class);
         publisherRequest(publisherController);
-        transactionTest(publisherController);
-
     }
 
     public static void publisherRequest(PublisherController publisherController) {
@@ -65,19 +63,5 @@ public class Application {
         System.out.println(publisherController.update(publisherToUpdate));
         System.out.println("All records");
         System.out.println(publisherController.getAll());
-    }
-
-    public static void transactionTest(PublisherController publisherController) {
-        for (int i = 0; i < 5; i++) {
-            Runnable task = () -> {
-                try {
-                    String result = publisherController.testMethod();
-                    System.out.println(result);
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                }
-            };
-            new Thread(task).start();
-        }
     }
 }

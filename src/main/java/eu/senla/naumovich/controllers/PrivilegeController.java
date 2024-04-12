@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.PrivilegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class PrivilegeController {
     private final PrivilegeService privilegeService;
     private final ObjectMapper objectMapper;
 
-    public List<String> getAll()  {
+    public List<String> getAll() {
         List<PrivilegeDto> privilegesDto = privilegeService.getAll();
         List<String> privilegesJSON = privilegesDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
         return privilegesJSON;
@@ -38,6 +37,7 @@ public class PrivilegeController {
     public void delete(String privilegeJSON) {
         privilegeService.delete(fromJSONToDto(privilegeJSON));
     }
+
     private PrivilegeDto fromJSONToDto(String privilegeJSON) {
         try {
             return objectMapper.readValue(privilegeJSON, PrivilegeDto.class);
@@ -46,7 +46,7 @@ public class PrivilegeController {
         }
     }
 
-    private String fromDtoToJSON(PrivilegeDto privilegeDto){
+    private String fromDtoToJSON(PrivilegeDto privilegeDto) {
         try {
             return objectMapper.writeValueAsString(privilegeDto);
         } catch (JsonProcessingException e) {

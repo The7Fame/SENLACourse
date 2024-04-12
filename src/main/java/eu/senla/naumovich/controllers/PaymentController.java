@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,27 +16,28 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final ObjectMapper objectMapper;
 
-    public List<String> getAll(){
+    public List<String> getAll() {
         List<PaymentDto> paymentsDto = paymentService.getAll();
         List<String> paymentsJSON = paymentsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
         return paymentsJSON;
     }
 
-    public String getById(String addressJSON){
+    public String getById(String addressJSON) {
         return fromDtoToJSON(paymentService.getById(fromJSONToDto(addressJSON)));
     }
 
-    public String update(String paymentJSON){
+    public String update(String paymentJSON) {
         return fromDtoToJSON(paymentService.update(fromJSONToDto(paymentJSON)));
     }
 
-    public String create(String paymentJSON){
+    public String create(String paymentJSON) {
         return fromDtoToJSON(paymentService.create(fromJSONToDto(paymentJSON)));
     }
 
-    public void delete(String paymentJSON){
+    public void delete(String paymentJSON) {
         paymentService.delete(fromJSONToDto(paymentJSON));
     }
+
     private PaymentDto fromJSONToDto(String paymentJSON) {
         try {
             return objectMapper.readValue(paymentJSON, PaymentDto.class);

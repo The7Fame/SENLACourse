@@ -6,10 +6,8 @@ import eu.senla.naumovich.entities.Address;
 import eu.senla.naumovich.services.mapper.AddressMapper;
 import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

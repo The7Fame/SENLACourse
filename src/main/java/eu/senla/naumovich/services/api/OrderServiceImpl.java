@@ -6,19 +6,17 @@ import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.services.mapper.OrderMapper;
 import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+
     @Override
     public List<OrderDto> getAll() {
         List<Order> orders = orderRepository.getAll();

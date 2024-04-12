@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,28 +16,28 @@ public class GenreController {
     private final GenreService genreService;
     private final ObjectMapper objectMapper;
 
-
     public List<String> getAll() {
         List<GenreDto> genresDto = genreService.getAll();
         List<String> genresJSON = genresDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
         return genresJSON;
     }
 
-    public String getById(String genreJSON){
+    public String getById(String genreJSON) {
         return fromDtoToJSON(genreService.getById(fromJSONToDto(genreJSON)));
     }
 
-    public String update(String genreJSON){
+    public String update(String genreJSON) {
         return fromDtoToJSON(genreService.update(fromJSONToDto(genreJSON)));
     }
 
-    public String create(String genreJSON){
+    public String create(String genreJSON) {
         return fromDtoToJSON(genreService.create(fromJSONToDto(genreJSON)));
     }
 
-    public void delete(String genreJSON){
+    public void delete(String genreJSON) {
         genreService.delete(fromJSONToDto(genreJSON));
     }
+
     private GenreDto fromJSONToDto(String genreJSON) {
         try {
             return objectMapper.readValue(genreJSON, GenreDto.class);

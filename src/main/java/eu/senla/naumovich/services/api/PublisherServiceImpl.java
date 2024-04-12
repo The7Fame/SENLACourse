@@ -1,19 +1,15 @@
 package eu.senla.naumovich.services.api;
 
-import eu.senla.naumovich.annotation.Transaction;
 import eu.senla.naumovich.dao.repository.PublisherRepository;
 import eu.senla.naumovich.dto.PublisherDto;
 import eu.senla.naumovich.entities.Publisher;
 import eu.senla.naumovich.services.mapper.PublisherMapper;
 import eu.senla.naumovich.services.service.PublisherService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +44,6 @@ public class PublisherServiceImpl implements PublisherService {
         publisherRepository.delete(publisherMapper.toEntity(publisher));
     }
 
-    @Transaction
     public PublisherDto testMethod() {
         Publisher publisher = new Publisher();
         publisher.setId(1L);

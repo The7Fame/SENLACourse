@@ -6,13 +6,10 @@ import eu.senla.naumovich.entities.Payment;
 import eu.senla.naumovich.services.mapper.PaymentMapper;
 import eu.senla.naumovich.services.service.PaymentService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
