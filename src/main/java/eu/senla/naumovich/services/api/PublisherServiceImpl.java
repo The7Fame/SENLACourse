@@ -26,7 +26,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public PublisherDto getById(PublisherDto publisher) {
-        return publisherMapper.toDto(publisherRepository.getById(publisherMapper.toEntity(publisher)));
+        return publisherMapper.toDto(publisherRepository.getById(publisher.getId()));
     }
 
     @Override
@@ -35,19 +35,12 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public PublisherDto create(PublisherDto publisher) {
-        return publisherMapper.toDto(publisherRepository.create(publisherMapper.toEntity(publisher)));
+    public void create(PublisherDto publisher) {
+        publisherRepository.create(publisherMapper.toEntity(publisher));
     }
 
     @Override
     public void delete(PublisherDto publisher) {
         publisherRepository.delete(publisherMapper.toEntity(publisher));
-    }
-
-    public PublisherDto testMethod() {
-        Publisher publisher = new Publisher();
-        publisher.setId(1L);
-        publisher.setPublisherName("publisherName");
-        return publisherMapper.toDto(publisherRepository.getById(publisher));
     }
 }

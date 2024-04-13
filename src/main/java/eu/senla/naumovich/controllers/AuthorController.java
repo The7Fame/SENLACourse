@@ -30,8 +30,8 @@ public class AuthorController {
         return fromDtoToJSON(authorService.update(fromJSONToDto(authorJSON)));
     }
 
-    public String create(String authorJSON) {
-        return fromDtoToJSON(authorService.create(fromJSONToDto(authorJSON)));
+    public void create(String authorJSON) {
+        authorService.create(fromJSONToDto(authorJSON));
     }
 
     public void delete(String authorJSON) {

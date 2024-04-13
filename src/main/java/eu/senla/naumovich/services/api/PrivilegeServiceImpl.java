@@ -28,7 +28,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public PrivilegeDto getById(PrivilegeDto privilege) {
-        return privilegeMapper.toDto(privilegeRepository.getById(privilegeMapper.toEntity(privilege)));
+        return privilegeMapper.toDto(privilegeRepository.getById(privilege.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public PrivilegeDto create(PrivilegeDto privilege) {
-        return privilegeMapper.toDto(privilegeRepository.create(privilegeMapper.toEntity(privilege)));
+    public void create(PrivilegeDto privilege) {
+        privilegeRepository.create(privilegeMapper.toEntity(privilege));
     }
 
     @Override

@@ -30,8 +30,8 @@ public class PromotionController {
         return fromDtoToJSON(promotionService.update(fromJSONToDto(promotionJSON)));
     }
 
-    public String create(String promotionJSON) {
-        return fromDtoToJSON(promotionService.create(fromJSONToDto(promotionJSON)));
+    public void create(String promotionJSON) {
+        promotionService.create(fromJSONToDto(promotionJSON));
     }
 
     public void delete(String promotionJSON) {

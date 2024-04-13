@@ -30,8 +30,8 @@ public class PrivilegeController {
         return fromDtoToJSON(privilegeService.update(fromJSONToDto(privilegeJSON)));
     }
 
-    public String create(String privilegeJSON) {
-        return fromDtoToJSON(privilegeService.create(fromJSONToDto(privilegeJSON)));
+    public void create(String privilegeJSON) {
+        privilegeService.create(fromJSONToDto(privilegeJSON));
     }
 
     public void delete(String privilegeJSON) {

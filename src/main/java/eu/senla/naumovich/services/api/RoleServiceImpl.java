@@ -6,6 +6,7 @@ import eu.senla.naumovich.entities.Role;
 import eu.senla.naumovich.services.mapper.RoleMapper;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto getById(RoleDto role) {
-        return roleMapper.toDto(roleRepository.getById(roleMapper.toEntity(role)));
+        return roleMapper.toDto(roleRepository.getById(role.getId()));
     }
 
     @Override
@@ -37,8 +38,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto create(RoleDto role) {
-        return roleMapper.toDto(roleRepository.create(roleMapper.toEntity(role)));
+    public void create(RoleDto role) {
+        roleRepository.create(roleMapper.toEntity(role));
     }
 
     @Override

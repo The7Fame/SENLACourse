@@ -28,7 +28,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto getById(AddressDto address) {
-        return addressMapper.toDto(addressRepository.getById(addressMapper.toEntity(address)));
+        return addressMapper.toDto(addressRepository.getById(address.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto create(AddressDto address) {
-        return addressMapper.toDto(addressRepository.create(addressMapper.toEntity(address)));
+    public void create(AddressDto address) {
+        addressRepository.create(addressMapper.toEntity(address));
     }
 
     @Override

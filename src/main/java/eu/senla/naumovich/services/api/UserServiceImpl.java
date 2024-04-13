@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(UserDto user) {
-        return userMapper.toDto(userRepository.getById(userMapper.toEntity(user)));
+        return userMapper.toDto(userRepository.getById(user.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserDto user) {
-        return userMapper.toDto(userRepository.create(userMapper.toEntity(user)));
+    public void create(UserDto user) {
+        userRepository.create(userMapper.toEntity(user));
     }
 
     @Override

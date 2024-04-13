@@ -28,7 +28,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreDto getById(GenreDto genre) {
-        return genreMapper.toDto(genreRepository.getById(genreMapper.toEntity(genre)));
+        return genreMapper.toDto(genreRepository.getById(genre.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDto create(GenreDto genre) {
-        return genreMapper.toDto(genreRepository.create(genreMapper.toEntity(genre)));
+    public void create(GenreDto genre) {
+        genreRepository.create(genreMapper.toEntity(genre));
     }
 
     @Override

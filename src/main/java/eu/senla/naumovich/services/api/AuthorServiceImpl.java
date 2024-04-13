@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto getById(AuthorDto author) {
-        return authorMapper.toDto(authorRepository.getById(authorMapper.toEntity(author)));
+        return authorMapper.toDto(authorRepository.getById(author.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto create(AuthorDto author) {
-        return authorMapper.toDto(authorRepository.create(authorMapper.toEntity(author)));
+    public void create(AuthorDto author) {
+        authorRepository.create(authorMapper.toEntity(author));
     }
 
     @Override

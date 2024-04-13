@@ -30,8 +30,8 @@ public class OrderController {
         return fromDtoToJSON(orderService.update(fromJSONToDto(orderJSON)));
     }
 
-    public String create(String orderJSON) {
-        return fromDtoToJSON(orderService.create(fromJSONToDto(orderJSON)));
+    public void create(String orderJSON) {
+        orderService.create(fromJSONToDto(orderJSON));
     }
 
     public void delete(String orderJSON) {

@@ -81,5 +81,34 @@
     <changeSet id="homework-2-constraint-review" author="Maksim Naumovich">
         <sqlFile encoding="utf8" path="./sql/24.add-constraint-on-review-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-
+    <changeSet id="homework-2-change-address" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/25.change-type-on-addresses.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book-author" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/26.change-type-on-book-author.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/27.change-type-on-book.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book-promotion" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/28.change-type-on-book-promotion.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-cart" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/29.change-type-on-cart.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-order" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/30.change-type-on-order.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-payment" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/31.change-type-on-payment.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-role-privilege" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/32.change-type-type-on-role-privilege.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-review" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/33.change-type-on-review.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-user" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/34.change-type-on-user.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog> 

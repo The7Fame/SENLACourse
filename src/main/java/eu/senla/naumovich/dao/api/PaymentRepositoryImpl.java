@@ -1,47 +1,14 @@
 package eu.senla.naumovich.dao.api;
 
 import eu.senla.naumovich.dao.repository.PaymentRepository;
+import eu.senla.naumovich.dao.repository.common.AbstractDao;
 import eu.senla.naumovich.entities.Payment;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
-public class PaymentRepositoryImpl implements PaymentRepository {
-    final List<Payment> payments = new ArrayList<>();
+public class PaymentRepositoryImpl extends AbstractDao<Long, Payment> implements PaymentRepository {
     @Override
-    public List<Payment> getAll() {
-        return payments;
-    }
-
-    @Override
-    public Payment getById(Payment payment) {
-        return payments.stream()
-                .filter(p -> p.getId() == payment.getId())
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public Payment update(Payment payment) {
-        for(Payment p : payments){
-            if(payment.getId() == p.getId()){
-                p.setStatus(payment.getStatus());
-                return p;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Payment create(Payment payment) {
-        payments.add(payment);
-        return payment;
-    }
-
-    @Override
-    public void delete(Payment payment) {
-        payments.removeIf(p -> p.getId() == payment.getId());
+    protected Class<Payment> getEntityClass() {
+        return Payment.class;
     }
 }

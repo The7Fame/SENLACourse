@@ -30,8 +30,8 @@ public class AddressController {
         return fromDtoToJSON(addressService.update(fromJSONToDto(addressJSON)));
     }
 
-    public String create(String addressJSON) {
-        return fromDtoToJSON(addressService.create(fromJSONToDto(addressJSON)));
+    public void create(String addressJSON) {
+        addressService.create(fromJSONToDto(addressJSON));
     }
 
     public void delete(String addressJSON) {

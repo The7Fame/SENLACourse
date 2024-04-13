@@ -30,8 +30,8 @@ public class PaymentController {
         return fromDtoToJSON(paymentService.update(fromJSONToDto(paymentJSON)));
     }
 
-    public String create(String paymentJSON) {
-        return fromDtoToJSON(paymentService.create(fromJSONToDto(paymentJSON)));
+    public void create(String paymentJSON) {
+        paymentService.create(fromJSONToDto(paymentJSON));
     }
 
     public void delete(String paymentJSON) {

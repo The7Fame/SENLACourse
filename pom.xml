@@ -99,6 +99,32 @@
             <artifactId>spring-orm</artifactId>
             <version>6.1.4</version>
         </dependency>
-
     </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/changelogs</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>4.5</version>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-jpamodelgen -->
+                    <dependency>
+                        <groupId>org.hibernate.orm</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>6.4.4.Final</version>
+                        <scope>provided</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>

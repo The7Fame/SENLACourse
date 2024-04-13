@@ -30,8 +30,8 @@ public class CartController {
         return fromDtoToJSON(cartService.update(fromJSONToDto(cartJSON)));
     }
 
-    public String create(String cartJSON) {
-        return fromDtoToJSON(cartService.create(fromJSONToDto(cartJSON)));
+    public void create(String cartJSON) {
+        cartService.create(fromJSONToDto(cartJSON));
     }
 
     public void delete(String cartJSON) {

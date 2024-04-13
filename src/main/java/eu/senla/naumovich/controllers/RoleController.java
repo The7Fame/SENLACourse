@@ -30,8 +30,8 @@ public class RoleController {
         return fromDtoToJSON(roleService.update(fromJSONToDto(roleJSON)));
     }
 
-    public String create(String roleJSON) {
-        return fromDtoToJSON(roleService.create(fromJSONToDto(roleJSON)));
+    public void create(String roleJSON) {
+        roleService.create(fromJSONToDto(roleJSON));
     }
 
     public void delete(String roleJSON) {

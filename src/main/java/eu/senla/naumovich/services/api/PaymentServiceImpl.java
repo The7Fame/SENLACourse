@@ -28,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentDto getById(PaymentDto payment) {
-        return paymentMapper.toDto(paymentRepository.getById(paymentMapper.toEntity(payment)));
+        return paymentMapper.toDto(paymentRepository.getById(payment.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto create(PaymentDto payment) {
-        return paymentMapper.toDto(paymentRepository.create(paymentMapper.toEntity(payment)));
+    public void create(PaymentDto payment) {
+        paymentRepository.create(paymentMapper.toEntity(payment));
     }
 
     @Override

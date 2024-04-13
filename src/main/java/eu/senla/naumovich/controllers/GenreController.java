@@ -30,8 +30,8 @@ public class GenreController {
         return fromDtoToJSON(genreService.update(fromJSONToDto(genreJSON)));
     }
 
-    public String create(String genreJSON) {
-        return fromDtoToJSON(genreService.create(fromJSONToDto(genreJSON)));
+    public void create(String genreJSON) {
+        genreService.create(fromJSONToDto(genreJSON));
     }
 
     public void delete(String genreJSON) {

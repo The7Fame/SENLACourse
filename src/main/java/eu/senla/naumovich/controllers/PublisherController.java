@@ -30,20 +30,12 @@ public class PublisherController {
         return fromDtoToJSON(publisherService.update(fromJSONToDto(publisherJSON)));
     }
 
-    public String create(String publisherJSON) {
-        return fromDtoToJSON(publisherService.create(fromJSONToDto(publisherJSON)));
+    public void create(String publisherJSON) {
+        publisherService.create(fromJSONToDto(publisherJSON));
     }
 
     public void delete(String addressJSON) {
         publisherService.delete(fromJSONToDto(addressJSON));
-    }
-
-    public synchronized String testMethod() {
-        try {
-            return objectMapper.writeValueAsString(publisherService.testMethod());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private PublisherDto fromJSONToDto(String publisherJSON) {

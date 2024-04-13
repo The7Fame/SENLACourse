@@ -9,7 +9,7 @@ public interface AbstractService<T> {
 
     T update(T object);
 
-    T create(T object);
+    void create(T object);
 
     void delete(T object);
 }

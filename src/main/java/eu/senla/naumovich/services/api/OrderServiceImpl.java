@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getById(OrderDto order) {
-        return orderMapper.toDto(orderRepository.getById(orderMapper.toEntity(order)));
+        return orderMapper.toDto(orderRepository.getById(order.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto create(OrderDto order) {
-        return orderMapper.toDto(orderRepository.create(orderMapper.toEntity(order)));
+    public void create(OrderDto order) {
+        orderRepository.create(orderMapper.toEntity(order));
     }
 
     @Override

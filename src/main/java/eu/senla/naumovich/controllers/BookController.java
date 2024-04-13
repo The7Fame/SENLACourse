@@ -30,8 +30,8 @@ public class BookController {
         return fromDtoToJSON(bookService.update(fromJSONToDto(bookJSON)));
     }
 
-    public String create(String bookJSON) {
-        return fromDtoToJSON(bookService.create(fromJSONToDto(bookJSON)));
+    public void create(String bookJSON) {
+        bookService.create(fromJSONToDto(bookJSON));
     }
 
     public void delete(String bookJSON) {

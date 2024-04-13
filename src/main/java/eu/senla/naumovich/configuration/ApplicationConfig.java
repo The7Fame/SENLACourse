@@ -5,10 +5,17 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
-@EnableAspectJAutoProxy
+@EnableTransactionManagement
 @Configuration
 @ComponentScan(basePackages = "eu.senla.naumovich")
 @PropertySource("classpath:application.properties")
@@ -45,5 +52,28 @@ public class ApplicationConfig {
         liquibase.setDataSource(dataSource());
         liquibase.setChangeLog(changelog);
         return liquibase;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean managerFactoryBean() {
+        LocalContainerEntityManagerFactoryBean managerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        managerFactoryBean.setDataSource(dataSource());
+        managerFactoryBean.setPackagesToScan("eu.senla.naumovich.entities");
+        managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.show_sql", "true");
+
+        managerFactoryBean.setJpaProperties(properties);
+        return managerFactoryBean;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(managerFactoryBean().getObject());
+        return transactionManager;
     }
 }

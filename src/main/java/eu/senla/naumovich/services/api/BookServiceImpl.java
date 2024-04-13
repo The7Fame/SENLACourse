@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(BookDto book) {
-        return bookMapper.toDto(bookRepository.getById(bookMapper.toEntity(book)));
+        return bookMapper.toDto(bookRepository.getById(book.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto create(BookDto book) {
-        return bookMapper.toDto(bookRepository.create(bookMapper.toEntity(book)));
+    public void create(BookDto book) {
+        bookRepository.create(bookMapper.toEntity(book));
     }
 
     @Override

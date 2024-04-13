@@ -30,8 +30,8 @@ public class UserController {
         return fromDtoToJSON(userService.update(fromJSONToDto(addressJSON)));
     }
 
-    public String create(String addressJSON) {
-        return fromDtoToJSON(userService.create(fromJSONToDto(addressJSON)));
+    public void create(String addressJSON) {
+        userService.create(fromJSONToDto(addressJSON));
     }
 
     public void delete(String addressJSON) {

@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto getById(ReviewDto review) {
-        return reviewMapper.toDto(reviewRepository.getById(reviewMapper.toEntity(review)));
+        return reviewMapper.toDto(reviewRepository.getById(review.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDto create(ReviewDto review) {
-        return reviewMapper.toDto(reviewRepository.create(reviewMapper.toEntity(review)));
+    public void create(ReviewDto review) {
+        reviewRepository.create(reviewMapper.toEntity(review));
     }
 
     @Override

@@ -28,7 +28,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionDto getById(PromotionDto promotion) {
-        return promotionMapper.toDto(promotionRepository.getById(promotionMapper.toEntity(promotion)));
+        return promotionMapper.toDto(promotionRepository.getById(promotion.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public PromotionDto create(PromotionDto promotion) {
-        return promotionMapper.toDto(promotionRepository.create(promotionMapper.toEntity(promotion)));
+    public void create(PromotionDto promotion) {
+        promotionRepository.create(promotionMapper.toEntity(promotion));
     }
 
     @Override

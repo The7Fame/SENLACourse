@@ -1,35 +1,14 @@
 package eu.senla.naumovich.dao.api;
 
 import eu.senla.naumovich.dao.repository.PublisherRepository;
+import eu.senla.naumovich.dao.repository.common.AbstractDao;
 import eu.senla.naumovich.entities.Publisher;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class PublisherRepositoryImpl implements PublisherRepository {
-
+public class PublisherRepositoryImpl extends AbstractDao<Long, Publisher> implements PublisherRepository {
     @Override
-    public List<Publisher> getAll() {
-        return null;
-    }
-
-    @Override
-    public Publisher getById(Publisher publisher) {
-        return null;
-    }
-
-    @Override
-    public Publisher update(Publisher publisher) {
-        return null;
-    }
-
-    @Override
-    public Publisher create(Publisher publisher) {
-        return null;
-    }
-
-    @Override
-    public void delete(Publisher publisher) {
+    protected Class<Publisher> getEntityClass() {
+        return Publisher.class;
     }
 }

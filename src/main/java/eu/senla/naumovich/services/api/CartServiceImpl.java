@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto getById(CartDto cart) {
-        return cartMapper.toDto(cartRepository.getById(cartMapper.toEntity(cart)));
+        return cartMapper.toDto(cartRepository.getById(cart.getId()));
     }
 
     @Override
@@ -37,8 +37,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDto create(CartDto cart) {
-        return cartMapper.toDto(cartRepository.create(cartMapper.toEntity(cart)));
+    public void create(CartDto cart) {
+        cartRepository.create(cartMapper.toEntity(cart));
     }
 
     @Override

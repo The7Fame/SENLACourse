@@ -30,8 +30,8 @@ public class ReviewController {
         return fromDtoToJSON(reviewService.update(fromJSONToDto(reviewJSON)));
     }
 
-    public String create(String reviewJSON) {
-        return fromDtoToJSON(reviewService.create(fromJSONToDto(reviewJSON)));
+    public void create(String reviewJSON) {
+        reviewService.create(fromJSONToDto(reviewJSON));
     }
 
     public void delete(String reviewJSON) {
