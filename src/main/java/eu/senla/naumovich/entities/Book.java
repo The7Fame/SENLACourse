@@ -17,6 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -25,6 +27,14 @@ import jakarta.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(name = "graph.Book.associations", attributeNodes = {
+        @NamedAttributeNode("genre"),
+        @NamedAttributeNode("publisher"),
+        @NamedAttributeNode("authors"),
+        @NamedAttributeNode("reviews"),
+        @NamedAttributeNode("promotions"),
+        @NamedAttributeNode("carts")
+})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

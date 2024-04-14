@@ -55,6 +55,7 @@ public class ApplicationConfig {
     }
 
     @Bean
+    @DependsOn("springLiquibase")
     public LocalContainerEntityManagerFactoryBean managerFactoryBean() {
         LocalContainerEntityManagerFactoryBean managerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         managerFactoryBean.setDataSource(dataSource());

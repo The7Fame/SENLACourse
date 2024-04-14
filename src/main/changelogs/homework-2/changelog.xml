@@ -56,7 +56,6 @@
     <changeSet id="homework-2-payment" author="Maksim Naumovich">
         <sqlFile encoding="utf8" path="./sql/12.create-payment-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-
     <changeSet id="homework-2-indexes-payment" author="Maksim Naumovich">
         <sqlFile encoding="utf8" path="./sql/17.create-indexes-on-payment-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
