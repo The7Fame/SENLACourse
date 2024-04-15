@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="23.create-index-publisher-on-book-table" author="Maksim Naumovich">
+        <createIndex indexName="ibx_publisher_id" tableName="books">
+            <column name="publisher_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="23.create-index-genre-on-book-table" author="your_name">
+        <createIndex indexName="ibx_genre_id" tableName="books">
+            <column name="genre_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

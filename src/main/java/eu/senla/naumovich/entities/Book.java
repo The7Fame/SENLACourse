@@ -1,11 +1,10 @@
 package eu.senla.naumovich.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +24,8 @@ import jakarta.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "books")
 @NamedEntityGraph(name = "graph.Book.associations", attributeNodes = {
@@ -61,4 +62,26 @@ public class Book {
     List<Promotion> promotions;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     List<Cart> carts;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id) &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(isbn, book.isbn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, isbn);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": " + id;
+    }
 }

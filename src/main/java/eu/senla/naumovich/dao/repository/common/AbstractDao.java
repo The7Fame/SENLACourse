@@ -34,10 +34,10 @@ public abstract class AbstractDao<K, T> {
     };
 
     public void create(T object) {
-        entityManager.persist(object);
+        entityManager.merge(object);
     };
 
     public void delete(T object) {
-        entityManager.remove(object);
+        entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
     };
 }

@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public enum GenreEnum {
-    GENRE1(1L, "genre1"), GENRE2(2L,"genre2");
+    GENRE1(1L, "genre1"), GENRE2(2L, "genre2");
+
     private final Long id;
     private final String genreName;
 
@@ -22,6 +23,7 @@ public enum GenreEnum {
         LOOKUP = Collections.unmodifiableMap(Arrays.stream(GenreEnum.values())
                 .collect(Collectors.toMap(GenreEnum::getId, Function.identity())));
     }
+
     public static GenreEnum lookup(long genreId) {
         return LOOKUP.get(genreId);
     }

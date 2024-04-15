@@ -9,13 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -31,4 +33,28 @@ public class Address {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     Publisher publisher;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(index, address.index) &&
+                Objects.equals(publisher, address.publisher);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, city, street, index, publisher);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": " + id;
+    }
 }

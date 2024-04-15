@@ -1,15 +1,16 @@
 package eu.senla.naumovich.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 @NamedEntityGraph(name = "graph.User.associations", attributeNodes = {
@@ -40,4 +41,24 @@ public class User {
     List<Order> orders;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Payment> payments;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": " + id;
+    }
 }

@@ -1,11 +1,10 @@
 package eu.senla.naumovich.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +20,8 @@ import jakarta.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "payments")
 public class Payment {
@@ -39,4 +40,29 @@ public class Payment {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     Order order;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Payment payment = (Payment) o;
+        return Objects.equals(id, payment.id) &&
+                Objects.equals(status, payment.status) &&
+                Objects.equals(paymentDate, payment.paymentDate) &&
+                Objects.equals(totalPrice, payment.totalPrice) &&
+                Objects.equals(user, payment.user) &&
+                Objects.equals(order, payment.order);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, status, paymentDate, totalPrice, user, order);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": " + id;
+    }
 }

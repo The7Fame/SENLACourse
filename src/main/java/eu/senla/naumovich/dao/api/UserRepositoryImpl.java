@@ -2,7 +2,6 @@ package eu.senla.naumovich.dao.api;
 
 import eu.senla.naumovich.dao.repository.UserRepository;
 import eu.senla.naumovich.dao.repository.common.AbstractDao;
-import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.entities.User;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
@@ -29,7 +28,7 @@ public class UserRepositoryImpl extends AbstractDao<Long, User> implements UserR
     @Override
     public User getUserByName(String userName) {
         String jbqlQuery = "select u from User u where u.name = :name";
-        TypedQuery<User> query =entityManager.createQuery(jbqlQuery, User.class);
+        TypedQuery<User> query = entityManager.createQuery(jbqlQuery, User.class);
         query.setParameter("name", userName);
         return query.getSingleResult();
     };

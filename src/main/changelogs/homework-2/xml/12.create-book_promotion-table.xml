@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="12.create-book_promotion-table" author="Maksim Naumovich">
+        <createTable tableName="books_promotions">
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="promotion_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_books_promotions_book_id"
+                                 baseTableName="books_promotions"
+                                 baseColumnNames="book_id"
+                                 referencedTableName="books"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_books_promotions_promotion_id"
+                                 baseTableName="books_promotions"
+                                 baseColumnNames="promotion_id"
+                                 referencedTableName="promotions"
+                                 referencedColumnNames="id"/>
+        <addPrimaryKey columnNames="book_id, promotion_id"
+                       constraintName="pk_books_promotions"
+                       tableName="books_promotions"/>
+    </changeSet>
+</databaseChangeLog>
