@@ -12,6 +12,6 @@ public class BookDto {
     String title;
     Double price;
     String isbn;
-    GenreDto genre;
+    String genre;
     PublisherDto publisher;
 }

@@ -1,15 +1,14 @@
 package eu.senla.naumovich.dao.repository.common;
 
 import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 public abstract class AbstractDao<K, T> {
 
     @PersistenceContext
@@ -29,14 +28,17 @@ public abstract class AbstractDao<K, T> {
         return entityManager.find(getEntityClass(), id);
     };
 
+    @Transactional
     public T update(T object) {
         return entityManager.merge(object);
     };
 
+    @Transactional
     public void create(T object) {
         entityManager.merge(object);
     };
 
+    @Transactional
     public void delete(T object) {
         entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
     };

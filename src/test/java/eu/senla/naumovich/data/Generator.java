@@ -95,19 +95,6 @@ public class Generator {
         return address;
     }
 
-    public Genre createGenre() {
-        return Genre.builder()
-                .id(ID)
-                .genreName(NAME)
-                .build();
-    }
-
-    public Genre updateGenre() {
-        Genre genre = createGenre();
-        genre.setGenreName(UPDATE_NAME);
-        return genre;
-    }
-
     public Book createBook() {
         return Book.builder()
                 .id(ID)
