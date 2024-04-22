@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,19 +22,19 @@ public class OrderController {
         return ordersJSON;
     }
 
-    public String getById(String orderJSON){
+    public String getById(String orderJSON) {
         return fromDtoToJSON(orderService.getById(fromJSONToDto(orderJSON)));
     }
 
-    public String update(String orderJSON){
+    public String update(String orderJSON) {
         return fromDtoToJSON(orderService.update(fromJSONToDto(orderJSON)));
     }
 
-    public String create(String orderJSON){
-        return fromDtoToJSON(orderService.create(fromJSONToDto(orderJSON)));
+    public void create(String orderJSON) {
+        orderService.create(fromJSONToDto(orderJSON));
     }
 
-    public void delete(String orderJSON){
+    public void delete(String orderJSON) {
         orderService.delete(fromJSONToDto(orderJSON));
     }
 
@@ -46,6 +45,7 @@ public class OrderController {
             throw new RuntimeException(e);
         }
     }
+
     private String fromDtoToJSON(OrderDto orderDto) {
         try {
             return objectMapper.writeValueAsString(orderDto);

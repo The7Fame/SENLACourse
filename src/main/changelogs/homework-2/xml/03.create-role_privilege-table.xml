@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="03.create-role_privilege-table" author="Maksim Naumovich">
+        <createTable tableName="roles_privileges">
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="privilege_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_roles_privileges_role_id"
+                                 baseTableName="roles_privileges"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_roles_privileges_privilege_id"
+                                 baseTableName="roles_privileges"
+                                 baseColumnNames="privilege_id"
+                                 referencedTableName="privileges"
+                                 referencedColumnNames="id"/>
+        <addPrimaryKey columnNames="role_id, privilege_id"
+                       constraintName="pk_roles_privileges"
+                       tableName="roles_privileges"/>
+    </changeSet>
+</databaseChangeLog>

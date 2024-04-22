@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +30,14 @@ public class CartController {
         return fromDtoToJSON(cartService.update(fromJSONToDto(cartJSON)));
     }
 
-    public String create(String cartJSON) {
-        return fromDtoToJSON(cartService.create(fromJSONToDto(cartJSON)));
+    public void create(String cartJSON) {
+        cartService.create(fromJSONToDto(cartJSON));
     }
 
     public void delete(String cartJSON) {
         cartService.delete(fromJSONToDto(cartJSON));
     }
+
     private CartDto fromJSONToDto(String cartJSON) {
         try {
             return objectMapper.readValue(cartJSON, CartDto.class);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="21.create-index-irx_user_id" author="Maksim Naumovich">
+        <createIndex indexName="irx_user_id" tableName="reviews">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="21.create-index-irx_book_id" author="Maksim Naumovich">
+        <createIndex indexName="irx_book_id" tableName="reviews">
+            <column name="book_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

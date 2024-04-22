@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class AuthorController {
     private final AuthorService authorService;
     private final ObjectMapper objectMapper;
 
-    public List<String> getAll()  {
+    public List<String> getAll() {
         List<AuthorDto> authorsDto = authorService.getAll();
         List<String> authorsJSON = authorsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
         return authorsJSON;
@@ -31,8 +30,8 @@ public class AuthorController {
         return fromDtoToJSON(authorService.update(fromJSONToDto(authorJSON)));
     }
 
-    public String create(String authorJSON) {
-        return fromDtoToJSON(authorService.create(fromJSONToDto(authorJSON)));
+    public void create(String authorJSON) {
+        authorService.create(fromJSONToDto(authorJSON));
     }
 
     public void delete(String authorJSON) {
@@ -47,7 +46,7 @@ public class AuthorController {
         }
     }
 
-    private String fromDtoToJSON(AuthorDto authorDto)  {
+    private String fromDtoToJSON(AuthorDto authorDto) {
         try {
             return objectMapper.writeValueAsString(authorDto);
         } catch (JsonProcessingException e) {

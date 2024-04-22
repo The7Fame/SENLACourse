@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="09.create-book-table" author="Maksim Naumovich">
+        <createTable tableName="books">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(25)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="price" type="decimal(5,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isbn" type="varchar(13)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="genre_id" type="bigint"/>
+            <column name="publisher_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_books_genres"
+                                 baseTableName="books"
+                                 baseColumnNames="genre_id"
+                                 referencedTableName="genres"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_books_publishers"
+                                 baseTableName="books"
+                                 baseColumnNames="publisher_id"
+                                 referencedTableName="publishers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

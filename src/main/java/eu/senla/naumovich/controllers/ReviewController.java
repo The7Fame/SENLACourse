@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ObjectMapper objectMapper;
 
-    public List<String> getAll(){
+    public List<String> getAll() {
         List<ReviewDto> reviewsDto = reviewService.getAll();
         List<String> reviewsJSON = reviewsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
         return reviewsJSON;
@@ -31,14 +30,15 @@ public class ReviewController {
         return fromDtoToJSON(reviewService.update(fromJSONToDto(reviewJSON)));
     }
 
-    public String create(String reviewJSON) {
-        return fromDtoToJSON(reviewService.create(fromJSONToDto(reviewJSON)));
+    public void create(String reviewJSON) {
+        reviewService.create(fromJSONToDto(reviewJSON));
     }
 
     public void delete(String reviewJSON) {
         reviewService.delete(fromJSONToDto(reviewJSON));
     }
-    private ReviewDto fromJSONToDto(String reviewJSON){
+
+    private ReviewDto fromJSONToDto(String reviewJSON) {
         try {
             return objectMapper.readValue(reviewJSON, ReviewDto.class);
         } catch (JsonProcessingException e) {
@@ -46,7 +46,7 @@ public class ReviewController {
         }
     }
 
-    private String fromDtoToJSON(ReviewDto reviewDto){
+    private String fromDtoToJSON(ReviewDto reviewDto) {
         try {
             return objectMapper.writeValueAsString(reviewDto);
         } catch (JsonProcessingException e) {

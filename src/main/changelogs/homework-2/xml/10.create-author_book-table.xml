@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="10.create-author_book-table" author="Maksim Naumovich">
+        <createTable tableName="authors_books">
+            <column name="author_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_authors_books_author_id"
+                                 baseTableName="authors_books"
+                                 baseColumnNames="author_id"
+                                 referencedTableName="authors"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_authors_books_book_id"
+                                 baseTableName="authors_books"
+                                 baseColumnNames="book_id"
+                                 referencedTableName="books"
+                                 referencedColumnNames="id"/>
+        <addPrimaryKey columnNames="author_id, book_id"
+                       constraintName="pk_authors_books"
+                       tableName="authors_books"/>
+    </changeSet>
+</databaseChangeLog>

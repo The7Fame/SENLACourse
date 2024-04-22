@@ -11,7 +11,7 @@ public class BookDto {
     Long id;
     String title;
     Double price;
-    Long isbn;
-    GenreDto genre;
+    String isbn;
+    String genre;
     PublisherDto publisher;
 }

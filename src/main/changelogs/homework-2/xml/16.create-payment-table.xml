@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="16.create-payment-table" author="Maksim Naumovich">
+        <createTable tableName="payments">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean"/>
+            <column name="payment_date" type="timestamp"/>
+            <column name="total_price" type="decimal(5,2)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="order_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_payments_user_id"
+                                 baseTableName="payments"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_payments_order_id"
+                                 baseTableName="payments"
+                                 baseColumnNames="order_id"
+                                 referencedTableName="orders"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

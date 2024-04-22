@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<databaseChangeLog
+   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro 
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd"
+      logicalFilePath="homework-2">
+    <changeSet id="homework-2-role" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/02.create-role-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-privilege" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/04.create-privilege-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-role_privilege" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/16.create-role_privilege-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-user" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/01.create-user-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-author" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/07.create-author-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-publisher" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/08.create-publisher-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-address" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/09.create-address-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-genre" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/06.create-genre-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/05.create-book-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-author_book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/14.create-author_book-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-promotion" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/13.create-promotion-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-book_promotion" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/15.create-book_promotion-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-review" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/10.create-review-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-cart" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/03.create-cart-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-order" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/11.create-order-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-payment" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/12.create-payment-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-indexes-payment" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/17.create-indexes-on-payment-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-index-user" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/18.create-index-role-on-user-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-index-order" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/19.create-index-user-on-order-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-indexes-cart" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/20.create-indexes-on-cart-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-indexes-review" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/21.create-indexes-on-review-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-index-address" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/22.create-index-publisher-on-address-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-indexes-book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/23.create-indexes-on-book-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-constraint-review" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/24.add-constraint-on-review-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-address" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/25.change-type-on-addresses.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book-author" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/26.change-type-on-book-author.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/27.change-type-on-book.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-book-promotion" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/28.change-type-on-book-promotion.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-cart" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/29.change-type-on-cart.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-order" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/30.change-type-on-order.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-payment" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/31.change-type-on-payment.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-role-privilege" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/32.change-type-type-on-role-privilege.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-review" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/33.change-type-on-review.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="homework-2-change-user" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/34.change-type-on-user.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog> 

@@ -7,7 +7,6 @@ import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,21 +22,22 @@ public class PromotionController {
         return promotionsJSON;
     }
 
-    public String getById(String promotionJSON){
+    public String getById(String promotionJSON) {
         return fromDtoToJSON(promotionService.getById(fromJSONToDto(promotionJSON)));
     }
 
-    public String update(String promotionJSON){
+    public String update(String promotionJSON) {
         return fromDtoToJSON(promotionService.update(fromJSONToDto(promotionJSON)));
     }
 
-    public String create(String promotionJSON){
-        return fromDtoToJSON(promotionService.create(fromJSONToDto(promotionJSON)));
+    public void create(String promotionJSON) {
+        promotionService.create(fromJSONToDto(promotionJSON));
     }
 
-    public void delete(String promotionJSON){
+    public void delete(String promotionJSON) {
         promotionService.delete(fromJSONToDto(promotionJSON));
     }
+
     private PromotionDto fromJSONToDto(String promotionJSON) {
         try {
             return objectMapper.readValue(promotionJSON, PromotionDto.class);
