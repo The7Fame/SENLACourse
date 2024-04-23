@@ -1,5 +1,6 @@
 package eu.senla.naumovich.data;
 
+import eu.senla.naumovich.dto.*;
 import eu.senla.naumovich.entities.*;
 import lombok.experimental.UtilityClass;
 
@@ -163,5 +164,157 @@ public class Generator {
         Payment payment = createPayment();
         payment.setStatus(true);
         return payment;
+    }
+
+    public AddressDto createAddressDto() {
+        return AddressDto.builder()
+                .id(ID)
+                .city(NAME)
+                .street(NAME)
+                .index(111111)
+                .build();
+    }
+
+    public AddressDto updateAddressDto() {
+        AddressDto address = createAddressDto();
+        address.setCity(UPDATE_NAME);
+        return address;
+    }
+
+    public AuthorDto createAuthorDto() {
+        return AuthorDto.builder()
+                .id(ID)
+                .name(NAME)
+                .surname(NAME)
+                .build();
+    }
+
+    public AuthorDto updateAuthorDto() {
+        AuthorDto author = createAuthorDto();
+        author.setName(UPDATE_NAME);
+        return author;
+    }
+
+    public BookDto createBookDto() {
+        return BookDto.builder()
+                .id(ID)
+                .title(NAME)
+                .isbn(NAME)
+                .price(new BigDecimal("10.00"))
+                .build();
+    }
+
+    public BookDto updateBookDto() {
+        BookDto book = createBookDto();
+        book.setTitle(UPDATE_NAME);
+        return book;
+    }
+
+    public OrderDto createOrderDto() {
+        return OrderDto.builder()
+                .id(ID)
+                .orderDate(Date.valueOf("2024-04-15"))
+                .totalPrice(new BigDecimal("30.00"))
+                .build();
+    }
+
+    public OrderDto updateOrderDto() {
+        OrderDto order = createOrderDto();
+        order.setTotalPrice(new BigDecimal("20.00"));
+        return order;
+    }
+
+    public PaymentDto createPaymentDto() {
+        return PaymentDto.builder()
+                .id(ID)
+                .status(false)
+                .build();
+    }
+
+    public PaymentDto updatePaymentDto() {
+        PaymentDto payment = createPaymentDto();
+        payment.setStatus(true);
+        return payment;
+    }
+
+    public PrivilegeDto createPrivilegeDto() {
+        return PrivilegeDto.builder()
+                .id(ID)
+                .privilegeName(NAME)
+                .build();
+    }
+
+    public PrivilegeDto updatePrivilegeDto() {
+        PrivilegeDto privilege = createPrivilegeDto();
+        privilege.setPrivilegeName(UPDATE_NAME);
+        return privilege;
+    }
+
+    public PromotionDto createPromotionDto() {
+        return PromotionDto.builder()
+                .id(ID)
+                .percent(new BigDecimal("10.00"))
+                .promotionName(NAME)
+                .build();
+    }
+
+    public PromotionDto updatePromotionDto() {
+        PromotionDto promotion = createPromotionDto();
+        promotion.setPromotionName(UPDATE_NAME);
+        return promotion;
+    }
+
+    public PublisherDto createPublisherDto() {
+        return PublisherDto.builder()
+                .id(ID)
+                .publisherName(NAME)
+                .build();
+    }
+
+    public PublisherDto updatePublisherDto() {
+        PublisherDto publisher = createPublisherDto();
+        publisher.setPublisherName(UPDATE_NAME);
+        return publisher;
+    }
+
+    public ReviewDto createReviewDto() {
+        return ReviewDto.builder()
+                .id(ID)
+                .text(NAME)
+                .build();
+    }
+
+    public ReviewDto updateReviewDto() {
+        ReviewDto review = createReviewDto();
+        review.setText(UPDATE_NAME);
+        return review;
+    }
+
+    public RoleDto createRoleDto() {
+        return RoleDto.builder()
+                .id(ID)
+                .roleName(NAME)
+                .build();
+    }
+
+    public RoleDto updateRoleDto() {
+        RoleDto role = createRoleDto();
+        role.setRoleName(UPDATE_NAME);
+        return role;
+    }
+
+    public UserDto createUserDto() {
+        return UserDto.builder()
+                .id(ID)
+                .name(NAME)
+                .surname(NAME)
+                .email(NAME)
+                .build();
+    }
+
+    public UserDto updateUserDto() {
+        UserDto user = createUserDto();
+        user.setName(UPDATE_NAME);
+        return user;
     }
 }

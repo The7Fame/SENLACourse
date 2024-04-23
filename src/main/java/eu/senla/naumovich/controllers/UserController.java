@@ -32,13 +32,13 @@ public class UserController implements CRUDInterface<UserDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(UserDto userDto) {
+    public ResponseEntity<?> update(@RequestBody UserDto userDto) {
         userService.update(userDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(UserDto userDto) {
+    public ResponseEntity<?> create(@RequestBody UserDto userDto) {
         userService.create(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

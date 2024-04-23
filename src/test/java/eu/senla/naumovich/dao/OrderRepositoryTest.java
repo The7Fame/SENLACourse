@@ -1,7 +1,7 @@
 package eu.senla.naumovich.dao;
 
-import eu.senla.naumovich.TestConfig;
-import eu.senla.naumovich.dao.impl.OrderRepositoryImpl;
+import eu.senla.naumovich.config.DaoConfig;
+import eu.senla.naumovich.config.TestConfig;
 import eu.senla.naumovich.dao.repository.OrderRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.entities.Order;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class, OrderRepositoryImpl.class })
+@ContextConfiguration(classes = { TestConfig.class, DaoConfig.class })
 public class OrderRepositoryTest {
     @Autowired
     OrderRepository repository;

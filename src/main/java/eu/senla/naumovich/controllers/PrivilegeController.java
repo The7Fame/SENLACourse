@@ -33,13 +33,13 @@ public class PrivilegeController implements CRUDInterface<PrivilegeDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(PrivilegeDto privilegeDto) {
+    public ResponseEntity<?> update(@RequestBody PrivilegeDto privilegeDto) {
         privilegeService.update(privilegeDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(PrivilegeDto privilegeDto) {
+    public ResponseEntity<?> create(@RequestBody PrivilegeDto privilegeDto) {
         privilegeService.create(privilegeDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.UserRepository;
 import eu.senla.naumovich.dto.UserDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.UserMapper;
+import eu.senla.naumovich.mapper.UserMapper;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

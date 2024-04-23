@@ -1,14 +1,16 @@
 package eu.senla.naumovich.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class PromotionDto {
     Long id;
     String promotionName;
-    Double percent;
+    BigDecimal percent;
 }

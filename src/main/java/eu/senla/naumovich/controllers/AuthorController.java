@@ -33,13 +33,13 @@ public class AuthorController implements CRUDInterface<AuthorDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(AuthorDto authorDto) {
+    public ResponseEntity<?> update(@RequestBody AuthorDto authorDto) {
         authorService.update(authorDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(AuthorDto authorDto) {
+    public ResponseEntity<?> create(@RequestBody AuthorDto authorDto) {
         authorService.create(authorDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

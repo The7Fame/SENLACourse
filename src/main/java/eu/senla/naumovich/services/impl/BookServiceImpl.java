@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.BookMapper;
+import eu.senla.naumovich.mapper.BookMapper;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

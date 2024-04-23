@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.PrivilegeRepository;
 import eu.senla.naumovich.dto.PrivilegeDto;
 import eu.senla.naumovich.entities.Privilege;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.PrivilegeMapper;
+import eu.senla.naumovich.mapper.PrivilegeMapper;
 import eu.senla.naumovich.services.service.PrivilegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

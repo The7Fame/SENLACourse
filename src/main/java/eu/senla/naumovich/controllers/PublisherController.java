@@ -32,13 +32,13 @@ public class PublisherController implements CRUDInterface<PublisherDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(PublisherDto publisherDto) {
+    public ResponseEntity<?> update(@RequestBody PublisherDto publisherDto) {
         publisherService.update(publisherDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(PublisherDto publisherDto) {
+    public ResponseEntity<?> create(@RequestBody PublisherDto publisherDto) {
         publisherService.create(publisherDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.ReviewRepository;
 import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.entities.Review;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.ReviewMapper;
+import eu.senla.naumovich.mapper.ReviewMapper;
 import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

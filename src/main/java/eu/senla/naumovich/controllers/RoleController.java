@@ -32,13 +32,13 @@ public class RoleController implements CRUDInterface<RoleDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(RoleDto roleDto) {
+    public ResponseEntity<?> update(@RequestBody RoleDto roleDto) {
         roleService.update(roleDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(RoleDto roleDto) {
+    public ResponseEntity<?> create(@RequestBody RoleDto roleDto) {
         roleService.create(roleDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

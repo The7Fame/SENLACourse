@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.RoleRepository;
 import eu.senla.naumovich.dto.RoleDto;
 import eu.senla.naumovich.entities.Role;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.RoleMapper;
+import eu.senla.naumovich.mapper.RoleMapper;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
 

@@ -32,13 +32,13 @@ public class CartController implements CRUDInterface<CartDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(CartDto cartDto) {
+    public ResponseEntity<?> update(@RequestBody CartDto cartDto) {
         cartService.update(cartDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(CartDto cartDto) {
+    public ResponseEntity<?> create(@RequestBody CartDto cartDto) {
         cartService.create(cartDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

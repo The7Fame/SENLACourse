@@ -1,4 +1,4 @@
-package eu.senla.naumovich.services.mapper;
+package eu.senla.naumovich.mapper;
 
 import eu.senla.naumovich.dto.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;

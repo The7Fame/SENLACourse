@@ -1,0 +1,47 @@
+package eu.senla.naumovich.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controller.common.BaseTest;
+import eu.senla.naumovich.data.Generator;
+import eu.senla.naumovich.dto.OrderDto;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+public class OrderControllerTest extends BaseTest {
+
+    @Test
+    public void getAllTest() throws Exception {
+        mockMvc.perform(get("/order"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    public void getBeIdTest() throws Exception {
+        mockMvc.perform(get("/order/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
+    @Test
+    public void getUpdateTest() throws Exception {
+        OrderDto orderDto = Generator.updateOrderDto();
+        mockMvc.perform(put("/order")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(orderDto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void createTest() throws Exception {
+        OrderDto orderDto = Generator.createOrderDto();
+        mockMvc.perform(post("/order")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(orderDto)))
+                .andExpect(status().isCreated());
+    }
+}

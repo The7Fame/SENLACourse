@@ -32,13 +32,13 @@ public class PromotionController implements CRUDInterface<PromotionDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(PromotionDto promotionDto) {
+    public ResponseEntity<?> update(@RequestBody PromotionDto promotionDto) {
         promotionService.update(promotionDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(PromotionDto promotionDto) {
+    public ResponseEntity<?> create(@RequestBody PromotionDto promotionDto) {
         promotionService.create(promotionDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -32,13 +32,13 @@ public class BookController implements CRUDInterface<BookDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(BookDto bookDto) {
+    public ResponseEntity<?> update(@RequestBody BookDto bookDto) {
         bookService.update(bookDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(BookDto bookDto) {
+    public ResponseEntity<?> create(@RequestBody BookDto bookDto) {
         bookService.create(bookDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

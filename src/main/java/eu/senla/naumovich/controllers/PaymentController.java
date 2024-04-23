@@ -32,13 +32,13 @@ public class PaymentController implements CRUDInterface<PaymentDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(PaymentDto paymentDto) {
+    public ResponseEntity<?> update(@RequestBody PaymentDto paymentDto) {
         paymentService.update(paymentDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(PaymentDto paymentDto) {
+    public ResponseEntity<?> create(@RequestBody PaymentDto paymentDto) {
         paymentService.create(paymentDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

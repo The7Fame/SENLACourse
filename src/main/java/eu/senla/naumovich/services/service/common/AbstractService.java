@@ -6,15 +6,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public interface AbstractService<T> {
     List<T> getAll();
 
     T getById(Long id);
-
+    @Transactional
     T update(T object);
 
+    @Transactional
     void create(T object);
 
+    @Transactional
     void delete(Long id);
 }

@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.CartRepository;
 import eu.senla.naumovich.dto.CartDto;
 import eu.senla.naumovich.entities.Cart;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.CartMapper;
+import eu.senla.naumovich.mapper.CartMapper;
 import eu.senla.naumovich.services.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -52,7 +52,7 @@ public class Book {
     List<Author> authors;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
     List<Review> reviews;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -61,6 +61,6 @@ public class Book {
     List<Promotion> promotions;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
     List<Cart> carts;
 }

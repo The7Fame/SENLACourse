@@ -32,13 +32,13 @@ public class OrderController implements CRUDInterface<OrderDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(OrderDto orderDto) {
+    public ResponseEntity<?> update(@RequestBody OrderDto orderDto) {
         orderService.update(orderDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(OrderDto orderDto) {
+    public ResponseEntity<?> create(@RequestBody OrderDto orderDto) {
         orderService.create(orderDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

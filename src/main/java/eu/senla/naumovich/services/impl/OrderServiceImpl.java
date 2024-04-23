@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.OrderRepository;
 import eu.senla.naumovich.dto.OrderDto;
 import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.OrderMapper;
+import eu.senla.naumovich.mapper.OrderMapper;
 import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

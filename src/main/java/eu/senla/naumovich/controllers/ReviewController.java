@@ -33,13 +33,13 @@ public class ReviewController implements CRUDInterface<ReviewDto> {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(ReviewDto reviewDto) {
+    public ResponseEntity<?> update(@RequestBody ReviewDto reviewDto) {
         reviewService.update(reviewDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(ReviewDto reviewDto) {
+    public ResponseEntity<?> create(@RequestBody ReviewDto reviewDto) {
         reviewService.create(reviewDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

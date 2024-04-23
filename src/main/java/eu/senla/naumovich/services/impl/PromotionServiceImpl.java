@@ -4,7 +4,7 @@ import eu.senla.naumovich.dao.repository.PromotionRepository;
 import eu.senla.naumovich.dto.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;
 import eu.senla.naumovich.exceptions.NoRecords;
-import eu.senla.naumovich.services.mapper.PromotionMapper;
+import eu.senla.naumovich.mapper.PromotionMapper;
 import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
