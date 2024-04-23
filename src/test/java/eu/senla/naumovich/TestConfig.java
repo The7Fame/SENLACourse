@@ -16,7 +16,6 @@ import java.util.Properties;
 
 @EnableTransactionManagement
 @Configuration
-@ComponentScan(basePackages = "eu.senla.naumovich")
 @PropertySource("classpath:application.properties")
 public class TestConfig {
     @Value("${spring.datasource.url}")

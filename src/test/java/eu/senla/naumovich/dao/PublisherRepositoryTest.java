@@ -1,6 +1,7 @@
 package eu.senla.naumovich.dao;
 
 import eu.senla.naumovich.TestConfig;
+import eu.senla.naumovich.dao.impl.PublisherRepositoryImpl;
 import eu.senla.naumovich.dao.repository.PublisherRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.entities.Publisher;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class })
+@ContextConfiguration(classes = { TestConfig.class, PublisherRepositoryImpl.class })
 public class PublisherRepositoryTest {
     @Autowired
     PublisherRepository repository;

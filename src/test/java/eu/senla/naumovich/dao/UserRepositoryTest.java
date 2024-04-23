@@ -1,6 +1,7 @@
 package eu.senla.naumovich.dao;
 
 import eu.senla.naumovich.TestConfig;
+import eu.senla.naumovich.dao.impl.UserRepositoryImpl;
 import eu.senla.naumovich.dao.repository.UserRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.entities.User;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class })
+@ContextConfiguration(classes = { TestConfig.class, UserRepositoryImpl.class })
 public class UserRepositoryTest {
     @Autowired
     UserRepository repository;

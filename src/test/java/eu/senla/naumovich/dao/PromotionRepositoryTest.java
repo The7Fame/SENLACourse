@@ -1,9 +1,9 @@
 package eu.senla.naumovich.dao;
 
 import eu.senla.naumovich.TestConfig;
+import eu.senla.naumovich.dao.impl.PromotionRepositoryImpl;
 import eu.senla.naumovich.dao.repository.PromotionRepository;
 import eu.senla.naumovich.data.Generator;
-
 import eu.senla.naumovich.entities.Promotion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class })
+@ContextConfiguration(classes = { TestConfig.class, PromotionRepositoryImpl.class })
 public class PromotionRepositoryTest {
     @Autowired
     PromotionRepository repository;
