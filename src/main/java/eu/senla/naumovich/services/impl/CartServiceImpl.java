@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dao.repository.CartRepository;
 import eu.senla.naumovich.dto.CartDto;
 import eu.senla.naumovich.entities.Cart;
+import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.services.mapper.CartMapper;
 import eu.senla.naumovich.services.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -19,30 +20,51 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartDto> getAll() {
-        List<Cart> carts = cartRepository.getAll();
-        List<CartDto> cartsDto = carts.stream()
-                .map(cartMapper::toDto)
-                .collect(Collectors.toList());
-        return cartsDto;
+        try {
+            List<Cart> carts = cartRepository.getAll();
+            List<CartDto> cartsDto = carts.stream()
+                    .map(cartMapper::toDto)
+                    .collect(Collectors.toList());
+            return cartsDto;
+        } catch (Exception e) {
+            throw new NoRecords("No records");
+        }
     }
 
     @Override
-    public CartDto getById(CartDto cart) {
-        return cartMapper.toDto(cartRepository.getById(cart.getId()));
+    public CartDto getById(Long id) {
+        try {
+            return cartMapper.toDto(cartRepository.getById(id));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 
     @Override
     public CartDto update(CartDto cart) {
-        return cartMapper.toDto(cartRepository.update(cartMapper.toEntity(cart)));
+        try {
+            return cartMapper.toDto(cartRepository.update(cartMapper.toEntity(cart)));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + cart.getId());
+        }
     }
 
     @Override
     public void create(CartDto cart) {
-        cartRepository.create(cartMapper.toEntity(cart));
+        try {
+            cartRepository.create(cartMapper.toEntity(cart));
+        } catch (Exception e) {
+            throw new NoRecords("Cannot create record");
+        }
     }
 
     @Override
-    public void delete(CartDto cart) {
-        cartRepository.delete(cartMapper.toEntity(cart));
+    public void delete(Long id) {
+        try {
+            Cart cart = cartRepository.getById(id);
+            cartRepository.delete(cart);
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 }

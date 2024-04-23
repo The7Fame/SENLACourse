@@ -1,56 +1,51 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.UserDto;
 import eu.senla.naumovich.services.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
-    private final ObjectMapper objectMapper;
+@RestController
+@RequestMapping("/user")
+public class UserController implements CRUDInterface<UserDto> {
+    @Autowired
+    private UserService userService;
 
-    public List<String> getAll() {
-        List<UserDto> usersDto = userService.getAll();
-        List<String> usersJSON = usersDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return usersJSON;
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAll() {
+        List<UserDto> userDto = userService.getAll();
+        return ResponseEntity.ok(userDto);
     }
 
-    public String getById(String addressJSON) {
-        return fromDtoToJSON(userService.getById(fromJSONToDto(addressJSON)));
-    }
-
-    public String update(String addressJSON) {
-        return fromDtoToJSON(userService.update(fromJSONToDto(addressJSON)));
-    }
-
-    public void create(String addressJSON) {
-        userService.create(fromJSONToDto(addressJSON));
-    }
-
-    public void delete(String addressJSON) {
-        userService.delete(fromJSONToDto(addressJSON));
-    }
-
-    private UserDto fromJSONToDto(String userJSON) {
-        try {
-            return objectMapper.readValue(userJSON, UserDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getById(@PathVariable("id") Long id) {
+        UserDto userDto = userService.getById(id);
+        if (userDto == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(userDto);
     }
 
-    private String fromDtoToJSON(UserDto userDto) {
-        try {
-            return objectMapper.writeValueAsString(userDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @PutMapping
+    public ResponseEntity<?> update(UserDto userDto) {
+        userService.update(userDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(UserDto userDto) {
+        userService.create(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,56 +1,51 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.PaymentDto;
 import eu.senla.naumovich.services.service.PaymentService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class PaymentController {
-    private final PaymentService paymentService;
-    private final ObjectMapper objectMapper;
+@RestController
+@RequestMapping("/payment")
+public class PaymentController implements CRUDInterface<PaymentDto> {
+    @Autowired
+    private PaymentService paymentService;
 
-    public List<String> getAll() {
-        List<PaymentDto> paymentsDto = paymentService.getAll();
-        List<String> paymentsJSON = paymentsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return paymentsJSON;
+    @GetMapping
+    public ResponseEntity<List<PaymentDto>> getAll() {
+        List<PaymentDto> paymentDto = paymentService.getAll();
+        return ResponseEntity.ok(paymentDto);
     }
 
-    public String getById(String addressJSON) {
-        return fromDtoToJSON(paymentService.getById(fromJSONToDto(addressJSON)));
-    }
-
-    public String update(String paymentJSON) {
-        return fromDtoToJSON(paymentService.update(fromJSONToDto(paymentJSON)));
-    }
-
-    public void create(String paymentJSON) {
-        paymentService.create(fromJSONToDto(paymentJSON));
-    }
-
-    public void delete(String paymentJSON) {
-        paymentService.delete(fromJSONToDto(paymentJSON));
-    }
-
-    private PaymentDto fromJSONToDto(String paymentJSON) {
-        try {
-            return objectMapper.readValue(paymentJSON, PaymentDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    @GetMapping("/{id}")
+    public ResponseEntity<PaymentDto> getById(@PathVariable("id") Long id) {
+        PaymentDto paymentDto = paymentService.getById(id);
+        if (paymentDto == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(paymentDto);
     }
 
-    private String fromDtoToJSON(PaymentDto paymentDto) {
-        try {
-            return objectMapper.writeValueAsString(paymentDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @PutMapping
+    public ResponseEntity<?> update(PaymentDto paymentDto) {
+        paymentService.update(paymentDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(PaymentDto paymentDto) {
+        paymentService.create(paymentDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        paymentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

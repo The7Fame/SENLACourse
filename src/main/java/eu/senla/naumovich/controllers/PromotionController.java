@@ -1,56 +1,51 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.PromotionDto;
 import eu.senla.naumovich.services.service.PromotionService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class PromotionController {
-    private final PromotionService promotionService;
-    private final ObjectMapper objectMapper;
+@RestController
+@RequestMapping("/promotion")
+public class PromotionController implements CRUDInterface<PromotionDto> {
+    @Autowired
+    private PromotionService promotionService;
 
-    public List<String> getAll() {
-        List<PromotionDto> promotionsDto = promotionService.getAll();
-        List<String> promotionsJSON = promotionsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return promotionsJSON;
+    @GetMapping
+    public ResponseEntity<List<PromotionDto>> getAll() {
+        List<PromotionDto> promotionDto = promotionService.getAll();
+        return ResponseEntity.ok(promotionDto);
     }
 
-    public String getById(String promotionJSON) {
-        return fromDtoToJSON(promotionService.getById(fromJSONToDto(promotionJSON)));
-    }
-
-    public String update(String promotionJSON) {
-        return fromDtoToJSON(promotionService.update(fromJSONToDto(promotionJSON)));
-    }
-
-    public void create(String promotionJSON) {
-        promotionService.create(fromJSONToDto(promotionJSON));
-    }
-
-    public void delete(String promotionJSON) {
-        promotionService.delete(fromJSONToDto(promotionJSON));
-    }
-
-    private PromotionDto fromJSONToDto(String promotionJSON) {
-        try {
-            return objectMapper.readValue(promotionJSON, PromotionDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    @GetMapping("/{id}")
+    public ResponseEntity<PromotionDto> getById(@PathVariable("id") Long id) {
+        PromotionDto promotionDto = promotionService.getById(id);
+        if (promotionDto == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(promotionDto);
     }
 
-    private String fromDtoToJSON(PromotionDto promotionDto) {
-        try {
-            return objectMapper.writeValueAsString(promotionDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @PutMapping
+    public ResponseEntity<?> update(PromotionDto promotionDto) {
+        promotionService.update(promotionDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(PromotionDto promotionDto) {
+        promotionService.create(promotionDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        promotionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dao.repository.ReviewRepository;
 import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.entities.Review;
+import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.services.mapper.ReviewMapper;
 import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -19,30 +20,51 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDto> getAll() {
-        List<Review> reviews = reviewRepository.getAll();
-        List<ReviewDto> reviewsDto = reviews.stream()
-                .map(reviewMapper::toDto)
-                .collect(Collectors.toList());
-        return reviewsDto;
+        try {
+            List<Review> reviews = reviewRepository.getAll();
+            List<ReviewDto> reviewsDto = reviews.stream()
+                    .map(reviewMapper::toDto)
+                    .collect(Collectors.toList());
+            return reviewsDto;
+        } catch (Exception e) {
+            throw new NoRecords("No records");
+        }
     }
 
     @Override
-    public ReviewDto getById(ReviewDto review) {
-        return reviewMapper.toDto(reviewRepository.getById(review.getId()));
+    public ReviewDto getById(Long id) {
+        try {
+            return reviewMapper.toDto(reviewRepository.getById(id));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 
     @Override
     public ReviewDto update(ReviewDto review) {
-        return reviewMapper.toDto(reviewRepository.update(reviewMapper.toEntity(review)));
+        try {
+            return reviewMapper.toDto(reviewRepository.update(reviewMapper.toEntity(review)));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + review.getId());
+        }
     }
 
     @Override
     public void create(ReviewDto review) {
-        reviewRepository.create(reviewMapper.toEntity(review));
+        try {
+            reviewRepository.create(reviewMapper.toEntity(review));
+        } catch (Exception e) {
+            throw new NoRecords("Cannot create record");
+        }
     }
 
     @Override
-    public void delete(ReviewDto review) {
-        reviewRepository.delete(reviewMapper.toEntity(review));
+    public void delete(Long id) {
+        try {
+            Review review = reviewRepository.getById(id);
+            reviewRepository.delete(review);
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 }

@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.entities.Book;
+import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.services.mapper.BookMapper;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -17,32 +18,53 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    @Override
     public List<BookDto> getAll() {
-        List<Book> books = bookRepository.getAll();
-        List<BookDto> booksDto = books.stream()
-                .map(bookMapper::toDto)
-                .collect(Collectors.toList());
-        return booksDto;
+        try {
+            List<Book> books = bookRepository.getAll();
+            List<BookDto> booksDto = books.stream()
+                    .map(bookMapper::toDto)
+                    .collect(Collectors.toList());
+            return booksDto;
+        } catch (Exception e) {
+            throw new NoRecords("No records");
+        }
     }
 
     @Override
-    public BookDto getById(BookDto book) {
-        return bookMapper.toDto(bookRepository.getById(book.getId()));
+    public BookDto getById(Long id) {
+        try {
+            return bookMapper.toDto(bookRepository.getById(id));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 
     @Override
     public BookDto update(BookDto book) {
-        return bookMapper.toDto(bookRepository.update(bookMapper.toEntity(book)));
+        try {
+            return bookMapper.toDto(bookRepository.update(bookMapper.toEntity(book)));
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + book.getId());
+        }
+
     }
 
     @Override
     public void create(BookDto book) {
-        bookRepository.create(bookMapper.toEntity(book));
+        try {
+            bookRepository.create(bookMapper.toEntity(book));
+        } catch (Exception e) {
+            throw new NoRecords("Cannot create record");
+        }
     }
 
     @Override
-    public void delete(BookDto book) {
-        bookRepository.delete(bookMapper.toEntity(book));
+    public void delete(Long id) {
+        try {
+            Book book = bookRepository.getById(id);
+            bookRepository.delete(book);
+        } catch (Exception e) {
+            throw new NoRecords("No record with such ID " + id);
+        }
     }
 }

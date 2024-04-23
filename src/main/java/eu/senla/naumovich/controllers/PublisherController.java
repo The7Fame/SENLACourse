@@ -1,56 +1,51 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.PublisherDto;
 import eu.senla.naumovich.services.service.PublisherService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class PublisherController {
-    private final PublisherService publisherService;
-    private final ObjectMapper objectMapper;
+@RestController
+@RequestMapping("/publisher")
+public class PublisherController implements CRUDInterface<PublisherDto> {
+    @Autowired
+    private PublisherService publisherService;
 
-    public List<String> getAll() {
-        List<PublisherDto> publishersDto = publisherService.getAll();
-        List<String> publishersJSON = publishersDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return publishersJSON;
+    @GetMapping
+    public ResponseEntity<List<PublisherDto>> getAll() {
+        List<PublisherDto> publisherDto = publisherService.getAll();
+        return ResponseEntity.ok(publisherDto);
     }
 
-    public String getById(String publisherJSON) {
-        return fromDtoToJSON(publisherService.getById(fromJSONToDto(publisherJSON)));
-    }
-
-    public String update(String publisherJSON) {
-        return fromDtoToJSON(publisherService.update(fromJSONToDto(publisherJSON)));
-    }
-
-    public void create(String publisherJSON) {
-        publisherService.create(fromJSONToDto(publisherJSON));
-    }
-
-    public void delete(String addressJSON) {
-        publisherService.delete(fromJSONToDto(addressJSON));
-    }
-
-    private PublisherDto fromJSONToDto(String publisherJSON) {
-        try {
-            return objectMapper.readValue(publisherJSON, PublisherDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    @GetMapping("/{id}")
+    public ResponseEntity<PublisherDto> getById(@PathVariable("id") Long id) {
+        PublisherDto publisherDto = publisherService.getById(id);
+        if (publisherDto == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(publisherDto);
     }
 
-    private String fromDtoToJSON(PublisherDto publisherDto) {
-        try {
-            return objectMapper.writeValueAsString(publisherDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @PutMapping
+    public ResponseEntity<?> update(PublisherDto publisherDto) {
+        publisherService.update(publisherDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(PublisherDto publisherDto) {
+        publisherService.create(publisherDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        publisherService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
