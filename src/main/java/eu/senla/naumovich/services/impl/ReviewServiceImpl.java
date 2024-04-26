@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class ReviewServiceImpl implements ReviewService {
         @Override
         public List<ReviewDto> getAll() {
                 List<Review> reviews = reviewRepository.getAll();
-                if (reviews.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return reviewMapper.toDtoList(reviews);
         }
 

@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<AddressDto> getAll() {
         List<Address> addresses = addressRepository.getAll();
-        if (addresses.isEmpty()) {
-            return Collections.emptyList();
-        }
         return addressMapper.toDtoList(addresses);
     }
 

@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,9 +19,6 @@ public class BookServiceImpl implements BookService {
 
         public List<BookDto> getAll() {
                 List<Book> books = bookRepository.getAll();
-                if (books.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return bookMapper.toDtoList(books);
         }
 

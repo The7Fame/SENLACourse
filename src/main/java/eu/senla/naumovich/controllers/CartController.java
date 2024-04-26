@@ -3,7 +3,7 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.CartDto;
 import eu.senla.naumovich.services.service.CartService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/cart")
 public class CartController implements CRUDInterface<CartDto> {
 

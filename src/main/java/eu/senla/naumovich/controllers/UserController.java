@@ -3,7 +3,7 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.UserDto;
 import eu.senla.naumovich.services.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController implements CRUDInterface<UserDto> {
 

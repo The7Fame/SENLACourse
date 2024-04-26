@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class PublisherServiceImpl implements PublisherService {
         @Override
         public List<PublisherDto> getAll() {
                 List<Publisher> publishers = publisherRepository.getAll();
-                if (publishers.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return publisherMapper.toDtoList(publishers);
         }
 

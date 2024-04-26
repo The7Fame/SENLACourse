@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDto> getAll() {
         List<Author> authors = authorRepository.getAll();
-        if (authors.isEmpty()) {
-            return Collections.emptyList();
-        }
         return authorMapper.toDtoList(authors);
     }
 

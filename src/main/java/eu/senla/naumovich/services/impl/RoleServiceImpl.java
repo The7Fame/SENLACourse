@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class RoleServiceImpl implements RoleService {
         @Override
         public List<RoleDto> getAll() {
                 List<Role> roles = roleRepository.getAll();
-                if (roles.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return roleMapper.toDtoList(roles);
         }
 

@@ -9,9 +9,7 @@ import eu.senla.naumovich.services.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +20,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentDto> getAll() {
         List<Payment> payments = paymentRepository.getAll();
-        if (payments.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return payments.stream()
-                .map(paymentMapper::toDto)
-                .collect(Collectors.toList());
+        return paymentMapper.toDtoList(payments);
     }
 
     @Override

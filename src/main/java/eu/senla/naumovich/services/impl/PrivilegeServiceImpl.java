@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.PrivilegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         @Override
         public List<PrivilegeDto> getAll() {
                 List<Privilege> privileges = privilegeRepository.getAll();
-                if (privileges.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return privilegeMapper.toDtoList(privileges);
         }
 

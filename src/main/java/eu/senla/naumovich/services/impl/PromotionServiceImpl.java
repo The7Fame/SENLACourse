@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public List<PromotionDto> getAll() {
         List<Promotion> promotions = promotionRepository.getAll();
-        if (promotions.isEmpty()) {
-            return Collections.emptyList();
-        }
         return promotionMapper.toDtoList(promotions);
     }
 

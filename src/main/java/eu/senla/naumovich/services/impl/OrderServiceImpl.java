@@ -9,7 +9,6 @@ import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +20,6 @@ public class OrderServiceImpl implements OrderService {
         @Override
         public List<OrderDto> getAll() {
                 List<Order> orders = orderRepository.getAll();
-                if (orders.isEmpty()) {
-                        return Collections.emptyList();
-                }
                 return orderMapper.toDtoList(orders);
         }
 
