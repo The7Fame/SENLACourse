@@ -9,61 +9,48 @@ import eu.senla.naumovich.services.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PublisherServiceImpl implements PublisherService {
-    private final PublisherRepository publisherRepository;
-    private final PublisherMapper publisherMapper;
+        private final PublisherRepository publisherRepository;
+        private final PublisherMapper publisherMapper;
 
-    @Override
-    public List<PublisherDto> getAll() {
-        try {
-            List<Publisher> publishers = publisherRepository.getAll();
-            List<PublisherDto> publishersDto = publishers.stream().map(publisherMapper::toDto)
-                    .collect(Collectors.toList());
-            return publishersDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        @Override
+        public List<PublisherDto> getAll() {
+                List<Publisher> publishers = publisherRepository.getAll();
+                if (publishers.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                return publisherMapper.toDtoList(publishers);
         }
-    }
 
-    @Override
-    public PublisherDto getById(Long id) {
-        try {
-            return publisherMapper.toDto(publisherRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
-    }
+        @Override
+        public PublisherDto getById(Long id) {
 
-    @Override
-    public PublisherDto update(PublisherDto publisher) {
-        try {
-            return publisherMapper.toDto(publisherRepository.update(publisherMapper.toEntity(publisher)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + publisher.getId());
-        }
-    }
+                return publisherMapper.toDto(publisherRepository.findById(id)
+                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
 
-    @Override
-    public void create(PublisherDto publisher) {
-        try {
-            publisherRepository.create(publisherMapper.toEntity(publisher));
-        } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
         }
-    }
 
-    @Override
-    public void delete(Long id) {
-        try {
-            Publisher publisher = publisherRepository.getById(id);
-            publisherRepository.delete(publisher);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
+        @Override
+        public PublisherDto update(PublisherDto publisher) {
+
+                return publisherMapper.toDto(publisherRepository.update(publisherMapper.toEntity(publisher)));
+
         }
-    }
+
+        @Override
+        public PublisherDto create(PublisherDto publisher) {
+                return publisherMapper.toDto(publisherRepository.create(publisherMapper.toEntity(publisher)));
+
+        }
+
+        @Override
+        public void delete(Long id) {
+                publisherRepository.deleteById(id);
+
+        }
 }

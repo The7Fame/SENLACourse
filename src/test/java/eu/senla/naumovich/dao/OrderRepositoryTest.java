@@ -22,20 +22,23 @@ public class OrderRepositoryTest {
     public void createRecord() {
         Order order = Generator.createOrder();
         repository.create(order);
-        Assertions.assertEquals(order, repository.getById(order.getId()));
+        Assertions.assertTrue(repository.findById(order.getId()).isPresent());
+        Assertions.assertEquals(order, repository.findById(order.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Order order = Generator.updateOrder();
         repository.update(order);
-        Assertions.assertEquals(order, repository.getById(order.getId()));
+        Assertions.assertTrue(repository.findById(order.getId()).isPresent());
+        Assertions.assertEquals(order, repository.findById(order.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Order order = Generator.createOrder();
-        repository.delete(order);
-        Assertions.assertNull(repository.getById(order.getId()));
+        repository.create(order);
+        repository.deleteById(order.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

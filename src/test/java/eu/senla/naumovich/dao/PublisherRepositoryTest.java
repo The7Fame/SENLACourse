@@ -22,20 +22,23 @@ public class PublisherRepositoryTest {
     public void createRecord() {
         Publisher publisher = Generator.createPublisher();
         repository.create(publisher);
-        Assertions.assertEquals(publisher, repository.getById(publisher.getId()));
+        Assertions.assertTrue(repository.findById(publisher.getId()).isPresent());
+        Assertions.assertEquals(publisher, repository.findById(publisher.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Publisher publisher = Generator.updatePublisher();
         repository.update(publisher);
-        Assertions.assertEquals(publisher, repository.getById(publisher.getId()));
+        Assertions.assertTrue(repository.findById(publisher.getId()).isPresent());
+        Assertions.assertEquals(publisher, repository.findById(publisher.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Publisher publisher = Generator.createPublisher();
-        repository.delete(publisher);
-        Assertions.assertNull(repository.getById(publisher.getId()));
+        repository.create(publisher);
+        repository.deleteById(publisher.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

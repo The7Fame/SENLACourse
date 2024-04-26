@@ -9,8 +9,8 @@ import eu.senla.naumovich.services.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,48 +20,31 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorDto> getAll() {
-        try {
-            List<Author> authors = authorRepository.getAll();
-            List<AuthorDto> authorsDto = authors.stream()
-                    .map(authorMapper::toDto)
-                    .collect(Collectors.toList());
-            return authorsDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        List<Author> authors = authorRepository.getAll();
+        if (authors.isEmpty()) {
+            return Collections.emptyList();
         }
+        return authorMapper.toDtoList(authors);
     }
 
     @Override
     public AuthorDto getById(Long id) {
-        try {
-            return authorMapper.toDto(authorRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+        return authorMapper
+                .toDto(authorRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
     }
 
     @Override
     public AuthorDto update(AuthorDto author) {
-        try {
-            return authorMapper.toDto(authorRepository.update(authorMapper.toEntity(author)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + author.getId());
-        }
+        return authorMapper.toDto(authorRepository.update(authorMapper.toEntity(author)));
     }
 
     @Override
-    public void create(AuthorDto author) {
-        authorRepository.create(authorMapper.toEntity(author));
+    public AuthorDto create(AuthorDto author) {
+        return authorMapper.toDto(authorRepository.create(authorMapper.toEntity(author)));
     }
 
     @Override
     public void delete(Long id) {
-        try {
-            Author author = authorRepository.getById(id);
-            authorRepository.delete(author);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
-
+        authorRepository.deleteById(id);
     }
 }

@@ -22,20 +22,23 @@ public class AuthorRepositoryTest {
     public void createRecord() {
         Author author = Generator.createAuthor();
         repository.create(author);
-        Assertions.assertEquals(author, repository.getById(author.getId()));
+        Assertions.assertTrue(repository.findById(author.getId()).isPresent());
+        Assertions.assertEquals(author, repository.findById(author.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Author author = Generator.updateAuthor();
         repository.update(author);
-        Assertions.assertEquals(author, repository.getById(author.getId()));
+        Assertions.assertTrue(repository.findById(author.getId()).isPresent());
+        Assertions.assertEquals(author, repository.findById(author.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Author author = Generator.createAuthor();
-        repository.delete(author);
-        Assertions.assertNull(repository.getById(author.getId()));
+        repository.create(author);
+        repository.deleteById(author.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

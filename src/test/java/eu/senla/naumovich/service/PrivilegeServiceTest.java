@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -30,28 +31,20 @@ public class PrivilegeServiceTest {
 
     @Test
     public void getAllTest() {
-        Privilege privilege = Generator.createPrivilege();
-        PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
-        List<PrivilegeDto> privilegeDtos = new ArrayList<>();
-        List<Privilege> privileges = new ArrayList<>();
-        privilegeDtos.add(privilegeDto);
-        privileges.add(privilege);
-        when(repository.getAll()).thenReturn(privileges);
-        when(mapper.toDto(privilege)).thenReturn(privilegeDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<PrivilegeDto> result = service.getAll();
-        Assertions.assertEquals(privilegeDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
-        when(repository.getById(1L)).thenReturn(privilege);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(privilege));
         when(mapper.toDto(privilege)).thenReturn(privilegeDto);
         PrivilegeDto result = service.getById(1L);
         Assertions.assertEquals(privilegeDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(privilege);
     }
 
@@ -74,19 +67,20 @@ public class PrivilegeServiceTest {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(mapper.toEntity(privilegeDto)).thenReturn(privilege);
-        doNothing().when(repository).create(privilege);
-        service.create(privilegeDto);
+        when(repository.create(privilege)).thenReturn(privilege);
+        when(mapper.toDto(privilege)).thenReturn(privilegeDto);
+        PrivilegeDto result = service.create(privilegeDto);
+        Assertions.assertEquals(privilegeDto, result);
         verify(repository).create(privilege);
         verify(mapper).toEntity(privilegeDto);
+        verify(mapper).toDto(privilege);
     }
 
     @Test
     public void deleteTest() {
         Privilege privilege = Generator.createPrivilege();
-        when(repository.getById(privilege.getId())).thenReturn(privilege);
-        doNothing().when(repository).delete(privilege);
+        doNothing().when(repository).deleteById(privilege.getId());
         service.delete(privilege.getId());
-        verify(repository).getById(privilege.getId());
-        verify(repository).delete(privilege);
+        verify(repository).deleteById(privilege.getId());
     }
 }

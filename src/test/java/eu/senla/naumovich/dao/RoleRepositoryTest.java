@@ -22,20 +22,23 @@ public class RoleRepositoryTest {
     public void createRecord() {
         Role role = Generator.createRole();
         repository.create(role);
-        Assertions.assertEquals(role, repository.getById(role.getId()));
+        Assertions.assertTrue(repository.findById(role.getId()).isPresent());
+        Assertions.assertEquals(role, repository.findById(role.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Role role = Generator.updateRole();
         repository.update(role);
-        Assertions.assertEquals(role, repository.getById(role.getId()));
+        Assertions.assertTrue(repository.findById(role.getId()).isPresent());
+        Assertions.assertEquals(role, repository.findById(role.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Role role = Generator.createRole();
-        repository.delete(role);
-        Assertions.assertNull(repository.getById(role.getId()));
+        repository.create(role);
+        repository.deleteById(role.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

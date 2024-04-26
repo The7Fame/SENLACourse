@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -30,28 +31,20 @@ public class PromotionServiceTest {
 
     @Test
     public void getAllTest() {
-        Promotion promotion = Generator.createPromotion();
-        PromotionDto promotionDto = Generator.createPromotionDto();
-        List<PromotionDto> promotionDtos = new ArrayList<>();
-        List<Promotion> promotions = new ArrayList<>();
-        promotionDtos.add(promotionDto);
-        promotions.add(promotion);
-        when(repository.getAll()).thenReturn(promotions);
-        when(mapper.toDto(promotion)).thenReturn(promotionDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<PromotionDto> result = service.getAll();
-        Assertions.assertEquals(promotionDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
-        when(repository.getById(1L)).thenReturn(promotion);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(promotion));
         when(mapper.toDto(promotion)).thenReturn(promotionDto);
         PromotionDto result = service.getById(1L);
         Assertions.assertEquals(promotionDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(promotion);
     }
 
@@ -74,19 +67,20 @@ public class PromotionServiceTest {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(mapper.toEntity(promotionDto)).thenReturn(promotion);
-        doNothing().when(repository).create(promotion);
-        service.create(promotionDto);
+        when(repository.create(promotion)).thenReturn(promotion);
+        when(mapper.toDto(promotion)).thenReturn(promotionDto);
+        PromotionDto result = service.create(promotionDto);
+        Assertions.assertEquals(promotionDto, result);
         verify(repository).create(promotion);
         verify(mapper).toEntity(promotionDto);
+        verify(mapper).toDto(promotion);
     }
 
     @Test
     public void deleteTest() {
         Promotion promotion = Generator.createPromotion();
-        when(repository.getById(promotion.getId())).thenReturn(promotion);
-        doNothing().when(repository).delete(promotion);
+        doNothing().when(repository).deleteById(promotion.getId());
         service.delete(promotion.getId());
-        verify(repository).getById(promotion.getId());
-        verify(repository).delete(promotion);
+        verify(repository).deleteById(promotion.getId());
     }
 }

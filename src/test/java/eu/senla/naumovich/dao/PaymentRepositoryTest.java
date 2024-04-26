@@ -22,20 +22,23 @@ public class PaymentRepositoryTest {
     public void createRecord() {
         Payment payment = Generator.createPayment();
         repository.create(payment);
-        Assertions.assertEquals(payment, repository.getById(payment.getId()));
+        Assertions.assertTrue(repository.findById(payment.getId()).isPresent());
+        Assertions.assertEquals(payment, repository.findById(payment.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Payment payment = Generator.updatePayment();
         repository.update(payment);
-        Assertions.assertEquals(payment, repository.getById(payment.getId()));
+        Assertions.assertTrue(repository.findById(payment.getId()).isPresent());
+        Assertions.assertEquals(payment, repository.findById(payment.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Payment payment = Generator.createPayment();
-        repository.delete(payment);
-        Assertions.assertNull(repository.getById(payment.getId()));
+        repository.create(payment);
+        repository.deleteById(payment.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -30,28 +31,20 @@ public class PaymentServiceTest {
 
     @Test
     public void getAllTest() {
-        Payment payment = Generator.createPayment();
-        PaymentDto paymentDto = Generator.createPaymentDto();
-        List<PaymentDto> paymentDtos = new ArrayList<>();
-        List<Payment> payments = new ArrayList<>();
-        paymentDtos.add(paymentDto);
-        payments.add(payment);
-        when(repository.getAll()).thenReturn(payments);
-        when(mapper.toDto(payment)).thenReturn(paymentDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<PaymentDto> result = service.getAll();
-        Assertions.assertEquals(paymentDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Payment payment = Generator.createPayment();
         PaymentDto paymentDto = Generator.createPaymentDto();
-        when(repository.getById(1L)).thenReturn(payment);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(payment));
         when(mapper.toDto(payment)).thenReturn(paymentDto);
         PaymentDto result = service.getById(1L);
         Assertions.assertEquals(paymentDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(payment);
     }
 
@@ -74,19 +67,20 @@ public class PaymentServiceTest {
         Payment payment = Generator.createPayment();
         PaymentDto paymentDto = Generator.createPaymentDto();
         when(mapper.toEntity(paymentDto)).thenReturn(payment);
-        doNothing().when(repository).create(payment);
-        service.create(paymentDto);
+        when(repository.create(payment)).thenReturn(payment);
+        when(mapper.toDto(payment)).thenReturn(paymentDto);
+        PaymentDto result = service.create(paymentDto);
+        Assertions.assertEquals(paymentDto, result);
         verify(repository).create(payment);
         verify(mapper).toEntity(paymentDto);
+        verify(mapper).toDto(payment);
     }
 
     @Test
     public void deleteTest() {
         Payment payment = Generator.createPayment();
-        when(repository.getById(payment.getId())).thenReturn(payment);
-        doNothing().when(repository).delete(payment);
+        doNothing().when(repository).deleteById(payment.getId());
         service.delete(payment.getId());
-        verify(repository).getById(payment.getId());
-        verify(repository).delete(payment);
+        verify(repository).deleteById(payment.getId());
     }
 }

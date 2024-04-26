@@ -22,20 +22,23 @@ public class BookRepositoryTest {
     public void createRecord() {
         Book book = Generator.createBook();
         repository.create(book);
-        Assertions.assertEquals(book, repository.getById(book.getId()));
+        Assertions.assertTrue(repository.findById(book.getId()).isPresent());
+        Assertions.assertEquals(book, repository.findById(book.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Book book = Generator.updateBook();
         repository.update(book);
-        Assertions.assertEquals(book, repository.getById(book.getId()));
+        Assertions.assertTrue(repository.findById(book.getId()).isPresent());
+        Assertions.assertEquals(book, repository.findById(book.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Book book = Generator.createBook();
-        repository.delete(book);
-        Assertions.assertNull(repository.getById(book.getId()));
+        repository.create(book);
+        repository.deleteById(book.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

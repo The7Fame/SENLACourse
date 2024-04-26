@@ -22,20 +22,23 @@ public class ReviewRepositoryTest {
     public void createRecord() {
         Review review = Generator.createReview();
         repository.create(review);
-        Assertions.assertEquals(review, repository.getById(review.getId()));
+        Assertions.assertTrue(repository.findById(review.getId()).isPresent());
+        Assertions.assertEquals(review, repository.findById(review.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Review review = Generator.updateReview();
         repository.update(review);
-        Assertions.assertEquals(review, repository.getById(review.getId()));
+        Assertions.assertTrue(repository.findById(review.getId()).isPresent());
+        Assertions.assertEquals(review, repository.findById(review.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Review review = Generator.createReview();
-        repository.delete(review);
-        Assertions.assertNull(repository.getById(review.getId()));
+        repository.create(review);
+        repository.deleteById(review.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

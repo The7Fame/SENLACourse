@@ -22,20 +22,23 @@ public class AddressRepositoryTest {
     public void createRecord() {
         Address address = Generator.createAddress();
         repository.create(address);
-        Assertions.assertEquals(address, repository.getById(address.getId()));
+        Assertions.assertTrue(repository.findById(address.getId()).isPresent());
+        Assertions.assertEquals(address, repository.findById(address.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Address address = Generator.updateAddress();
         repository.update(address);
-        Assertions.assertEquals(address, repository.getById(address.getId()));
+        Assertions.assertTrue(repository.findById(address.getId()).isPresent());
+        Assertions.assertEquals(address, repository.findById(address.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Address address = Generator.createAddress();
-        repository.delete(address);
-        Assertions.assertNull(repository.getById(address.getId()));
+        repository.create(address);
+        repository.deleteById(address.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

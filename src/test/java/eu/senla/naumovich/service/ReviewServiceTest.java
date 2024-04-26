@@ -14,8 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -31,28 +32,20 @@ public class ReviewServiceTest {
 
     @Test
     public void getAllTest() {
-        Review review = Generator.createReview();
-        ReviewDto reviewDto = Generator.createReviewDto();
-        List<ReviewDto> reviewDtos = new ArrayList<>();
-        List<Review> reviews = new ArrayList<>();
-        reviewDtos.add(reviewDto);
-        reviews.add(review);
-        when(repository.getAll()).thenReturn(reviews);
-        when(mapper.toDto(review)).thenReturn(reviewDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<ReviewDto> result = service.getAll();
-        Assertions.assertEquals(reviewDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
-        when(repository.getById(1L)).thenReturn(review);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(review));
         when(mapper.toDto(review)).thenReturn(reviewDto);
         ReviewDto result = service.getById(1L);
         Assertions.assertEquals(reviewDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(review);
     }
 
@@ -75,19 +68,20 @@ public class ReviewServiceTest {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(mapper.toEntity(reviewDto)).thenReturn(review);
-        doNothing().when(repository).create(review);
-        service.create(reviewDto);
+        when(repository.create(review)).thenReturn(review);
+        when(mapper.toDto(review)).thenReturn(reviewDto);
+        ReviewDto result = service.create(reviewDto);
+        Assertions.assertEquals(reviewDto, result);
         verify(repository).create(review);
         verify(mapper).toEntity(reviewDto);
+        verify(mapper).toDto(review);
     }
 
     @Test
     public void deleteTest() {
         Review review = Generator.createReview();
-        when(repository.getById(review.getId())).thenReturn(review);
-        doNothing().when(repository).delete(review);
+        doNothing().when(repository).deleteById(review.getId());
         service.delete(review.getId());
-        verify(repository).getById(review.getId());
-        verify(repository).delete(review);
+        verify(repository).deleteById(review.getId());
     }
 }

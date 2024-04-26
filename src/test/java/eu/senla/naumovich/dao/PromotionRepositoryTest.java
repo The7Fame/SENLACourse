@@ -22,20 +22,23 @@ public class PromotionRepositoryTest {
     public void createRecord() {
         Promotion promotion = Generator.createPromotion();
         repository.create(promotion);
-        Assertions.assertEquals(promotion, repository.getById(promotion.getId()));
+        Assertions.assertTrue(repository.findById(promotion.getId()).isPresent());
+        Assertions.assertEquals(promotion, repository.findById(promotion.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Promotion promotion = Generator.updatePromotion();
         repository.update(promotion);
-        Assertions.assertEquals(promotion, repository.getById(promotion.getId()));
+        Assertions.assertTrue(repository.findById(promotion.getId()).isPresent());
+        Assertions.assertEquals(promotion, repository.findById(promotion.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Promotion promotion = Generator.createPromotion();
-        repository.delete(promotion);
-        Assertions.assertNull(repository.getById(promotion.getId()));
+        repository.create(promotion);
+        repository.deleteById(promotion.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

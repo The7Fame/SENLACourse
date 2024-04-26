@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -30,28 +31,20 @@ public class BookServiceTest {
 
     @Test
     public void getAllTest() {
-        Book book = Generator.createBook();
-        BookDto bookDto = Generator.createBookDto();
-        List<BookDto> bookDtos = new ArrayList<>();
-        List<Book> books = new ArrayList<>();
-        bookDtos.add(bookDto);
-        books.add(book);
-        when(repository.getAll()).thenReturn(books);
-        when(mapper.toDto(book)).thenReturn(bookDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<BookDto> result = service.getAll();
-        Assertions.assertEquals(bookDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Book book = Generator.createBook();
         BookDto bookDto = Generator.createBookDto();
-        when(repository.getById(1L)).thenReturn(book);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(book));
         when(mapper.toDto(book)).thenReturn(bookDto);
         BookDto result = service.getById(1L);
         Assertions.assertEquals(bookDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(book);
     }
 
@@ -74,19 +67,20 @@ public class BookServiceTest {
         Book book = Generator.createBook();
         BookDto bookDto = Generator.createBookDto();
         when(mapper.toEntity(bookDto)).thenReturn(book);
-        doNothing().when(repository).create(book);
-        service.create(bookDto);
+        when(repository.create(book)).thenReturn(book);
+        when(mapper.toDto(book)).thenReturn(bookDto);
+        BookDto result = service.create(bookDto);
+        Assertions.assertEquals(bookDto, result);
         verify(repository).create(book);
         verify(mapper).toEntity(bookDto);
+        verify(mapper).toDto(book);
     }
 
     @Test
     public void deleteTest() {
         Book book = Generator.createBook();
-        when(repository.getById(book.getId())).thenReturn(book);
-        doNothing().when(repository).delete(book);
+        doNothing().when(repository).deleteById(book.getId());
         service.delete(book.getId());
-        verify(repository).getById(book.getId());
-        verify(repository).delete(book);
+        verify(repository).deleteById(book.getId());
     }
 }

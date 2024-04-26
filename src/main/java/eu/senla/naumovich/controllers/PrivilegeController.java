@@ -3,19 +3,26 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.PrivilegeDto;
 import eu.senla.naumovich.services.service.PrivilegeService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/privilege")
 public class PrivilegeController implements CRUDInterface<PrivilegeDto> {
-    @Autowired
-    private PrivilegeService privilegeService;
+
+    private final PrivilegeService privilegeService;
 
     @GetMapping
     public ResponseEntity<List<PrivilegeDto>> getAll() {
@@ -26,9 +33,6 @@ public class PrivilegeController implements CRUDInterface<PrivilegeDto> {
     @GetMapping("/{id}")
     public ResponseEntity<PrivilegeDto> getById(@PathVariable("id") Long id) {
         PrivilegeDto privilegeDto = privilegeService.getById(id);
-        if (privilegeDto == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(privilegeDto);
     }
 

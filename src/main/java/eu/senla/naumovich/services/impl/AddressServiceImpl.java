@@ -9,8 +9,8 @@ import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,51 +20,31 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDto> getAll() {
-        try {
-            List<Address> addresses = addressRepository.getAll();
-            List<AddressDto> addressesDto = addresses.stream()
-                    .map(addressMapper::toDto)
-                    .collect(Collectors.toList());
-            return addressesDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        List<Address> addresses = addressRepository.getAll();
+        if (addresses.isEmpty()) {
+            return Collections.emptyList();
         }
+        return addressMapper.toDtoList(addresses);
     }
 
     @Override
     public AddressDto getById(Long id) {
-        try {
-            return addressMapper.toDto(addressRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+        return addressMapper
+                .toDto(addressRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
     }
 
     @Override
     public AddressDto update(AddressDto address) {
-        try {
-            return addressMapper.toDto(addressRepository.update(addressMapper.toEntity(address)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + address.getId());
-        }
+        return addressMapper.toDto(addressRepository.update(addressMapper.toEntity(address)));
     }
 
     @Override
-    public void create(AddressDto address) {
-        try {
-            addressRepository.create(addressMapper.toEntity(address));
-        } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
-        }
+    public AddressDto create(AddressDto address) {
+        return addressMapper.toDto(addressRepository.create(addressMapper.toEntity(address)));
     }
 
     @Override
     public void delete(Long id) {
-        try {
-            Address address = addressRepository.getById(id);
-            addressRepository.delete(address);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+        addressRepository.deleteById(id);
     }
 }

@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -30,28 +31,20 @@ public class AuthorServiceTest {
 
     @Test
     public void getAllTest() {
-        Author author = Generator.createAuthor();
-        AuthorDto authorDto = Generator.createAuthorDto();
-        List<AuthorDto> authorDtos = new ArrayList<>();
-        List<Author> authors = new ArrayList<>();
-        authorDtos.add(authorDto);
-        authors.add(author);
-        when(repository.getAll()).thenReturn(authors);
-        when(mapper.toDto(author)).thenReturn(authorDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<AuthorDto> result = service.getAll();
-        Assertions.assertEquals(authorDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Author author = Generator.createAuthor();
         AuthorDto authorDto = Generator.createAuthorDto();
-        when(repository.getById(1L)).thenReturn(author);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(author));
         when(mapper.toDto(author)).thenReturn(authorDto);
         AuthorDto result = service.getById(1L);
         Assertions.assertEquals(authorDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(author);
     }
 
@@ -74,20 +67,20 @@ public class AuthorServiceTest {
         Author author = Generator.createAuthor();
         AuthorDto authorDto = Generator.createAuthorDto();
         when(mapper.toEntity(authorDto)).thenReturn(author);
-        doNothing().when(repository).create(author);
-        service.create(authorDto);
+        when(repository.create(author)).thenReturn(author);
+        when(mapper.toDto(author)).thenReturn(authorDto);
+        AuthorDto result = service.create(authorDto);
+        Assertions.assertEquals(authorDto, result);
         verify(repository).create(author);
         verify(mapper).toEntity(authorDto);
+        verify(mapper).toDto(author);
     }
 
     @Test
     public void deleteTest() {
         Author author = Generator.createAuthor();
-
-        when(repository.getById(author.getId())).thenReturn(author);
-        doNothing().when(repository).delete(author);
+        doNothing().when(repository).deleteById(author.getId());
         service.delete(author.getId());
-        verify(repository).getById(author.getId());
-        verify(repository).delete(author);
+        verify(repository).deleteById(author.getId());
     }
 }

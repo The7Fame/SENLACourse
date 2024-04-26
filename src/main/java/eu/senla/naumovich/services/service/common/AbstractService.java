@@ -15,7 +15,7 @@ public interface AbstractService<T> {
     T update(T object);
 
     @Transactional
-    void create(T object);
+    T create(T object);
 
     @Transactional
     void delete(Long id);

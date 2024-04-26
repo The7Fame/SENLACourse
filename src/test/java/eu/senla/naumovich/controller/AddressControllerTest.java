@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AddressControllerTest extends BaseTest {
-
     @Test
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/address"))
@@ -21,7 +20,7 @@ public class AddressControllerTest extends BaseTest {
     }
 
     @Test
-    public void getBeIdTest() throws Exception {
+    public void getByIdTest() throws Exception {
         mockMvc.perform(get("/address/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -30,6 +29,7 @@ public class AddressControllerTest extends BaseTest {
     @Test
     public void getUpdateTest() throws Exception {
         AddressDto addressDto = Generator.updateAddressDto();
+
         mockMvc.perform(put("/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(addressDto)))

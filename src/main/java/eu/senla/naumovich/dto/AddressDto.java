@@ -1,15 +1,17 @@
 package eu.senla.naumovich.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class AddressDto {
-    Long id;
-    String city;
-    String street;
-    int index;
+    private Long id;
+    private String city;
+    private String street;
+    private int index;
 }

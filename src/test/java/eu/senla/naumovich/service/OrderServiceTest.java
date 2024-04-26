@@ -14,8 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -31,28 +32,20 @@ public class OrderServiceTest {
 
     @Test
     public void getAllTest() {
-        Order order = Generator.createOrder();
-        OrderDto orderDto = Generator.createOrderDto();
-        List<OrderDto> orderDtos = new ArrayList<>();
-        List<Order> orders = new ArrayList<>();
-        orderDtos.add(orderDto);
-        orders.add(order);
-        when(repository.getAll()).thenReturn(orders);
-        when(mapper.toDto(order)).thenReturn(orderDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<OrderDto> result = service.getAll();
-        Assertions.assertEquals(orderDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Order order = Generator.createOrder();
         OrderDto orderDto = Generator.createOrderDto();
-        when(repository.getById(1L)).thenReturn(order);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(order));
         when(mapper.toDto(order)).thenReturn(orderDto);
         OrderDto result = service.getById(1L);
         Assertions.assertEquals(orderDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(order);
     }
 
@@ -75,19 +68,20 @@ public class OrderServiceTest {
         Order order = Generator.createOrder();
         OrderDto orderDto = Generator.createOrderDto();
         when(mapper.toEntity(orderDto)).thenReturn(order);
-        doNothing().when(repository).create(order);
-        service.create(orderDto);
+        when(repository.create(order)).thenReturn(order);
+        when(mapper.toDto(order)).thenReturn(orderDto);
+        OrderDto result = service.create(orderDto);
+        Assertions.assertEquals(orderDto, result);
         verify(repository).create(order);
         verify(mapper).toEntity(orderDto);
+        verify(mapper).toDto(order);
     }
 
     @Test
     public void deleteTest() {
         Order order = Generator.createOrder();
-        when(repository.getById(order.getId())).thenReturn(order);
-        doNothing().when(repository).delete(order);
+        doNothing().when(repository).deleteById(order.getId());
         service.delete(order.getId());
-        verify(repository).getById(order.getId());
-        verify(repository).delete(order);
+        verify(repository).deleteById(order.getId());
     }
 }

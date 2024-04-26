@@ -3,18 +3,26 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.AddressDto;
 import eu.senla.naumovich.services.service.AddressService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/address")
 public class AddressController implements CRUDInterface<AddressDto> {
-    @Autowired
-    private AddressService addressService;
+
+    private final AddressService addressService;
 
     @GetMapping
     public ResponseEntity<List<AddressDto>> getAll() {
@@ -25,9 +33,6 @@ public class AddressController implements CRUDInterface<AddressDto> {
     @GetMapping("/{id}")
     public ResponseEntity<AddressDto> getById(@PathVariable("id") Long id) {
         AddressDto addressDto = addressService.getById(id);
-        if (addressDto == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(addressDto);
     }
 
@@ -38,9 +43,9 @@ public class AddressController implements CRUDInterface<AddressDto> {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody AddressDto addressDto) {
-        addressService.create(addressDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<AddressDto> create(@RequestBody AddressDto addressDto) {
+        AddressDto address = addressService.create(addressDto);
+        return new ResponseEntity<>(address, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

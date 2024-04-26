@@ -9,6 +9,7 @@ import eu.senla.naumovich.services.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,39 +21,34 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<PaymentDto> getAll() {
-        try {
-            List<Payment> payments = paymentRepository.getAll();
-            List<PaymentDto> paymentsDto = payments.stream()
-                    .map(paymentMapper::toDto)
-                    .collect(Collectors.toList());
-            return paymentsDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        List<Payment> payments = paymentRepository.getAll();
+        if (payments.isEmpty()) {
+            return Collections.emptyList();
         }
+        return payments.stream()
+                .map(paymentMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public PaymentDto getById(Long id) {
-        try {
-            return paymentMapper.toDto(paymentRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+
+        return paymentMapper
+                .toDto(paymentRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
+
     }
 
     @Override
     public PaymentDto update(PaymentDto payment) {
-        try {
-            return paymentMapper.toDto(paymentRepository.update(paymentMapper.toEntity(payment)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + payment.getId());
-        }
+
+        return paymentMapper.toDto(paymentRepository.update(paymentMapper.toEntity(payment)));
+
     }
 
     @Override
-    public void create(PaymentDto payment) {
+    public PaymentDto create(PaymentDto payment) {
         try {
-            paymentRepository.create(paymentMapper.toEntity(payment));
+            return paymentMapper.toDto(paymentRepository.create(paymentMapper.toEntity(payment)));
         } catch (Exception e) {
             throw new NoRecords("Cannot create record");
         }
@@ -60,11 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void delete(Long id) {
-        try {
-            Payment payment = paymentRepository.getById(id);
-            paymentRepository.delete(payment);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+        paymentRepository.deleteById(id);
+
     }
 }

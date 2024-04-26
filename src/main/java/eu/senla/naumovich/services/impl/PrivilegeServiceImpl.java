@@ -9,62 +9,48 @@ import eu.senla.naumovich.services.service.PrivilegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PrivilegeServiceImpl implements PrivilegeService {
-    private final PrivilegeRepository privilegeRepository;
-    private final PrivilegeMapper privilegeMapper;
+        private final PrivilegeRepository privilegeRepository;
+        private final PrivilegeMapper privilegeMapper;
 
-    @Override
-    public List<PrivilegeDto> getAll() {
-        try {
-            List<Privilege> privileges = privilegeRepository.getAll();
-            List<PrivilegeDto> privilegesDto = privileges.stream()
-                    .map(privilegeMapper::toDto)
-                    .collect(Collectors.toList());
-            return privilegesDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        @Override
+        public List<PrivilegeDto> getAll() {
+                List<Privilege> privileges = privilegeRepository.getAll();
+                if (privileges.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                return privilegeMapper.toDtoList(privileges);
         }
-    }
 
-    @Override
-    public PrivilegeDto getById(Long id) {
-        try {
-            return privilegeMapper.toDto(privilegeRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
-    }
+        @Override
+        public PrivilegeDto getById(Long id) {
 
-    @Override
-    public PrivilegeDto update(PrivilegeDto privilege) {
-        try {
-            return privilegeMapper.toDto(privilegeRepository.update(privilegeMapper.toEntity(privilege)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + privilege.getId());
-        }
-    }
+                return privilegeMapper.toDto(privilegeRepository.findById(id)
+                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
 
-    @Override
-    public void create(PrivilegeDto privilege) {
-        try {
-            privilegeRepository.create(privilegeMapper.toEntity(privilege));
-        } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
         }
-    }
 
-    @Override
-    public void delete(Long id) {
-        try {
-            Privilege privilege = privilegeRepository.getById(id);
-            privilegeRepository.delete(privilege);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
+        @Override
+        public PrivilegeDto update(PrivilegeDto privilege) {
+                return privilegeMapper.toDto(privilegeRepository.update(privilegeMapper.toEntity(privilege)));
+
         }
-    }
+
+        @Override
+        public PrivilegeDto create(PrivilegeDto privilege) {
+
+                return privilegeMapper.toDto(privilegeRepository.create(privilegeMapper.toEntity(privilege)));
+
+        }
+
+        @Override
+        public void delete(Long id) {
+                privilegeRepository.deleteById(id);
+
+        }
 }

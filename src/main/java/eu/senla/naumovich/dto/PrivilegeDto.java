@@ -1,13 +1,15 @@
 package eu.senla.naumovich.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class PrivilegeDto {
-    Long id;
-    String privilegeName;
+    private Long id;
+    private String privilegeName;
 }

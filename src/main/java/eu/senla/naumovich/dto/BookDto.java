@@ -1,19 +1,23 @@
 package eu.senla.naumovich.dto;
 
-import lombok.*;
-
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class BookDto {
-    Long id;
-    String title;
-    BigDecimal price;
-    String isbn;
-    String genre;
-    PublisherDto publisher;
+    private Long id;
+    private String title;
+    private BigDecimal price;
+    private String isbn;
+    private String genre;
+    private PublisherDto publisher;
 }

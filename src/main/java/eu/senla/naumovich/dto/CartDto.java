@@ -1,14 +1,16 @@
 package eu.senla.naumovich.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class CartDto {
-    Long id;
-    BookDto book;
-    UserDto user;
+    private Long id;
+    private BookDto book;
+    private UserDto user;
 }

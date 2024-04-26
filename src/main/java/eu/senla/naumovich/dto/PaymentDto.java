@@ -5,19 +5,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class PaymentDto {
-    Long id;
-    Boolean status;
+    private Long id;
+    private Boolean status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    Date paymentDate;
-    BigDecimal totalPrice;
-    UserDto user;
-    OrderDto order;
+    private Date paymentDate;
+    private BigDecimal totalPrice;
+    private UserDto user;
+    private OrderDto order;
 }

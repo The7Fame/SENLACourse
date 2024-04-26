@@ -9,62 +9,42 @@ import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+        private final OrderRepository orderRepository;
+        private final OrderMapper orderMapper;
 
-    @Override
-    public List<OrderDto> getAll() {
-        try {
-            List<Order> orders = orderRepository.getAll();
-            List<OrderDto> ordersDto = orders.stream()
-                    .map(orderMapper::toDto)
-                    .collect(Collectors.toList());
-            return ordersDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        @Override
+        public List<OrderDto> getAll() {
+                List<Order> orders = orderRepository.getAll();
+                if (orders.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                return orderMapper.toDtoList(orders);
         }
-    }
 
-    @Override
-    public OrderDto getById(Long id) {
-        try {
-            return orderMapper.toDto(orderRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
+        @Override
+        public OrderDto getById(Long id) {
+                return orderMapper.toDto(orderRepository.findById(id)
+                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
         }
-    }
 
-    @Override
-    public OrderDto update(OrderDto order) {
-        try {
-            return orderMapper.toDto(orderRepository.update(orderMapper.toEntity(order)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + order.getId());
+        @Override
+        public OrderDto update(OrderDto order) {
+                return orderMapper.toDto(orderRepository.update(orderMapper.toEntity(order)));
         }
-    }
 
-    @Override
-    public void create(OrderDto order) {
-        try {
-            orderRepository.create(orderMapper.toEntity(order));
-        } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
+        @Override
+        public OrderDto create(OrderDto order) {
+                return orderMapper.toDto(orderRepository.create(orderMapper.toEntity(order)));
         }
-    }
 
-    @Override
-    public void delete(Long id) {
-        try {
-            Order order = orderRepository.getById(id);
-            orderRepository.delete(order);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
+        @Override
+        public void delete(Long id) {
+                orderRepository.deleteById(id);
         }
-    }
 }

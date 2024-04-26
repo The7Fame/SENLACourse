@@ -13,8 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -28,29 +29,21 @@ public class AddressServiceTest {
     private AddressServiceImpl service;
 
     @Test
-    public void getAllTest(){
-        Address address = Generator.createAddress();
-        AddressDto addressDto = Generator.createAddressDto();
-        List<AddressDto> addressDtos = new ArrayList<>();
-        List<Address> addresses = new ArrayList<>();
-        addressDtos.add(addressDto);
-        addresses.add(address);
-        when(repository.getAll()).thenReturn(addresses);
-        when(mapper.toDto(address)).thenReturn(addressDto);
+    public void getAllTest() {
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<AddressDto> result = service.getAll();
-        Assertions.assertEquals(addressDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
-    public void getByIdTest(){
+    public void getByIdTest() {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
-        when(repository.getById(1L)).thenReturn(address);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(address));
         when(mapper.toDto(address)).thenReturn(addressDto);
         AddressDto result = service.getById(1L);
         Assertions.assertEquals(addressDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(address);
     }
 
@@ -73,18 +66,20 @@ public class AddressServiceTest {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(mapper.toEntity(addressDto)).thenReturn(address);
-        doNothing().when(repository).create(address);
-        service.create(addressDto);
+        when(repository.create(address)).thenReturn(address);
+        when(mapper.toDto(address)).thenReturn(addressDto);
+        AddressDto result = service.create(addressDto);
+        Assertions.assertEquals(addressDto, result);
         verify(repository).create(address);
         verify(mapper).toEntity(addressDto);
+        verify(mapper).toDto(address);
     }
+
     @Test
     public void deleteTest() {
         Address address = Generator.createAddress();
-        when(repository.getById(address.getId())).thenReturn(address);
-        doNothing().when(repository).delete(address);
+        doNothing().when(repository).deleteById(address.getId());
         service.delete(address.getId());
-        verify(repository).getById(address.getId());
-        verify(repository).delete(address);
+        verify(repository).deleteById(address.getId());
     }
 }

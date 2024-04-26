@@ -1,14 +1,16 @@
 package eu.senla.naumovich.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class PublisherDto {
-    Long id;
-    String publisherName;
-    AddressDto address;
+    private Long id;
+    private String publisherName;
+    private AddressDto address;
 }

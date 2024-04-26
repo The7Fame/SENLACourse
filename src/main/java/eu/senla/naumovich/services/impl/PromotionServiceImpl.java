@@ -9,8 +9,8 @@ import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,51 +20,38 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public List<PromotionDto> getAll() {
-        try {
-            List<Promotion> promotions = promotionRepository.getAll();
-            List<PromotionDto> promotionsDto = promotions.stream()
-                    .map(promotionMapper::toDto)
-                    .collect(Collectors.toList());
-            return promotionsDto;
-        } catch (Exception e) {
-            throw new NoRecords("No records");
+        List<Promotion> promotions = promotionRepository.getAll();
+        if (promotions.isEmpty()) {
+            return Collections.emptyList();
         }
+        return promotionMapper.toDtoList(promotions);
     }
 
     @Override
     public PromotionDto getById(Long id) {
-        try {
-            return promotionMapper.toDto(promotionRepository.getById(id));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+
+        return promotionMapper.toDto(
+                promotionRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
+
     }
 
     @Override
     public PromotionDto update(PromotionDto promotion) {
-        try {
-            return promotionMapper.toDto(promotionRepository.update(promotionMapper.toEntity(promotion)));
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + promotion.getId());
-        }
+
+        return promotionMapper.toDto(promotionRepository.update(promotionMapper.toEntity(promotion)));
+
     }
 
     @Override
-    public void create(PromotionDto promotion) {
-        try {
-            promotionRepository.create(promotionMapper.toEntity(promotion));
-        } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
-        }
+    public PromotionDto create(PromotionDto promotion) {
+        return promotionMapper.toDto(promotionRepository.create(promotionMapper.toEntity(promotion)));
+
     }
 
     @Override
     public void delete(Long id) {
-        try {
-            Promotion promotion = promotionRepository.getById(id);
-            promotionRepository.delete(promotion);
-        } catch (Exception e) {
-            throw new NoRecords("No record with such ID " + id);
-        }
+
+        promotionRepository.deleteById(id);
+
     }
 }

@@ -2,14 +2,12 @@ package eu.senla.naumovich.mapper;
 
 import eu.senla.naumovich.dto.OrderDto;
 import eu.senla.naumovich.entities.Order;
+import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface OrderMapper {
+public interface OrderMapper extends InterfaceMapper<Order, OrderDto> {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    OrderDto toDto(Order order);
-
-    Order toEntity(OrderDto orderDto);
 }

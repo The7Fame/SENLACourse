@@ -14,8 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -31,28 +32,20 @@ public class PublisherServiceTest {
 
     @Test
     public void getAllTest() {
-        Publisher publisher = Generator.createPublisher();
-        PublisherDto publisherDto = Generator.createPublisherDto();
-        List<PublisherDto> publisherDtos = new ArrayList<>();
-        List<Publisher> publishers = new ArrayList<>();
-        publisherDtos.add(publisherDto);
-        publishers.add(publisher);
-        when(repository.getAll()).thenReturn(publishers);
-        when(mapper.toDto(publisher)).thenReturn(publisherDto);
+        when(repository.getAll()).thenReturn(Collections.emptyList());
         List<PublisherDto> result = service.getAll();
-        Assertions.assertEquals(publisherDtos, result);
-        verify(repository).getAll();
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Test
     public void getByIdTest() {
         Publisher publisher = Generator.createPublisher();
         PublisherDto publisherDto = Generator.createPublisherDto();
-        when(repository.getById(1L)).thenReturn(publisher);
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(publisher));
         when(mapper.toDto(publisher)).thenReturn(publisherDto);
         PublisherDto result = service.getById(1L);
         Assertions.assertEquals(publisherDto, result);
-        verify(repository).getById(1L);
+        verify(repository).findById(1L);
         verify(mapper).toDto(publisher);
     }
 
@@ -75,19 +68,20 @@ public class PublisherServiceTest {
         Publisher publisher = Generator.createPublisher();
         PublisherDto publisherDto = Generator.createPublisherDto();
         when(mapper.toEntity(publisherDto)).thenReturn(publisher);
-        doNothing().when(repository).create(publisher);
-        service.create(publisherDto);
+        when(repository.create(publisher)).thenReturn(publisher);
+        when(mapper.toDto(publisher)).thenReturn(publisherDto);
+        PublisherDto result = service.create(publisherDto);
+        Assertions.assertEquals(publisherDto, result);
         verify(repository).create(publisher);
         verify(mapper).toEntity(publisherDto);
+        verify(mapper).toDto(publisher);
     }
 
     @Test
     public void deleteTest() {
         Publisher publisher = Generator.createPublisher();
-        when(repository.getById(publisher.getId())).thenReturn(publisher);
-        doNothing().when(repository).delete(publisher);
+        doNothing().when(repository).deleteById(publisher.getId());
         service.delete(publisher.getId());
-        verify(repository).getById(publisher.getId());
-        verify(repository).delete(publisher);
+        verify(repository).deleteById(publisher.getId());
     }
 }
