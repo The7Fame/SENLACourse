@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class ReviewController {
+@RequestMapping("/review")
+public class ReviewController implements CRUDInterface<ReviewDto> {
+
     private final ReviewService reviewService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<ReviewDto> reviewsDto = reviewService.getAll();
-        List<String> reviewsJSON = reviewsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return reviewsJSON;
+    @GetMapping
+    public ResponseEntity<List<ReviewDto>> getAll() {
+        List<ReviewDto> reviewDto = reviewService.getAll();
+        return ResponseEntity.ok(reviewDto);
     }
 
-    public String getById(String reviewJSON) {
-        return fromDtoToJSON(reviewService.getById(fromJSONToDto(reviewJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDto> getById(@PathVariable("id") Long id) {
+        ReviewDto reviewDto = reviewService.getById(id);
+        return ResponseEntity.ok(reviewDto);
     }
 
-    public String update(String reviewJSON) {
-        return fromDtoToJSON(reviewService.update(fromJSONToDto(reviewJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody ReviewDto reviewDto) {
+        reviewService.update(reviewDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String reviewJSON) {
-        reviewService.create(fromJSONToDto(reviewJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody ReviewDto reviewDto) {
+        reviewService.create(reviewDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String reviewJSON) {
-        reviewService.delete(fromJSONToDto(reviewJSON));
-    }
-
-    private ReviewDto fromJSONToDto(String reviewJSON) {
-        try {
-            return objectMapper.readValue(reviewJSON, ReviewDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(ReviewDto reviewDto) {
-        try {
-            return objectMapper.writeValueAsString(reviewDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        reviewService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,8 @@
 package eu.senla.naumovich.dao.repository.common;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,8 +26,8 @@ public abstract class AbstractDao<K, T> {
         return entityManager.createQuery(query).getResultList();
     };
 
-    public T getById(K id) {
-        return entityManager.find(getEntityClass(), id);
+    public Optional<T> findById(K id) {
+        return Optional.of(entityManager.find(getEntityClass(), id));
     };
 
     @Transactional
@@ -34,12 +36,13 @@ public abstract class AbstractDao<K, T> {
     };
 
     @Transactional
-    public void create(T object) {
-        entityManager.merge(object);
+    public T create(T object) {
+        return entityManager.merge(object);
     };
 
     @Transactional
-    public void delete(T object) {
-        entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
+    public void deleteById(K id) {
+        Optional<T> entity = findById(id);
+        entity.ifPresent(entityManager::remove);
     };
 }

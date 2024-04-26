@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class BookController {
+@RequestMapping("/book")
+public class BookController implements CRUDInterface<BookDto> {
+
     private final BookService bookService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<BookDto> booksDto = bookService.getAll();
-        List<String> booksJSON = booksDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return booksJSON;
+    @GetMapping
+    public ResponseEntity<List<BookDto>> getAll() {
+        List<BookDto> bookDto = bookService.getAll();
+        return ResponseEntity.ok(bookDto);
     }
 
-    public String getById(String bookJSON) {
-        return fromDtoToJSON(bookService.getById(fromJSONToDto(bookJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<BookDto> getById(@PathVariable("id") Long id) {
+        BookDto bookDto = bookService.getById(id);
+        return ResponseEntity.ok(bookDto);
     }
 
-    public String update(String bookJSON) {
-        return fromDtoToJSON(bookService.update(fromJSONToDto(bookJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody BookDto bookDto) {
+        bookService.update(bookDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String bookJSON) {
-        bookService.create(fromJSONToDto(bookJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody BookDto bookDto) {
+        bookService.create(bookDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String bookJSON) {
-        bookService.delete(fromJSONToDto(bookJSON));
-    }
-
-    private BookDto fromJSONToDto(String bookJSON) {
-        try {
-            return objectMapper.readValue(bookJSON, BookDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(BookDto bookDto) {
-        try {
-            return objectMapper.writeValueAsString(bookDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        bookService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

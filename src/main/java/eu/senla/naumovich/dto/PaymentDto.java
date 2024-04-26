@@ -1,21 +1,25 @@
 package eu.senla.naumovich.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
+@Jacksonized
 public class PaymentDto {
-    Long id;
-    Boolean status;
+    private Long id;
+    private Boolean status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    Date paymentDate;
-    Double totalPrice;
-    UserDto user;
-    OrderDto order;
+    private Date paymentDate;
+    private BigDecimal totalPrice;
+    private UserDto user;
+    private OrderDto order;
 }

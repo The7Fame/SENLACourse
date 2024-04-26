@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.RoleDto;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class RoleController {
+@RequestMapping("/role")
+public class RoleController implements CRUDInterface<RoleDto> {
+
     private final RoleService roleService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<RoleDto> rolesDto = roleService.getAll();
-        List<String> rolesJSON = rolesDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return rolesJSON;
+    @GetMapping
+    public ResponseEntity<List<RoleDto>> getAll() {
+        List<RoleDto> roleDto = roleService.getAll();
+        return ResponseEntity.ok(roleDto);
     }
 
-    public String getById(String roleJSON) {
-        return fromDtoToJSON(roleService.getById(fromJSONToDto(roleJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<RoleDto> getById(@PathVariable("id") Long id) {
+        RoleDto roleDto = roleService.getById(id);
+        return ResponseEntity.ok(roleDto);
     }
 
-    public String update(String roleJSON) {
-        return fromDtoToJSON(roleService.update(fromJSONToDto(roleJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody RoleDto roleDto) {
+        roleService.update(roleDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String roleJSON) {
-        roleService.create(fromJSONToDto(roleJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody RoleDto roleDto) {
+        roleService.create(roleDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String roleJSON) {
-        roleService.delete(fromJSONToDto(roleJSON));
-    }
-
-    private RoleDto fromJSONToDto(String roleJSON) {
-        try {
-            return objectMapper.readValue(roleJSON, RoleDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(RoleDto roleDto) {
-        try {
-            return objectMapper.writeValueAsString(roleDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        roleService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

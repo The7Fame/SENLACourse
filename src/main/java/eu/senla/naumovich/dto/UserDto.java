@@ -1,16 +1,18 @@
 package eu.senla.naumovich.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
+@Jacksonized
 public class UserDto {
-    Long id;
-    String name;
-    String surname;
-    String email;
-    RoleDto role;
+    private Long id;
+    private String name;
+    private String surname;
+    private String email;
+    private RoleDto role;
 }

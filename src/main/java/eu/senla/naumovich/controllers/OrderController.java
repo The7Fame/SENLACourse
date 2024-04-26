@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.OrderDto;
 import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class OrderController {
+@RequestMapping("/order")
+public class OrderController implements CRUDInterface<OrderDto> {
+
     private final OrderService orderService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<OrderDto> ordersDto = orderService.getAll();
-        List<String> ordersJSON = ordersDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return ordersJSON;
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getAll() {
+        List<OrderDto> orderDto = orderService.getAll();
+        return ResponseEntity.ok(orderDto);
     }
 
-    public String getById(String orderJSON) {
-        return fromDtoToJSON(orderService.getById(fromJSONToDto(orderJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDto> getById(@PathVariable("id") Long id) {
+        OrderDto orderDto = orderService.getById(id);
+        return ResponseEntity.ok(orderDto);
     }
 
-    public String update(String orderJSON) {
-        return fromDtoToJSON(orderService.update(fromJSONToDto(orderJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody OrderDto orderDto) {
+        orderService.update(orderDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String orderJSON) {
-        orderService.create(fromJSONToDto(orderJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody OrderDto orderDto) {
+        orderService.create(orderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String orderJSON) {
-        orderService.delete(fromJSONToDto(orderJSON));
-    }
-
-    private OrderDto fromJSONToDto(String orderJSON) {
-        try {
-            return objectMapper.readValue(orderJSON, OrderDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(OrderDto orderDto) {
-        try {
-            return objectMapper.writeValueAsString(orderDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        orderService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

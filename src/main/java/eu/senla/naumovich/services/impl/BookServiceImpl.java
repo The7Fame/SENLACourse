@@ -3,46 +3,44 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.entities.Book;
-import eu.senla.naumovich.services.mapper.BookMapper;
+import eu.senla.naumovich.exceptions.NoRecords;
+import eu.senla.naumovich.mapper.BookMapper;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
-    private final BookMapper bookMapper;
+        private final BookRepository bookRepository;
+        private final BookMapper bookMapper;
 
-    @Override
-    public List<BookDto> getAll() {
-        List<Book> books = bookRepository.getAll();
-        List<BookDto> booksDto = books.stream()
-                .map(bookMapper::toDto)
-                .collect(Collectors.toList());
-        return booksDto;
-    }
+        public List<BookDto> getAll() {
+                List<Book> books = bookRepository.getAll();
+                return bookMapper.toDtoList(books);
+        }
 
-    @Override
-    public BookDto getById(BookDto book) {
-        return bookMapper.toDto(bookRepository.getById(book.getId()));
-    }
+        @Override
+        public BookDto getById(Long id) {
+                return bookMapper.toDto(bookRepository.findById(id)
+                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
+        }
 
-    @Override
-    public BookDto update(BookDto book) {
-        return bookMapper.toDto(bookRepository.update(bookMapper.toEntity(book)));
-    }
+        @Override
+        public BookDto update(BookDto book) {
+                return bookMapper.toDto(bookRepository.update(bookMapper.toEntity(book)));
+        }
 
-    @Override
-    public void create(BookDto book) {
-        bookRepository.create(bookMapper.toEntity(book));
-    }
+        @Override
+        public BookDto create(BookDto book) {
+                return bookMapper.toDto(bookRepository.create(bookMapper.toEntity(book)));
+        }
 
-    @Override
-    public void delete(BookDto book) {
-        bookRepository.delete(bookMapper.toEntity(book));
-    }
+        @Override
+        public void delete(Long id) {
+                bookRepository.deleteById(id);
+
+        }
 }

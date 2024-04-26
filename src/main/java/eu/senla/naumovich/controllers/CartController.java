@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.CartDto;
 import eu.senla.naumovich.services.service.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class CartController {
+@RequestMapping("/cart")
+public class CartController implements CRUDInterface<CartDto> {
+
     private final CartService cartService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<CartDto> cartsDto = cartService.getAll();
-        List<String> cartsJSON = cartsDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return cartsJSON;
+    @GetMapping
+    public ResponseEntity<List<CartDto>> getAll() {
+        List<CartDto> cartDto = cartService.getAll();
+        return ResponseEntity.ok(cartDto);
     }
 
-    public String getById(String cartJSON) {
-        return fromDtoToJSON(cartService.getById(fromJSONToDto(cartJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<CartDto> getById(@PathVariable("id") Long id) {
+        CartDto cartDto = cartService.getById(id);
+        return ResponseEntity.ok(cartDto);
     }
 
-    public String update(String cartJSON) {
-        return fromDtoToJSON(cartService.update(fromJSONToDto(cartJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody CartDto cartDto) {
+        cartService.update(cartDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String cartJSON) {
-        cartService.create(fromJSONToDto(cartJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody CartDto cartDto) {
+        cartService.create(cartDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String cartJSON) {
-        cartService.delete(fromJSONToDto(cartJSON));
-    }
-
-    private CartDto fromJSONToDto(String cartJSON) {
-        try {
-            return objectMapper.readValue(cartJSON, CartDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(CartDto cartDto) {
-        try {
-            return objectMapper.writeValueAsString(cartDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        cartService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package eu.senla.naumovich.dao;
 
-import eu.senla.naumovich.TestConfig;
+import eu.senla.naumovich.config.DaoConfig;
+import eu.senla.naumovich.config.TestConfig;
 import eu.senla.naumovich.dao.repository.AddressRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.entities.Address;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class })
+@ContextConfiguration(classes = { TestConfig.class, DaoConfig.class })
 public class AddressRepositoryTest {
     @Autowired
     AddressRepository repository;
@@ -21,20 +22,23 @@ public class AddressRepositoryTest {
     public void createRecord() {
         Address address = Generator.createAddress();
         repository.create(address);
-        Assertions.assertEquals(address, repository.getById(address.getId()));
+        Assertions.assertTrue(repository.findById(address.getId()).isPresent());
+        Assertions.assertEquals(address, repository.findById(address.getId()).get());
     }
 
     @Test
     public void updateRecord() {
         Address address = Generator.updateAddress();
         repository.update(address);
-        Assertions.assertEquals(address, repository.getById(address.getId()));
+        Assertions.assertTrue(repository.findById(address.getId()).isPresent());
+        Assertions.assertEquals(address, repository.findById(address.getId()).get());
     }
 
     @Test
     public void deleteTest() {
         Address address = Generator.createAddress();
-        repository.delete(address);
-        Assertions.assertNull(repository.getById(address.getId()));
+        repository.create(address);
+        repository.deleteById(address.getId());
+        Assertions.assertEquals(repository.getAll().size(), 2);
     }
 }

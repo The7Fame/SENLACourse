@@ -1,4 +1,4 @@
-package eu.senla.naumovich;
+package eu.senla.naumovich.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import liquibase.integration.spring.SpringLiquibase;
@@ -14,9 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@EnableTransactionManagement
 @Configuration
-@ComponentScan(basePackages = "eu.senla.naumovich")
+@EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class TestConfig {
     @Value("${spring.datasource.url}")

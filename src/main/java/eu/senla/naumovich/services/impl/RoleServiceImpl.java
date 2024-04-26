@@ -3,47 +3,47 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dao.repository.RoleRepository;
 import eu.senla.naumovich.dto.RoleDto;
 import eu.senla.naumovich.entities.Role;
-import eu.senla.naumovich.services.mapper.RoleMapper;
+import eu.senla.naumovich.exceptions.NoRecords;
+import eu.senla.naumovich.mapper.RoleMapper;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private final RoleRepository roleRepository;
-    private final RoleMapper roleMapper;
+        private final RoleRepository roleRepository;
+        private final RoleMapper roleMapper;
 
-    @Override
-    public List<RoleDto> getAll() {
-        List<Role> roles = roleRepository.getAll();
-        List<RoleDto> rolesDto = roles.stream()
-                .map(roleMapper::toDto)
-                .collect(Collectors.toList());
-        return rolesDto;
-    }
+        @Override
+        public List<RoleDto> getAll() {
+                List<Role> roles = roleRepository.getAll();
+                return roleMapper.toDtoList(roles);
+        }
 
-    @Override
-    public RoleDto getById(RoleDto role) {
-        return roleMapper.toDto(roleRepository.getById(role.getId()));
-    }
+        @Override
+        public RoleDto getById(Long id) {
+                return roleMapper.toDto(roleRepository.findById(id)
+                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
 
-    @Override
-    public RoleDto update(RoleDto role) {
-        return roleMapper.toDto(roleRepository.update(roleMapper.toEntity(role)));
-    }
+        }
 
-    @Override
-    public void create(RoleDto role) {
-        roleRepository.create(roleMapper.toEntity(role));
-    }
+        @Override
+        public RoleDto update(RoleDto role) {
+                return roleMapper.toDto(roleRepository.update(roleMapper.toEntity(role)));
 
-    @Override
-    public void delete(RoleDto role) {
-        roleRepository.delete(roleMapper.toEntity(role));
-    }
+        }
+
+        @Override
+        public RoleDto create(RoleDto role) {
+                return roleMapper.toDto(roleRepository.create(roleMapper.toEntity(role)));
+
+        }
+
+        @Override
+        public void delete(Long id) {
+                roleRepository.deleteById(id);
+        }
 }

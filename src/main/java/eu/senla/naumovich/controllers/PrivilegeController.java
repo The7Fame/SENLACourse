@@ -1,56 +1,56 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.PrivilegeDto;
 import eu.senla.naumovich.services.service.PrivilegeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RequiredArgsConstructor
-public class PrivilegeController {
+@RequestMapping("/privilege")
+public class PrivilegeController implements CRUDInterface<PrivilegeDto> {
+
     private final PrivilegeService privilegeService;
-    private final ObjectMapper objectMapper;
 
-    public List<String> getAll() {
-        List<PrivilegeDto> privilegesDto = privilegeService.getAll();
-        List<String> privilegesJSON = privilegesDto.stream().map(this::fromDtoToJSON).collect(Collectors.toList());
-        return privilegesJSON;
+    @GetMapping
+    public ResponseEntity<List<PrivilegeDto>> getAll() {
+        List<PrivilegeDto> privilegeDto = privilegeService.getAll();
+        return ResponseEntity.ok(privilegeDto);
     }
 
-    public String getById(String addressJSON) {
-        return fromDtoToJSON(privilegeService.getById(fromJSONToDto(addressJSON)));
+    @GetMapping("/{id}")
+    public ResponseEntity<PrivilegeDto> getById(@PathVariable("id") Long id) {
+        PrivilegeDto privilegeDto = privilegeService.getById(id);
+        return ResponseEntity.ok(privilegeDto);
     }
 
-    public String update(String privilegeJSON) {
-        return fromDtoToJSON(privilegeService.update(fromJSONToDto(privilegeJSON)));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody PrivilegeDto privilegeDto) {
+        privilegeService.update(privilegeDto);
+        return ResponseEntity.ok().build();
     }
 
-    public void create(String privilegeJSON) {
-        privilegeService.create(fromJSONToDto(privilegeJSON));
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody PrivilegeDto privilegeDto) {
+        privilegeService.create(privilegeDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void delete(String privilegeJSON) {
-        privilegeService.delete(fromJSONToDto(privilegeJSON));
-    }
-
-    private PrivilegeDto fromJSONToDto(String privilegeJSON) {
-        try {
-            return objectMapper.readValue(privilegeJSON, PrivilegeDto.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String fromDtoToJSON(PrivilegeDto privilegeDto) {
-        try {
-            return objectMapper.writeValueAsString(privilegeDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        privilegeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
