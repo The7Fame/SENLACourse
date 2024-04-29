@@ -32,6 +32,9 @@ public class User {
     @Column(name = "email")
     String email;
     @ToString.Exclude
+    @Column(name = "hash_password")
+    String password;
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")

@@ -9,10 +9,10 @@
 
     <changeSet id="insert-roles" author="Maksim Naumovich">
         <insert tableName="roles">
-            <column name="role_name" value="role1"/>
+            <column name="role_name" value="USER"/>
         </insert>
         <insert tableName="roles">
-            <column name="role_name" value="role2"/>
+            <column name="role_name" value="ADMIN"/>
         </insert>
     </changeSet>
 
@@ -41,12 +41,14 @@
             <column name="name" value="name1"/>
             <column name="surname" value="surname1"/>
             <column name="email" value="1@example.com"/>
+            <column name="hash_password" value="$2a$12$jHsW2SXan.dyFAK64yPSXOKlrUMyz//tSDKFn4tQ2cGYxqF56w/96"/>
             <column name="role_id" valueNumeric="1"/>
         </insert>
         <insert tableName="users">
             <column name="name" value="name2"/>
             <column name="surname" value="surname2"/>
             <column name="email" value="2@example.com"/>
+            <column name="hash_password" value="$2a$12$jHsW2SXan.dyFAK64yPSXOKlrUMyz//tSDKFn4tQ2cGYxqF56w/96"/>
             <column name="role_id" valueNumeric="2"/>
         </insert>
     </changeSet>

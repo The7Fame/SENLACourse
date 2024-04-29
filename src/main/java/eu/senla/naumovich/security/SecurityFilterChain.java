@@ -1,4 +1,4 @@
-package eu.senla.naumovich.configuration.security;
+package eu.senla.naumovich.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

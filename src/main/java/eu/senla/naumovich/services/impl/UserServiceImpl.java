@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 
         @Override
         public UserDto getById(Long id) {
-
                 return userMapper.toDto(userRepository.findById(id)
                                 .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
 
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
 
         @Override
         public UserDto create(UserDto user) {
-
                 return userMapper.toDto(userRepository.create(userMapper.toEntity(user)));
 
         }
@@ -47,6 +45,5 @@ public class UserServiceImpl implements UserService {
         @Override
         public void delete(Long id) {
                 userRepository.deleteById(id);
-
         }
 }
