@@ -1,4 +1,4 @@
-package eu.senla.naumovich.services.impl;
+package eu.senla.naumovich.services.impl.auth;
 
 import eu.senla.naumovich.dao.repository.UserRepository;
 
