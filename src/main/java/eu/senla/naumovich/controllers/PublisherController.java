@@ -7,14 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,28 +19,27 @@ public class PublisherController implements CRUDInterface<PublisherDto> {
     private final PublisherService publisherService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<List<PublisherDto>> getAll() {
-        List<PublisherDto> publisherDto = publisherService.getAll();
+    public ResponseEntity<List<PublisherDto>> getAll(@RequestParam(name = "page", defaultValue = "1") int page,
+                                                     @RequestParam(name = "size", defaultValue = "10") int size) {
+        List<PublisherDto> publisherDto = publisherService.getAll(page, size);
         return ResponseEntity.ok(publisherDto);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<PublisherDto> getById(@PathVariable("id") Long id) {
         PublisherDto publisherDto = publisherService.getById(id);
         return ResponseEntity.ok(publisherDto);
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> update(@RequestBody PublisherDto publisherDto) {
         publisherService.update(publisherDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> create(@RequestBody PublisherDto publisherDto) {
         publisherService.create(publisherDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();

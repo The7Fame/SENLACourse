@@ -18,8 +18,8 @@ public class PublisherServiceImpl implements PublisherService {
         private final PublisherMapper publisherMapper;
 
         @Override
-        public List<PublisherDto> getAll() {
-                List<Publisher> publishers = publisherRepository.getAll();
+        public List<PublisherDto> getAll(int size, int page) {
+                List<Publisher> publishers = publisherRepository.getAll(size, page);
                 return publisherMapper.toDtoList(publishers);
         }
 

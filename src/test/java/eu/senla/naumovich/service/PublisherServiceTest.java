@@ -32,8 +32,8 @@ public class PublisherServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll()).thenReturn(Collections.emptyList());
-        List<PublisherDto> result = service.getAll();
+        when(repository.getAll(1,1)).thenReturn(Collections.emptyList());
+        List<PublisherDto> result = service.getAll(1,1);
         Assertions.assertTrue(result.isEmpty());
     }
 

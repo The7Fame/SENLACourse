@@ -2,9 +2,12 @@ package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dto.BookDto;
+import eu.senla.naumovich.dto.ReviewDto;
+import eu.senla.naumovich.dto.ReviewForBookDto;
 import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.BookMapper;
+import eu.senla.naumovich.mapper.ReviewMapper;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +19,10 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
         private final BookRepository bookRepository;
         private final BookMapper bookMapper;
+        private final ReviewMapper reviewMapper;
 
-        public List<BookDto> getAll() {
-                List<Book> books = bookRepository.getAll();
+        public List<BookDto> getAll(int size, int page) {
+                List<Book> books = bookRepository.getAll(size, page);
                 return bookMapper.toDtoList(books);
         }
 
@@ -41,6 +45,10 @@ public class BookServiceImpl implements BookService {
         @Override
         public void delete(Long id) {
                 bookRepository.deleteById(id);
+        }
 
+        @Override
+        public List<ReviewForBookDto> getReviewsByBookId(Long id) {
+                return reviewMapper.toReviewForBookDtoList(bookRepository.getReviewsByBookId(id));
         }
 }

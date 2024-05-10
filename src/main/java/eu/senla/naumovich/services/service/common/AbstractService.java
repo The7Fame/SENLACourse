@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public interface AbstractService<T> {
-    List<T> getAll();
+    List<T> getAll(int page, int size);
 
     T getById(Long id);
     @Transactional

@@ -18,8 +18,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         private final PrivilegeMapper privilegeMapper;
 
         @Override
-        public List<PrivilegeDto> getAll() {
-                List<Privilege> privileges = privilegeRepository.getAll();
+        public List<PrivilegeDto> getAll(int size, int page) {
+                List<Privilege> privileges = privilegeRepository.getAll(size, page);
                 return privilegeMapper.toDtoList(privileges);
         }
 

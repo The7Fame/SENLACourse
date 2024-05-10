@@ -18,8 +18,8 @@ public class ReviewServiceImpl implements ReviewService {
         private final ReviewMapper reviewMapper;
 
         @Override
-        public List<ReviewDto> getAll() {
-                List<Review> reviews = reviewRepository.getAll();
+        public List<ReviewDto> getAll(int size, int page) {
+                List<Review> reviews = reviewRepository.getAll(size, page);
                 return reviewMapper.toDtoList(reviews);
         }
 

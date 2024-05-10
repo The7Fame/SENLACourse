@@ -18,8 +18,8 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    public List<AddressDto> getAll() {
-        List<Address> addresses = addressRepository.getAll();
+    public List<AddressDto> getAll(int size, int page) {
+        List<Address> addresses = addressRepository.getAll(size, page);
         return addressMapper.toDtoList(addresses);
     }
 

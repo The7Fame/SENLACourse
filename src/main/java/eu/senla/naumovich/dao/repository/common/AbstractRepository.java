@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AbstractRepository<T, K> {
-    List<T> getAll();
+    List<T> getAll(int page, int size);
 
     Optional<T> findById(K id);
 

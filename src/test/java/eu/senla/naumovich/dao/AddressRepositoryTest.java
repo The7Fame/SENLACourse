@@ -39,6 +39,6 @@ public class AddressRepositoryTest {
         Address address = Generator.createAddress();
         repository.create(address);
         repository.deleteById(address.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

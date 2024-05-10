@@ -39,6 +39,6 @@ public class UserRepositoryTest {
         User user = Generator.createUser();
         repository.create(user);
         repository.deleteById(user.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

@@ -18,8 +18,8 @@ public class CartServiceImpl implements CartService {
         private final CartMapper cartMapper;
 
         @Override
-        public List<CartDto> getAll() {
-                List<Cart> carts = cartRepository.getAll();
+        public List<CartDto> getAll(int size, int page) {
+                List<Cart> carts = cartRepository.getAll(size, page);
                 return cartMapper.toDtoList(carts);
         }
 

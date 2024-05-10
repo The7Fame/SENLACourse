@@ -18,8 +18,8 @@ public class PromotionServiceImpl implements PromotionService {
     private final PromotionMapper promotionMapper;
 
     @Override
-    public List<PromotionDto> getAll() {
-        List<Promotion> promotions = promotionRepository.getAll();
+    public List<PromotionDto> getAll(int size, int page) {
+        List<Promotion> promotions = promotionRepository.getAll(size, page);
         return promotionMapper.toDtoList(promotions);
     }
 

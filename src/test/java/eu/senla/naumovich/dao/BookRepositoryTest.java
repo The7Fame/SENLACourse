@@ -39,6 +39,6 @@ public class BookRepositoryTest {
         Book book = Generator.createBook();
         repository.create(book);
         repository.deleteById(book.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

@@ -39,6 +39,6 @@ public class RoleRepositoryTest {
         Role role = Generator.createRole();
         repository.create(role);
         repository.deleteById(role.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

@@ -1,8 +1,7 @@
 package eu.senla.naumovich.dto;
 
 import java.math.BigDecimal;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +19,5 @@ public class BookDto {
     private String isbn;
     private String genre;
     private PublisherDto publisher;
+    private List<AuthorDto> authors;
 }

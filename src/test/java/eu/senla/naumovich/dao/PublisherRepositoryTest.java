@@ -39,6 +39,6 @@ public class PublisherRepositoryTest {
         Publisher publisher = Generator.createPublisher();
         repository.create(publisher);
         repository.deleteById(publisher.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

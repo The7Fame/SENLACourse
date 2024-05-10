@@ -2,6 +2,7 @@ package eu.senla.naumovich.dao.impl;
 
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dao.repository.common.AbstractDao;
+import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.entities.Author;
 import eu.senla.naumovich.entities.Book;
 
@@ -9,11 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.senla.naumovich.entities.Review;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -51,6 +50,13 @@ public class BookRepositoryImpl extends AbstractDao<Long, Book> implements BookR
         hints.put("javax.persistence.fetchgraph", entityGraph);
         Book book = entityManager.find(Book.class, id, hints);
         return book;
-    };
+    }
 
+    @Override
+    public List<Review> getReviewsByBookId(Long id) {
+        String jbqlQuery = "select r from Review r where r.book.id = :id";
+        TypedQuery <Review> query = entityManager.createQuery(jbqlQuery, Review.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }

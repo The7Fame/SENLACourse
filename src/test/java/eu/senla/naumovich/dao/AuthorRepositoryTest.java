@@ -39,6 +39,6 @@ public class AuthorRepositoryTest {
         Author author = Generator.createAuthor();
         repository.create(author);
         repository.deleteById(author.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }

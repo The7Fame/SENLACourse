@@ -18,8 +18,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
 
     @Override
-    public List<PaymentDto> getAll() {
-        List<Payment> payments = paymentRepository.getAll();
+    public List<PaymentDto> getAll(int size, int page) {
+        List<Payment> payments = paymentRepository.getAll(size, page);
         return paymentMapper.toDtoList(payments);
     }
 

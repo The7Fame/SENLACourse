@@ -3,6 +3,8 @@ package eu.senla.naumovich.dao.repository.common;
 import java.util.List;
 import java.util.Optional;
 
+import eu.senla.naumovich.entities.Book;
+import jakarta.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -18,12 +20,15 @@ public abstract class AbstractDao<K, T> {
 
     protected abstract Class<T> getEntityClass();
 
-    public List<T> getAll() {
+    public List<T> getAll(int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = criteriaBuilder.createQuery(getEntityClass());
         Root<T> root = query.from(getEntityClass());
         query.select(root);
-        return entityManager.createQuery(query).getResultList();
+        TypedQuery<T> typedQuery = entityManager.createQuery(query);
+        typedQuery.setFirstResult((page - 1) * size);
+        typedQuery.setMaxResults(size);
+        return typedQuery.getResultList();
     };
 
     public Optional<T> findById(K id) {

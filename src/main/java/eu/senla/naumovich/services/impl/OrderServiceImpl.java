@@ -9,6 +9,7 @@ import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -18,8 +19,8 @@ public class OrderServiceImpl implements OrderService {
         private final OrderMapper orderMapper;
 
         @Override
-        public List<OrderDto> getAll() {
-                List<Order> orders = orderRepository.getAll();
+        public List<OrderDto> getAll(int size, int page) {
+                List<Order> orders = orderRepository.getAll(size, page);
                 return orderMapper.toDtoList(orders);
         }
 
@@ -42,5 +43,10 @@ public class OrderServiceImpl implements OrderService {
         @Override
         public void delete(Long id) {
                 orderRepository.deleteById(id);
+        }
+
+        @Override
+        public List<OrderDto> filterOrderByPrice(BigDecimal totalPrice) {
+                return List.of();
         }
 }

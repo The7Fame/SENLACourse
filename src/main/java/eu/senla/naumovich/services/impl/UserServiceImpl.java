@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
         private final UserMapper userMapper;
 
         @Override
-        public List<UserDto> getAll() {
-                List<User> users = userRepository.getAll();
+        public List<UserDto> getAll(int size, int page) {
+                List<User> users = userRepository.getAll(size, page);
                 return userMapper.toDtoList(users);
         }
 

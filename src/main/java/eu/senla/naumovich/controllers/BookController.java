@@ -2,19 +2,13 @@ package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.BookDto;
+import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,37 +20,42 @@ public class BookController implements CRUDInterface<BookDto> {
     private final BookService bookService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<List<BookDto>> getAll() {
-        List<BookDto> bookDto = bookService.getAll();
+    public ResponseEntity<List<BookDto>> getAll(@RequestParam(name = "page", defaultValue = "1") int page,
+                                                @RequestParam(name = "size", defaultValue = "10") int size) {
+        List<BookDto> bookDto = bookService.getAll(page, size);
         return ResponseEntity.ok(bookDto);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<BookDto> getById(@PathVariable("id") Long id) {
         BookDto bookDto = bookService.getById(id);
         return ResponseEntity.ok(bookDto);
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('UPDATE_BOOK')")
     public ResponseEntity<?> update(@RequestBody BookDto bookDto) {
         bookService.update(bookDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_BOOK')")
     public ResponseEntity<?> create(@RequestBody BookDto bookDto) {
         bookService.create(bookDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE_BOOK')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         bookService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{id}/reviews")
+    public ResponseEntity<List<ReviewDto>> getBookReviews(@PathVariable("id") Long id){
+        List<ReviewDto> reviews = bookService.getReviewsByBookId(id);
+        return ResponseEntity.ok(reviews);
     }
 }

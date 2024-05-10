@@ -18,8 +18,8 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
 
     @Override
-    public List<AuthorDto> getAll() {
-        List<Author> authors = authorRepository.getAll();
+    public List<AuthorDto> getAll(int size, int page) {
+        List<Author> authors = authorRepository.getAll(size, page);
         return authorMapper.toDtoList(authors);
     }
 

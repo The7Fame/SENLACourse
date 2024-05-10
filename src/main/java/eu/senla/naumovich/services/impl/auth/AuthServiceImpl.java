@@ -1,6 +1,7 @@
 package eu.senla.naumovich.services.impl.auth;
 
 import eu.senla.naumovich.dao.repository.UserRepository;
+import eu.senla.naumovich.entities.Privilege;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.security.JwtTokenProvider;
 import eu.senla.naumovich.dto.auth.AuthDto;
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
             User user = repository.getUserByEmail(authDto.getEmail());
             String token = provider.createToken(user.getId(), user.getName(), user.getEmail(),
-                    user.getRole().getRoleName());
+                    user.getRole().getRoleName(), user.getRole().getPrivileges().stream().map(Privilege::getPrivilegeName).toList());
             Map<Object, Object> resp = new HashMap<>();
             resp.put("email", authDto.getEmail());
             resp.put("token", token);

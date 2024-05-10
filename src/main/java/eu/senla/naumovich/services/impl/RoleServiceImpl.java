@@ -18,8 +18,8 @@ public class RoleServiceImpl implements RoleService {
         private final RoleMapper roleMapper;
 
         @Override
-        public List<RoleDto> getAll() {
-                List<Role> roles = roleRepository.getAll();
+        public List<RoleDto> getAll(int size, int page) {
+                List<Role> roles = roleRepository.getAll(size, page);
                 return roleMapper.toDtoList(roles);
         }
 

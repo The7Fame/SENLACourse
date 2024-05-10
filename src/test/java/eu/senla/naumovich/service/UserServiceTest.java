@@ -31,8 +31,8 @@ public class UserServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll()).thenReturn(Collections.emptyList());
-        List<UserDto> result = service.getAll();
+        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
+        List<UserDto> result = service.getAll(1,2);
         Assertions.assertTrue(result.isEmpty());
     }
 

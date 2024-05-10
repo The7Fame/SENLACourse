@@ -32,8 +32,8 @@ public class ReviewServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll()).thenReturn(Collections.emptyList());
-        List<ReviewDto> result = service.getAll();
+        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
+        List<ReviewDto> result = service.getAll(1,2);
         Assertions.assertTrue(result.isEmpty());
     }
 

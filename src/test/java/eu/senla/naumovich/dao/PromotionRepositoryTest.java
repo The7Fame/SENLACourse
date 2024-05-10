@@ -39,6 +39,6 @@ public class PromotionRepositoryTest {
         Promotion promotion = Generator.createPromotion();
         repository.create(promotion);
         repository.deleteById(promotion.getId());
-        Assertions.assertEquals(repository.getAll().size(), 2);
+        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
 }
