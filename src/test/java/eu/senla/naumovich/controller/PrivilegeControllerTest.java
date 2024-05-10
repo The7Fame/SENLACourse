@@ -6,6 +6,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.PrivilegeDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivilegeControllerTest extends BaseTest {
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/privilege"))
                 .andExpect(status().isOk())
@@ -21,6 +23,7 @@ public class PrivilegeControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getBeIdTest() throws Exception {
         mockMvc.perform(get("/privilege/1"))
                 .andExpect(status().isOk())
@@ -28,6 +31,7 @@ public class PrivilegeControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getUpdateTest() throws Exception {
         PrivilegeDto privilegeDto = Generator.updatePrivilegeDto();
         mockMvc.perform(put("/privilege")
@@ -37,6 +41,7 @@ public class PrivilegeControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void createTest() throws Exception {
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         mockMvc.perform(post("/privilege")

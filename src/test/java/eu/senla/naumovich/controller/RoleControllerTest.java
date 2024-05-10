@@ -6,6 +6,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.RoleDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RoleControllerTest extends BaseTest {
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/role"))
                 .andExpect(status().isOk())
@@ -22,6 +24,7 @@ public class RoleControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getBeIdTest() throws Exception {
         mockMvc.perform(get("/role/1"))
                 .andExpect(status().isOk())
@@ -29,6 +32,7 @@ public class RoleControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void createTest() throws Exception {
         RoleDto roleDto = Generator.createRoleDto();
         mockMvc.perform(post("/role")
@@ -38,6 +42,7 @@ public class RoleControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getUpdateTest() throws Exception {
         RoleDto roleDto = Generator.updateRoleDto();
         System.out.println(new ObjectMapper().writeValueAsString(roleDto));
@@ -48,6 +53,7 @@ public class RoleControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/address/1"))
                 .andExpect(status().isNoContent());

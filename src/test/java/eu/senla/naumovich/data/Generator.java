@@ -3,6 +3,7 @@ package eu.senla.naumovich.data;
 import eu.senla.naumovich.dto.*;
 import eu.senla.naumovich.entities.*;
 import lombok.experimental.UtilityClass;
+import org.checkerframework.checker.units.qual.N;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -44,6 +45,7 @@ public class Generator {
                 .id(ID)
                 .name(NAME)
                 .surname(NAME)
+                .password(NAME)
                 .email(NAME)
                 .build();
     }
@@ -51,6 +53,7 @@ public class Generator {
     public User updateUser() {
         User user = createUser();
         user.setName(UPDATE_NAME);
+        user.setPassword(UPDATE_NAME);
         return user;
     }
 
@@ -308,6 +311,7 @@ public class Generator {
                 .id(ID)
                 .name(NAME)
                 .surname(NAME)
+                .password(NAME)
                 .email(NAME)
                 .build();
     }
@@ -315,6 +319,7 @@ public class Generator {
     public UserDto updateUserDto() {
         UserDto user = createUserDto();
         user.setName(UPDATE_NAME);
+        user.setPassword(UPDATE_NAME);
         return user;
     }
 }

@@ -6,6 +6,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.ReviewDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ReviewControllerTest extends BaseTest {
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/review"))
                 .andExpect(status().isOk())
@@ -22,6 +24,7 @@ public class ReviewControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void getBeIdTest() throws Exception {
         mockMvc.perform(get("/review/1"))
                 .andExpect(status().isOk())
@@ -29,6 +32,7 @@ public class ReviewControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void getUpdateTest() throws Exception {
         ReviewDto reviewDto = Generator.updateReviewDto();
         mockMvc.perform(put("/review")
@@ -38,6 +42,7 @@ public class ReviewControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void createTest() throws Exception {
         ReviewDto reviewDto = Generator.createReviewDto();
         mockMvc.perform(post("/review")
@@ -47,6 +52,7 @@ public class ReviewControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/review/1"))
                 .andExpect(status().isNoContent());

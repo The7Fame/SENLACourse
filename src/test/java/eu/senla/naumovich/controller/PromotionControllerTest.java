@@ -6,6 +6,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.PromotionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PromotionControllerTest extends BaseTest {
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/promotion"))
                 .andExpect(status().isOk())
@@ -22,6 +24,7 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getBeIdTest() throws Exception {
         mockMvc.perform(get("/promotion/1"))
                 .andExpect(status().isOk())
@@ -29,6 +32,7 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getUpdateTest() throws Exception {
         PromotionDto promotionDto = Generator.updatePromotionDto();
         mockMvc.perform(put("/promotion")
@@ -38,6 +42,7 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void createTest() throws Exception {
         PromotionDto promotionDto = Generator.createPromotionDto();
         mockMvc.perform(post("/promotion")
@@ -47,6 +52,7 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/promotion/1"))
                 .andExpect(status().isNoContent());

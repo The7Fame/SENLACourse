@@ -6,6 +6,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest extends BaseTest {
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
@@ -22,6 +24,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getBeIdTest() throws Exception {
         mockMvc.perform(get("/user/1"))
                 .andExpect(status().isOk())
@@ -29,6 +32,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void getUpdateTest() throws Exception {
         UserDto userDto = Generator.updateUserDto();
         mockMvc.perform(put("/user")
@@ -38,8 +42,10 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"USER"})
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/user/1"))
                 .andExpect(status().isNoContent());
     }
 }
+

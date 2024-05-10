@@ -1,6 +1,7 @@
 package eu.senla.naumovich.controller.common;
 
 import eu.senla.naumovich.config.ControllerConfig;
+import eu.senla.naumovich.config.SecurityConf;
 import eu.senla.naumovich.config.TestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class, ControllerConfig.class })
+@ContextConfiguration(classes = { TestConfig.class, ControllerConfig.class, SecurityConf.class })
 @WebAppConfiguration
 public class BaseTest {
     @Autowired

@@ -6,6 +6,7 @@ import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,30 +26,35 @@ public class PromotionController implements CRUDInterface<PromotionDto> {
     private final PromotionService promotionService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<PromotionDto>> getAll() {
         List<PromotionDto> promotionDto = promotionService.getAll();
         return ResponseEntity.ok(promotionDto);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PromotionDto> getById(@PathVariable("id") Long id) {
         PromotionDto promotionDto = promotionService.getById(id);
         return ResponseEntity.ok(promotionDto);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> update(@RequestBody PromotionDto promotionDto) {
         promotionService.update(promotionDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> create(@RequestBody PromotionDto promotionDto) {
         promotionService.create(promotionDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         promotionService.delete(id);
         return ResponseEntity.noContent().build();
