@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface BookService extends AbstractService<BookDto> {
     List<ReviewForBookDto> getReviewsByBookId(Long id);
+    List<BookDto> getBooksByGenreAndTitle(Integer genreId, String bookTitle, int size, int page);
 }

@@ -48,7 +48,6 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/sign-in").permitAll()
-//                .requestMatchers("/user/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -2,11 +2,15 @@ package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.OrderDto;
+import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.security.SecurityUser;
+import eu.senla.naumovich.services.service.CartService;
 import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/order")
 public class OrderController implements CRUDInterface<OrderDto> {
-
     private final OrderService orderService;
+    private final CartService cartService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -41,14 +45,22 @@ public class OrderController implements CRUDInterface<OrderDto> {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> create(@RequestBody OrderDto orderDto) {
         orderService.create(orderDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping
     @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<?> createOrder(Authentication authentication) {
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        System.out.println(cartService.booksInCart(securityUser.getId()));
+       return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         orderService.delete(id);
         return ResponseEntity.noContent().build();

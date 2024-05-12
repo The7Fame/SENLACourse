@@ -3,6 +3,7 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.UserDto;
 import eu.senla.naumovich.security.SecurityUser;
+import eu.senla.naumovich.services.service.CartService;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController implements CRUDInterface<UserDto> {
-
+    private final CartService cartService;
     private final UserService userService;
 
     @GetMapping
@@ -31,6 +32,7 @@ public class UserController implements CRUDInterface<UserDto> {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDto> getById(@PathVariable("id") Long id) {
+
         UserDto userDto = userService.getById(id);
         return ResponseEntity.ok(userDto);
     }

@@ -3,6 +3,7 @@ package eu.senla.naumovich.controllers;
 import eu.senla.naumovich.controllers.common.CRUDInterface;
 import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.dto.ReviewDto;
+import eu.senla.naumovich.dto.ReviewForBookDto;
 import eu.senla.naumovich.services.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,9 +54,19 @@ public class BookController implements CRUDInterface<BookDto> {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{id}/reviews")
-    public ResponseEntity<List<ReviewDto>> getBookReviews(@PathVariable("id") Long id){
-        List<ReviewDto> reviews = bookService.getReviewsByBookId(id);
+    @GetMapping("{id:\\d+}/reviews")
+    public ResponseEntity<List<ReviewForBookDto>> getBookReviews(@PathVariable("id") Long id){
+        List<ReviewForBookDto> reviews = bookService.getReviewsByBookId(id);
         return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<BookDto>> getBookByGenre(@RequestParam(name = "genre", defaultValue = "0") int genre,
+                                                        @RequestParam(name = "title", defaultValue = "") String booTitle,
+                                                        @RequestParam(name = "page", defaultValue = "1") int page,
+                                                        @RequestParam(name = "size", defaultValue = "10") int size){
+        System.out.println(genre);
+        List<BookDto> books = bookService.getBooksByGenreAndTitle(genre, booTitle, page, size);
+        return ResponseEntity.ok(books);
     }
 }

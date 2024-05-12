@@ -13,5 +13,4 @@ public class ReviewForBookDto {
     private Long id;
     private Long rating;
     private String text;
-    private UserDto user;
 }

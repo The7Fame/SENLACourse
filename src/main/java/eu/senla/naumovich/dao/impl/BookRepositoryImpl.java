@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.senla.naumovich.entities.Review;
+import eu.senla.naumovich.entities.enums.Genre;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
@@ -26,12 +27,13 @@ public class BookRepositoryImpl extends AbstractDao<Long, Book> implements BookR
     }
 
     @Override
-    public Book getBookByName(String bookName) {
-        String jbqlQuery = "select b from Book b where b.title = :bookName";
+    public List<Book> getBookByName(String bookTitle, int page, int size) {
+        String jbqlQuery = "select b from Book b where b.title like :bookName";
         TypedQuery<Book> query = entityManager.createQuery(jbqlQuery, Book.class);
-        query.setParameter("bookName", bookName);
-        return query.getSingleResult();
-    };
+        query.setParameter("bookName", "%" + bookTitle + "%");
+        applyPagination(query, page, size);
+        return query.getResultList();
+    }
 
     @Override
     public List<Book> getBooksByAuthor(String authorName) {
@@ -41,7 +43,18 @@ public class BookRepositoryImpl extends AbstractDao<Long, Book> implements BookR
         Join<Book, Author> authorJoin = bookRoot.join("author");
         criteriaQuery.select(bookRoot).where(criteriaBuilder.equal(authorJoin.get("name"), authorName));
         return entityManager.createQuery(criteriaQuery).getResultList();
-    };
+    }
+
+    @Override
+    public List<Book> getBooksByGenreAndTitle(Integer genreId, String bookTitle, int page, int size) {
+        Genre genre = Genre.lookup(genreId);
+        String jbqlQuery = "select b from Book b where b.genre = :genre and b.title like :bookName";
+        TypedQuery <Book> query = entityManager.createQuery(jbqlQuery, Book.class);
+        query.setParameter("genre", genre);
+        query.setParameter("bookName", "%" + bookTitle + "%");
+        applyPagination(query, page, size);
+        return query.getResultList();
+    }
 
     @Override
     public Book getBookByIdGraph(Integer id) {

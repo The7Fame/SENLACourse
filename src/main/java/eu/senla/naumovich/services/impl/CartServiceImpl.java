@@ -1,14 +1,18 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.CartRepository;
+import eu.senla.naumovich.dto.BookDto;
 import eu.senla.naumovich.dto.CartDto;
+import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.entities.Cart;
 import eu.senla.naumovich.exceptions.NoRecords;
+import eu.senla.naumovich.mapper.BookMapper;
 import eu.senla.naumovich.mapper.CartMapper;
 import eu.senla.naumovich.services.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -42,5 +46,10 @@ public class CartServiceImpl implements CartService {
         @Override
         public void delete(Long id) {
                 cartRepository.deleteById(id);
+        }
+
+        @Override
+        public double booksInCart(long userId) {
+                return cartRepository.calculateTotalPrice(userId);
         }
 }

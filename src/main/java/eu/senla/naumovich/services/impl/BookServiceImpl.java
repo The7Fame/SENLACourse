@@ -51,4 +51,15 @@ public class BookServiceImpl implements BookService {
         public List<ReviewForBookDto> getReviewsByBookId(Long id) {
                 return reviewMapper.toReviewForBookDtoList(bookRepository.getReviewsByBookId(id));
         }
+
+        @Override
+        public List<BookDto> getBooksByGenreAndTitle(Integer genreId, String bookTitle, int size, int page) {
+                if(genreId == 0 && bookTitle.isEmpty()){
+                        return getAll(size, page);
+                }
+                if(genreId == 0){
+                        return bookMapper.toDtoList(bookRepository.getBookByName(bookTitle, size, page));
+                }
+                return bookMapper.toDtoList(bookRepository.getBooksByGenreAndTitle(genreId, bookTitle, size, page));
+        }
 }

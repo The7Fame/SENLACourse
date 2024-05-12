@@ -34,14 +34,14 @@ public class CartController implements CRUDInterface<CartDto> {
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> update(@RequestBody CartDto cartDto) {
         cartService.update(cartDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> create(@RequestBody CartDto cartDto) {
         cartService.create(cartDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
