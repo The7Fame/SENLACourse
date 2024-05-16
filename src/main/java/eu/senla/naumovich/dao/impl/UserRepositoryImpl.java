@@ -44,7 +44,7 @@ public class UserRepositoryImpl extends AbstractDao<Long, User> implements UserR
     };
 
     @Override
-    public User getUserByIdGraph(Integer id) {
+    public User getUserByIdGraph(Long id) {
         EntityGraph<?> entityGraph = entityManager.getEntityGraph("graph.User.associations");
         Map hints = new HashMap();
         hints.put("javax.persistence.fetchgraph", entityGraph);

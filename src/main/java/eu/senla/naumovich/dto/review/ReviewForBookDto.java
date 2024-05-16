@@ -1,15 +1,16 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.review;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
 @Jacksonized
-public class PrivilegeDto {
+public class ReviewForBookDto {
     private Long id;
-    private String privilegeName;
+    private Long rating;
+    private String text;
 }

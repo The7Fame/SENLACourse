@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.CartDto;
+import eu.senla.naumovich.dto.cart.CartDto;
 import eu.senla.naumovich.entities.Cart;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

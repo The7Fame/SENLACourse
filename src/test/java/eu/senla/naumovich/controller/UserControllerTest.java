@@ -3,7 +3,7 @@ package eu.senla.naumovich.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.naumovich.controller.common.BaseTest;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;

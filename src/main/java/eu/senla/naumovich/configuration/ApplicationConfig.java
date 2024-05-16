@@ -1,9 +1,9 @@
 package eu.senla.naumovich.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,11 +16,13 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-@EnableTransactionManagement
+
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = "eu.senla.naumovich")
 @PropertySource("classpath:application.properties")
+@ComponentScan(basePackages = "eu.senla.naumovich")
+@EnableTransactionManagement
+@EnableJpaRepositories(entityManagerFactoryRef = "managerFactoryBean",basePackages = "eu.senla.naumovich.repositories")
+@EnableWebMvc
 public class ApplicationConfig {
     @Value("${spring.datasource.url}")
     private String databaseURI;
@@ -32,11 +34,6 @@ public class ApplicationConfig {
     private String password;
     @Value("${spring.liquibase.change-log}")
     private String changelog;
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 
     @Bean
     public DataSource dataSource() {
@@ -56,6 +53,14 @@ public class ApplicationConfig {
         return liquibase;
     }
 
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.show_sql", "true");
+        return properties;
+    }
+
     @Bean
     @DependsOn("springLiquibase")
     public LocalContainerEntityManagerFactoryBean managerFactoryBean() {
@@ -64,12 +69,7 @@ public class ApplicationConfig {
         managerFactoryBean.setPackagesToScan("eu.senla.naumovich.entities");
         managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.show_sql", "true");
-
-        managerFactoryBean.setJpaProperties(properties);
+        managerFactoryBean.setJpaProperties(hibernateProperties());
         return managerFactoryBean;
     }
 

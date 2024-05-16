@@ -1,4 +1,4 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.order;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @Builder
 @Jacksonized
-public class ReviewForBookDto {
-    private Long id;
-    private Long rating;
-    private String text;
+public class OrderCreateDto {
+    private int id;
 }

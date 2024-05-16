@@ -1,5 +1,7 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.review;
 
+import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

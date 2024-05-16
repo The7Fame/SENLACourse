@@ -1,7 +1,7 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.PrivilegeRepository;
-import eu.senla.naumovich.dto.PrivilegeDto;
+import eu.senla.naumovich.dto.privilege.PrivilegeDto;
 import eu.senla.naumovich.entities.Privilege;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.PrivilegeMapper;

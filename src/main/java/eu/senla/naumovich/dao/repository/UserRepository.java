@@ -8,5 +8,5 @@ public interface UserRepository extends AbstractRepository<User, Long> {
 
     public User getUserByEmail(String userEmail);
 
-    public User getUserByIdGraph(Integer id);
+    public User getUserByIdGraph(Long id);
 }

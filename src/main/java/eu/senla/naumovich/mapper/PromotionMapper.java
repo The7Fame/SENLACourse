@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.PromotionDto;
+import eu.senla.naumovich.dto.promotion.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

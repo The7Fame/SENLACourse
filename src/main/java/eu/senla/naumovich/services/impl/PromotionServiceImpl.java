@@ -1,7 +1,9 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.PromotionRepository;
-import eu.senla.naumovich.dto.PromotionDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionAuthorDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionGenreDto;
+import eu.senla.naumovich.dto.promotion.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.PromotionMapper;
@@ -25,15 +27,12 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionDto getById(Long id) {
-
         return promotionMapper.toDto(
                 promotionRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
-
     }
 
     @Override
     public PromotionDto update(PromotionDto promotion) {
-
         return promotionMapper.toDto(promotionRepository.update(promotionMapper.toEntity(promotion)));
 
     }
@@ -46,8 +45,23 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void delete(Long id) {
-
         promotionRepository.deleteById(id);
 
+    }
+
+    @Override
+    public PromotionDto createPromotionByGenre(CreatePromotionGenreDto promotionDto) {
+        return promotionMapper.toDto(promotionRepository
+                .createPromotionByGenre(promotionDto.getGenreId(),
+                        promotionDto.getPercent(),
+                        promotionDto.getPromotionName()));
+    }
+
+    @Override
+    public PromotionDto createPromotionByAuthor(CreatePromotionAuthorDto promotionDto) {
+        return promotionMapper.toDto(promotionRepository
+                .createPromotionByAuthor(promotionDto.getAuthorName(),
+                        promotionDto.getPercent(),
+                        promotionDto.getPromotionName()));
     }
 }

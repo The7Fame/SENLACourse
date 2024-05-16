@@ -1,7 +1,7 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.RoleRepository;
-import eu.senla.naumovich.dto.RoleDto;
+import eu.senla.naumovich.dto.role.RoleDto;
 import eu.senla.naumovich.entities.Role;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.RoleMapper;

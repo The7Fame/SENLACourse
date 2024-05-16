@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.PromotionRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.PromotionDto;
+import eu.senla.naumovich.dto.promotion.PromotionDto;
 import eu.senla.naumovich.entities.Promotion;
 import eu.senla.naumovich.mapper.PromotionMapper;
 import eu.senla.naumovich.services.impl.PromotionServiceImpl;

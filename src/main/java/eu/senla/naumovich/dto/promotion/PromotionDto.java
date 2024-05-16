@@ -1,4 +1,4 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.promotion;
 
 import java.math.BigDecimal;
 

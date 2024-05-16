@@ -1,16 +1,15 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.OrderDto;
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.security.SecurityUser;
-import eu.senla.naumovich.services.service.CartService;
 import eu.senla.naumovich.services.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController implements CRUDInterface<OrderDto> {
     private final OrderService orderService;
-    private final CartService cartService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -51,12 +49,11 @@ public class OrderController implements CRUDInterface<OrderDto> {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<?> createOrder(Authentication authentication) {
-        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        System.out.println(cartService.booksInCart(securityUser.getId()));
-       return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> createOrder(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody List<BookDto> books) {
+        OrderDto orderDto = orderService.createOrderFromBooks(securityUser, books);
+        return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -64,5 +61,22 @@ public class OrderController implements CRUDInterface<OrderDto> {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         orderService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<?> getUserOrders(@AuthenticationPrincipal SecurityUser securityUser,
+                                           @RequestParam(name = "page", defaultValue = "1") int page,
+                                           @RequestParam(name = "size", defaultValue = "10") int size){
+        List<OrderDto> orders = orderService.getUserOrders(securityUser, page, size);
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/my/{id}")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<?> getUserOrder(@AuthenticationPrincipal SecurityUser securityUser,
+                                          @PathVariable("id") int id){
+        OrderDto order = orderService.getUserOrderById(securityUser, id);
+        return ResponseEntity.ok(order);
     }
 }

@@ -1,10 +1,11 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.UserRepository;
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.UserMapper;
+import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class UserServiceImpl implements UserService {
         @Override
         public void delete(Long id) {
                 userRepository.deleteById(id);
+        }
+
+        @Override
+        public UserDto getAuthenticate(SecurityUser securityUser) {
+                return getById(securityUser.getId());
         }
 }

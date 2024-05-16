@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.ReviewDto;
-import eu.senla.naumovich.dto.ReviewForBookDto;
+import eu.senla.naumovich.dto.review.ReviewDto;
+import eu.senla.naumovich.dto.review.ReviewForBookDto;
 import eu.senla.naumovich.entities.Review;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

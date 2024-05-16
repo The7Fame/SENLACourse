@@ -1,10 +1,11 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+import eu.senla.naumovich.dto.user.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

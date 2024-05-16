@@ -25,6 +25,11 @@ public class Promotion {
     BigDecimal percent;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "promotions")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "books_promotions",
+            joinColumns = @JoinColumn(name = "promotion_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     List<Book> books;
 }

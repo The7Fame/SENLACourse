@@ -1,9 +1,18 @@
 package eu.senla.naumovich.data;
 
-import eu.senla.naumovich.dto.*;
+import eu.senla.naumovich.dto.address.AddressDto;
+import eu.senla.naumovich.dto.author.AuthorDto;
+import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.order.OrderDto;
+import eu.senla.naumovich.dto.payment.PaymentDto;
+import eu.senla.naumovich.dto.privilege.PrivilegeDto;
+import eu.senla.naumovich.dto.promotion.PromotionDto;
+import eu.senla.naumovich.dto.publisher.PublisherDto;
+import eu.senla.naumovich.dto.review.ReviewDto;
+import eu.senla.naumovich.dto.role.RoleDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.*;
 import lombok.experimental.UtilityClass;
-import org.checkerframework.checker.units.qual.N;
 
 import java.math.BigDecimal;
 import java.sql.Date;

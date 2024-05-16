@@ -19,6 +19,10 @@ public class OrderRepositoryTest {
     OrderRepository repository;
 
     @Test
+    public void getOrderByUserId(){
+        System.out.println(repository.getOrdersByUserId(1, 1, 10));
+    }
+    @Test
     public void createRecord() {
         Order order = Generator.createOrder();
         repository.create(order);

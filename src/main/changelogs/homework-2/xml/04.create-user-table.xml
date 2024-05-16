@@ -18,6 +18,8 @@
             <column name="email" type="varchar(64)">
                 <constraints unique="true" nullable="false"/>
             </column>
+            <column name="balance" type="decimal(5,2)">
+            </column>
             <column name="role_id" type="bigint">
                 <constraints nullable="true"/>
             </column>

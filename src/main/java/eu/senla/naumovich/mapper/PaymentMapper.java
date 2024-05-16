@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.PaymentDto;
+import eu.senla.naumovich.dto.payment.PaymentDto;
 import eu.senla.naumovich.entities.Payment;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

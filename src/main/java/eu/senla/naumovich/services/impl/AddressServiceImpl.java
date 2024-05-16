@@ -1,10 +1,11 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.AddressRepository;
-import eu.senla.naumovich.dto.AddressDto;
+import eu.senla.naumovich.dto.address.AddressDto;
 import eu.senla.naumovich.entities.Address;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.AddressMapper;
+import eu.senla.naumovich.repositories.TryJpaRepository;
 import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final TryJpaRepository jpaRepository;
 
     @Override
     public List<AddressDto> getAll(int size, int page) {
+        System.out.println(jpaRepository.findAll());
         List<Address> addresses = addressRepository.getAll(size, page);
         return addressMapper.toDtoList(addresses);
     }

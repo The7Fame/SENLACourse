@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.PublisherRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.PublisherDto;
+import eu.senla.naumovich.dto.publisher.PublisherDto;
 import eu.senla.naumovich.entities.Publisher;
 import eu.senla.naumovich.mapper.PublisherMapper;
 import eu.senla.naumovich.services.impl.PublisherServiceImpl;

@@ -1,8 +1,10 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.book;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import eu.senla.naumovich.dto.author.AuthorDto;
+import eu.senla.naumovich.dto.publisher.PublisherDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.RoleDto;
+import eu.senla.naumovich.dto.role.RoleDto;
 import eu.senla.naumovich.services.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

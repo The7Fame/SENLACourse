@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.ReviewRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.ReviewDto;
+import eu.senla.naumovich.dto.review.ReviewDto;
 import eu.senla.naumovich.entities.Review;
 import eu.senla.naumovich.mapper.ReviewMapper;
 import eu.senla.naumovich.services.impl.ReviewServiceImpl;

@@ -1,4 +1,4 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.author;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,11 +9,8 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @Builder
 @Jacksonized
-public class UserDto {
+public class AuthorDto {
     private Long id;
     private String name;
     private String surname;
-    private String email;
-    private String password;
-    private RoleDto role;
 }

@@ -25,5 +25,8 @@
                                  baseColumnNames="order_id"
                                  referencedTableName="orders"
                                  referencedColumnNames="id"/>
+        <addUniqueConstraint columnNames="user_id, order_id"
+                             tableName="payments"
+                             constraintName="unique_user_order"/>
     </changeSet>
 </databaseChangeLog>

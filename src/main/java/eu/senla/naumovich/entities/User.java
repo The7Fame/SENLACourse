@@ -3,6 +3,7 @@ package eu.senla.naumovich.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -31,6 +32,9 @@ public class User {
     String surname;
     @Column(name = "email")
     String email;
+    @ToString.Exclude
+    @Column(name = "balance")
+    BigDecimal balance;
     @ToString.Exclude
     @Column(name = "hash_password")
     String password;

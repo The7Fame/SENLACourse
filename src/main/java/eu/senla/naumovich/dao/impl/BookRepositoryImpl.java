@@ -2,7 +2,6 @@ package eu.senla.naumovich.dao.impl;
 
 import eu.senla.naumovich.dao.repository.BookRepository;
 import eu.senla.naumovich.dao.repository.common.AbstractDao;
-import eu.senla.naumovich.dto.ReviewDto;
 import eu.senla.naumovich.entities.Author;
 import eu.senla.naumovich.entities.Book;
 
@@ -35,12 +34,28 @@ public class BookRepositoryImpl extends AbstractDao<Long, Book> implements BookR
         return query.getResultList();
     }
 
+    public List<Book> getBookByGenre(Integer genreId){
+        Genre genre = Genre.lookup(genreId);
+        String jbqlQuery = "select b from Book b where b.genre = :genre";
+        TypedQuery <Book> query = entityManager.createQuery(jbqlQuery, Book.class);
+        query.setParameter("genre", genre);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Book> getPopularBooks(int page, int size) {
+        String jpqlQuery = "select c.book from Cart c join c.book b group by b.id order by count(b) desc";
+        TypedQuery<Book> query = entityManager.createQuery(jpqlQuery, Book.class);
+        applyPagination(query, page, size);
+        return query.getResultList();
+    }
+
     @Override
     public List<Book> getBooksByAuthor(String authorName) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
         Root<Book> bookRoot = criteriaQuery.from(Book.class);
-        Join<Book, Author> authorJoin = bookRoot.join("author");
+        Join<Book, Author> authorJoin = bookRoot.join("authors");
         criteriaQuery.select(bookRoot).where(criteriaBuilder.equal(authorJoin.get("name"), authorName));
         return entityManager.createQuery(criteriaQuery).getResultList();
     }

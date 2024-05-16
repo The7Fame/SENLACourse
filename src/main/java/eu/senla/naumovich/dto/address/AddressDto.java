@@ -1,6 +1,4 @@
-package eu.senla.naumovich.dto;
-
-import java.util.List;
+package eu.senla.naumovich.dto.address;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +9,9 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @Builder
 @Jacksonized
-public class RoleDto {
+public class AddressDto {
     private Long id;
-    private String roleName;
-    private List<PrivilegeDto> privileges;
+    private String city;
+    private String street;
+    private int index;
 }

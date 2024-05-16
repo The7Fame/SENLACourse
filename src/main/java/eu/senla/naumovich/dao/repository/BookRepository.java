@@ -12,4 +12,6 @@ public interface BookRepository extends AbstractRepository<Book, Long> {
     public List<Book> getBooksByGenreAndTitle(Integer genreId, String bookTitle, int page, int size);
     public Book getBookByIdGraph(Integer id);
     public List<Review> getReviewsByBookId(Long id);
+    public List<Book> getBookByGenre(Integer genreId);
+    public List<Book> getPopularBooks(int page, int size);
 }

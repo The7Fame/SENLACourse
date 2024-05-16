@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.OrderDto;
+import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

@@ -1,9 +1,8 @@
 package eu.senla.naumovich.services.impl;
 
 import eu.senla.naumovich.dao.repository.BookRepository;
-import eu.senla.naumovich.dto.BookDto;
-import eu.senla.naumovich.dto.ReviewDto;
-import eu.senla.naumovich.dto.ReviewForBookDto;
+import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.review.ReviewForBookDto;
 import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.exceptions.NoRecords;
 import eu.senla.naumovich.mapper.BookMapper;
@@ -61,5 +60,10 @@ public class BookServiceImpl implements BookService {
                         return bookMapper.toDtoList(bookRepository.getBookByName(bookTitle, size, page));
                 }
                 return bookMapper.toDtoList(bookRepository.getBooksByGenreAndTitle(genreId, bookTitle, size, page));
+        }
+
+        @Override
+        public List<BookDto> getPopularBooks(int page, int size) {
+                return bookMapper.toDtoList(bookRepository.getPopularBooks(page, size));
         }
 }

@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.UserRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.mapper.UserMapper;
 import eu.senla.naumovich.services.impl.UserServiceImpl;

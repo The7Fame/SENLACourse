@@ -1,12 +1,18 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.CartDto;
+import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.cart.CartDto;
+import eu.senla.naumovich.dto.user.UserDto;
+import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.CartService;
+import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cart")
-public class CartController implements CRUDInterface<CartDto> {
-
+public class CartController {
     private final CartService cartService;
 
     @GetMapping
@@ -42,15 +47,24 @@ public class CartController implements CRUDInterface<CartDto> {
 
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<?> create(@RequestBody CartDto cartDto) {
-        cartService.create(cartDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> create(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody BookDto book) {
+        CartDto cart = cartService.addBookToCart(securityUser, book);
+        return new ResponseEntity<>(cart, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         cartService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<List<BookDto>> getBooksInCart(@AuthenticationPrincipal SecurityUser securityUser,
+                                                        @RequestParam(name = "page", defaultValue = "1") int page,
+                                                        @RequestParam(name = "size", defaultValue = "10") int size){
+        List<BookDto> books = cartService.booksInCart(securityUser);
+        return ResponseEntity.ok(books);
     }
 }

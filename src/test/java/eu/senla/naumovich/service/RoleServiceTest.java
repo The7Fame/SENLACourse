@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.RoleRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.RoleDto;
+import eu.senla.naumovich.dto.role.RoleDto;
 import eu.senla.naumovich.entities.Role;
 import eu.senla.naumovich.mapper.RoleMapper;
 import eu.senla.naumovich.services.impl.RoleServiceImpl;

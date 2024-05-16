@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.PrivilegeDto;
+import eu.senla.naumovich.dto.privilege.PrivilegeDto;
 import eu.senla.naumovich.entities.Privilege;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

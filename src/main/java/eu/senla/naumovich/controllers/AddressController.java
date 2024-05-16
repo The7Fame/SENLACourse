@@ -1,7 +1,7 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.AddressDto;
+import eu.senla.naumovich.dto.address.AddressDto;
 import eu.senla.naumovich.services.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/address")
 public class AddressController implements CRUDInterface<AddressDto> {
-
     private final AddressService addressService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<AddressDto>> getAll(@RequestParam(name = "page", defaultValue = "1") int page,
                                                    @RequestParam(name = "size", defaultValue = "10") int size) {
         List<AddressDto> addressesDto = addressService.getAll(page, size);
@@ -27,7 +25,6 @@ public class AddressController implements CRUDInterface<AddressDto> {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('ADMIN')")
     public ResponseEntity<AddressDto> getById(@PathVariable("id") Long id) {
         AddressDto addressDto = addressService.getById(id);
         return ResponseEntity.ok(addressDto);

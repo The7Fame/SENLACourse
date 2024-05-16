@@ -1,7 +1,9 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.PromotionDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionAuthorDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionGenreDto;
+import eu.senla.naumovich.dto.promotion.PromotionDto;
 import eu.senla.naumovich.services.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,6 @@ public class PromotionController implements CRUDInterface<PromotionDto> {
     private final PromotionService promotionService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<PromotionDto>> getAll(@RequestParam(name = "page", defaultValue = "1") int page,
                                                      @RequestParam(name = "size", defaultValue = "10") int size) {
         List<PromotionDto> promotionDto = promotionService.getAll(page, size);
@@ -27,7 +28,6 @@ public class PromotionController implements CRUDInterface<PromotionDto> {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('ADMIN')")
     public ResponseEntity<PromotionDto> getById(@PathVariable("id") Long id) {
         PromotionDto promotionDto = promotionService.getById(id);
         return ResponseEntity.ok(promotionDto);
@@ -52,5 +52,19 @@ public class PromotionController implements CRUDInterface<PromotionDto> {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         promotionService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/genre")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public ResponseEntity<?> createPromotionByGenre(@RequestBody CreatePromotionGenreDto createPromotion){
+        PromotionDto promotionDto = promotionService.createPromotionByGenre(createPromotion);
+        return new ResponseEntity<>(promotionDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/author")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public ResponseEntity<?> createPromotionByAuthor(@RequestBody CreatePromotionAuthorDto createPromotion){
+        PromotionDto promotionDto = promotionService.createPromotionByAuthor(createPromotion);
+        return new ResponseEntity<>(promotionDto, HttpStatus.CREATED);
     }
 }

@@ -41,4 +41,9 @@ public class BookRepositoryTest {
         repository.deleteById(book.getId());
         Assertions.assertEquals(repository.getAll(1,2).size(), 2);
     }
+
+    @Test
+    public void getPopular(){
+        System.out.println(repository.getPopularBooks(10,10));
+    }
 }

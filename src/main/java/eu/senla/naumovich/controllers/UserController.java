@@ -1,7 +1,7 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.UserDto;
+import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.CartService;
 import eu.senla.naumovich.services.service.UserService;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController implements CRUDInterface<UserDto> {
-    private final CartService cartService;
     private final UserService userService;
 
     @GetMapping
@@ -32,7 +32,6 @@ public class UserController implements CRUDInterface<UserDto> {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDto> getById(@PathVariable("id") Long id) {
-
         UserDto userDto = userService.getById(id);
         return ResponseEntity.ok(userDto);
     }
@@ -60,9 +59,8 @@ public class UserController implements CRUDInterface<UserDto> {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/my")
-    public ResponseEntity<UserDto> getUserProfile(Authentication authentication) {
-        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        UserDto userDto = userService.getById(securityUser.getId());
+    public ResponseEntity<UserDto> getUserProfile(@AuthenticationPrincipal SecurityUser securityUser) {
+        UserDto userDto = userService.getAuthenticate(securityUser);
         return ResponseEntity.ok(userDto);
     }
 }

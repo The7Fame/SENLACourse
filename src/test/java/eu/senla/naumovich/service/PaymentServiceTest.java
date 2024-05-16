@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.PaymentRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.PaymentDto;
+import eu.senla.naumovich.dto.payment.PaymentDto;
 import eu.senla.naumovich.entities.Payment;
 import eu.senla.naumovich.mapper.PaymentMapper;
 import eu.senla.naumovich.services.impl.PaymentServiceImpl;

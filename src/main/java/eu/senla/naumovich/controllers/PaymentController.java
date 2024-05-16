@@ -1,12 +1,17 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.PaymentDto;
+import eu.senla.naumovich.dto.order.OrderCreateDto;
+import eu.senla.naumovich.dto.payment.PaymentDto;
+import eu.senla.naumovich.exceptions.NoMoneyOnBankAccount;
+import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.PaymentService;
+import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/payment")
 public class PaymentController implements CRUDInterface<PaymentDto> {
-
     private final PaymentService paymentService;
+    private final UserService userService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -27,17 +32,17 @@ public class PaymentController implements CRUDInterface<PaymentDto> {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('GET_PAYMENT')")
     public ResponseEntity<PaymentDto> getById(@PathVariable("id") Long id) {
         PaymentDto paymentDto = paymentService.getById(id);
         return ResponseEntity.ok(paymentDto);
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> update(@RequestBody PaymentDto paymentDto) {
-        paymentService.update(paymentDto);
-        return ResponseEntity.ok().build();
+        PaymentDto paymentUpdated = paymentService.update(paymentDto);
+        return new ResponseEntity<>(paymentUpdated, HttpStatus.OK);
     }
 
     @PostMapping
@@ -52,5 +57,12 @@ public class PaymentController implements CRUDInterface<PaymentDto> {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         paymentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<?> createPayment(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody OrderCreateDto orderCreateDto) {
+        PaymentDto paymentDto = paymentService.createPayment(securityUser, orderCreateDto);
+        return new ResponseEntity<>(paymentDto, HttpStatus.CREATED);
     }
 }

@@ -2,7 +2,7 @@ package eu.senla.naumovich.service;
 
 import eu.senla.naumovich.dao.repository.AddressRepository;
 import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.AddressDto;
+import eu.senla.naumovich.dto.address.AddressDto;
 import eu.senla.naumovich.entities.Address;
 import eu.senla.naumovich.services.impl.AddressServiceImpl;
 import eu.senla.naumovich.mapper.AddressMapper;

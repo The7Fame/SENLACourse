@@ -12,7 +12,10 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public enum Genre {
-    GENRE1(1L, "genre1"), GENRE2(2L, "genre2");
+    POETRY(1L, "POETRY"),
+    FUTURISM(2L, "FUTURISM"),
+    PROSE(3L, "PROSE"),
+    DYSTOPIA(4L, "DYSTOPIA");
 
     private final Long id;
     private final String genreName;

@@ -1,6 +1,6 @@
 package eu.senla.naumovich.mapper;
 
-import eu.senla.naumovich.dto.RoleDto;
+import eu.senla.naumovich.dto.role.RoleDto;
 import eu.senla.naumovich.entities.Role;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;

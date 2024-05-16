@@ -1,5 +1,6 @@
-package eu.senla.naumovich.dto;
+package eu.senla.naumovich.dto.publisher;
 
+import eu.senla.naumovich.dto.address.AddressDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

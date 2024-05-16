@@ -3,7 +3,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="14.create-cart-table" author="Maksim Naumovich">
         <createTable tableName="carts">
             <column name="id" type="bigint" autoIncrement="true">
@@ -25,5 +25,8 @@
                                  baseColumnNames="book_id"
                                  referencedTableName="books"
                                  referencedColumnNames="id"/>
+        <addUniqueConstraint columnNames="user_id, book_id"
+                             tableName="carts"
+                             constraintName="unique_user_book"/>
     </changeSet>
 </databaseChangeLog>

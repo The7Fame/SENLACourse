@@ -36,6 +36,7 @@ public class CartRepositoryImpl extends AbstractDao<Long, Cart> implements CartR
     public double calculateTotalPrice(long userId) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         List<Book> books = getBooksFromCart(userId);
+        System.out.println(books);
         for(Book book : books){
             BigDecimal bookPrice = book.getPrice();
             Optional<List<Promotion>> promotions = Optional.ofNullable(book.getPromotions());

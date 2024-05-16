@@ -47,8 +47,8 @@ public abstract class AbstractDao<K, T> {
 
     @Transactional
     public void deleteById(K id) {
-        Optional<T> entity = findById(id);
-        entity.ifPresent(entityManager::remove);
+        T entity = findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id));
+        entityManager.remove(entity);
     };
 
     public void applyPagination(TypedQuery<?> query, int page, int size){

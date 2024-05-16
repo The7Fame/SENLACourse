@@ -1,7 +1,7 @@
 package eu.senla.naumovich.controllers;
 
 import eu.senla.naumovich.controllers.common.CRUDInterface;
-import eu.senla.naumovich.dto.ReviewDto;
+import eu.senla.naumovich.dto.review.ReviewDto;
 import eu.senla.naumovich.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
