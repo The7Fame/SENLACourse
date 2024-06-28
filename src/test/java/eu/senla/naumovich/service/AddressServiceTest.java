@@ -1,9 +1,10 @@
 package eu.senla.naumovich.service;
 
-import eu.senla.naumovich.dao.repository.AddressRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.address.AddressDto;
+import eu.senla.naumovich.dto.address.AddressShortDto;
 import eu.senla.naumovich.entities.Address;
+import eu.senla.naumovich.repositories.AddressRepository;
 import eu.senla.naumovich.services.impl.AddressServiceImpl;
 import eu.senla.naumovich.mapper.AddressMapper;
 import org.junit.jupiter.api.Assertions;
@@ -12,11 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,9 +34,17 @@ public class AddressServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
-        List<AddressDto> result = service.getAll(1,2);
-        Assertions.assertTrue(result.isEmpty());
+        String sort = "id";
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
+        Address address = new Address();
+        Page<Address> addressPage = new PageImpl<>(Collections.singletonList(address));
+        when(repository.findAll(pageable)).thenReturn(addressPage);
+        when(mapper.toDtoList(anyList())).thenReturn(Collections.singletonList(AddressShortDto.builder().build()));
+        List<AddressShortDto> result = service.getAll(1, 5, sort);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(repository).findAll(pageable);
+        verify(mapper).toDtoList(anyList());
     }
 
     @Test
@@ -52,11 +64,11 @@ public class AddressServiceTest {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(mapper.toEntity(addressDto)).thenReturn(address);
-        when(repository.update(address)).thenReturn(address);
+        when(repository.save(address)).thenReturn(address);
         when(mapper.toDto(address)).thenReturn(addressDto);
         AddressDto result = service.update(addressDto);
         Assertions.assertEquals(addressDto, result);
-        verify(repository).update(address);
+        verify(repository).save(address);
         verify(mapper).toEntity(addressDto);
         verify(mapper).toDto(address);
     }
@@ -66,11 +78,11 @@ public class AddressServiceTest {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(mapper.toEntity(addressDto)).thenReturn(address);
-        when(repository.create(address)).thenReturn(address);
+        when(repository.save(address)).thenReturn(address);
         when(mapper.toDto(address)).thenReturn(addressDto);
         AddressDto result = service.create(addressDto);
         Assertions.assertEquals(addressDto, result);
-        verify(repository).create(address);
+        verify(repository).save(address);
         verify(mapper).toEntity(addressDto);
         verify(mapper).toDto(address);
     }

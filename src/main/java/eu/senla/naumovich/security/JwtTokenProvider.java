@@ -1,5 +1,6 @@
 package eu.senla.naumovich.security;
 
+import eu.senla.naumovich.services.service.auth.TokenBlackListService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
     private final String secret = "secret";
-    private final int experationTime = 30 * 60 * 1000;
     private final UserDetailsService service;
+    private final TokenBlackListService tokenBlackListService;
 
     public String createToken(long id, String name, String email, String role, List<String> privileges) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -27,7 +28,8 @@ public class JwtTokenProvider {
         claims.put("role", role);
         claims.put("privileges", privileges);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + experationTime);
+        int expirationTime = 30 * 60 * 1000;
+        Date validity = new Date(now.getTime() + expirationTime);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -56,7 +58,7 @@ public class JwtTokenProvider {
     public boolean isValidateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
+            return !claims.getBody().getExpiration().before(new Date()) && !tokenBlackListService.isTokenInBlackList(token);
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtException("JWT token is expired or invalid");
         }

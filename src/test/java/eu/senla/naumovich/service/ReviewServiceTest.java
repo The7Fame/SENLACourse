@@ -1,10 +1,11 @@
 package eu.senla.naumovich.service;
 
-import eu.senla.naumovich.dao.repository.ReviewRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.review.ReviewDto;
+import eu.senla.naumovich.dto.review.ReviewShortDto;
 import eu.senla.naumovich.entities.Review;
 import eu.senla.naumovich.mapper.ReviewMapper;
+import eu.senla.naumovich.repositories.ReviewRepository;
 import eu.senla.naumovich.services.impl.ReviewServiceImpl;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,11 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -32,9 +36,17 @@ public class ReviewServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
-        List<ReviewDto> result = service.getAll(1,2);
-        Assertions.assertTrue(result.isEmpty());
+        String sort = "id";
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
+        Review review = new Review();
+        Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
+        when(repository.findAll(pageable)).thenReturn(reviewPage);
+        when(mapper.toDtoList(anyList())).thenReturn(Collections.singletonList(ReviewShortDto.builder().build()));
+        List<ReviewShortDto> result = service.getAll(1, 5, sort);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(repository).findAll(pageable);
+        verify(mapper).toDtoList(anyList());
     }
 
     @Test
@@ -54,11 +66,11 @@ public class ReviewServiceTest {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(mapper.toEntity(reviewDto)).thenReturn(review);
-        when(repository.update(review)).thenReturn(review);
+        when(repository.save(review)).thenReturn(review);
         when(mapper.toDto(review)).thenReturn(reviewDto);
         ReviewDto result = service.update(reviewDto);
         Assertions.assertEquals(reviewDto, result);
-        verify(repository).update(review);
+        verify(repository).save(review);
         verify(mapper).toEntity(reviewDto);
         verify(mapper).toDto(review);
     }
@@ -68,11 +80,11 @@ public class ReviewServiceTest {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(mapper.toEntity(reviewDto)).thenReturn(review);
-        when(repository.create(review)).thenReturn(review);
+        when(repository.save(review)).thenReturn(review);
         when(mapper.toDto(review)).thenReturn(reviewDto);
         ReviewDto result = service.create(reviewDto);
         Assertions.assertEquals(reviewDto, result);
-        verify(repository).create(review);
+        verify(repository).save(review);
         verify(mapper).toEntity(reviewDto);
         verify(mapper).toDto(review);
     }

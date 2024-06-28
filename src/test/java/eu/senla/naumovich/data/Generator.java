@@ -6,20 +6,26 @@ import eu.senla.naumovich.dto.book.BookDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.payment.PaymentDto;
 import eu.senla.naumovich.dto.privilege.PrivilegeDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionAuthorDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionGenreDto;
 import eu.senla.naumovich.dto.promotion.PromotionDto;
 import eu.senla.naumovich.dto.publisher.PublisherDto;
+import eu.senla.naumovich.dto.review.ReviewCreateDto;
 import eu.senla.naumovich.dto.review.ReviewDto;
 import eu.senla.naumovich.dto.role.RoleDto;
 import eu.senla.naumovich.dto.user.UserDto;
+import eu.senla.naumovich.dto.user.UserReplenishBalanceDto;
+import eu.senla.naumovich.dto.user.UserUpdateDto;
 import eu.senla.naumovich.entities.*;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Collections;
 
 @UtilityClass
 public class Generator {
-    private final static Long ID = 3L;
+    private final static Long ID = 4L;
     private final static String NAME = "NAME";
     private final static String UPDATE_NAME = "UPDATE_NAME";
 
@@ -181,9 +187,10 @@ public class Generator {
     public AddressDto createAddressDto() {
         return AddressDto.builder()
                 .id(ID)
-                .city(NAME)
-                .street(NAME)
+                .city(NAME+NAME)
+                .street(NAME+NAME)
                 .index(111111)
+                .publisher(createPublisherDto())
                 .build();
     }
 
@@ -208,11 +215,15 @@ public class Generator {
     }
 
     public BookDto createBookDto() {
+        PublisherDto publisherDto = PublisherDto.builder().publisherName(NAME).id(1L).build();
         return BookDto.builder()
                 .id(ID)
                 .title(NAME)
                 .isbn(NAME)
+                .genre("POETRY")
                 .price(new BigDecimal("10.00"))
+                .authors(Collections.singletonList(createAuthorDto()))
+                .publisher(publisherDto)
                 .build();
     }
 
@@ -293,6 +304,9 @@ public class Generator {
         return ReviewDto.builder()
                 .id(ID)
                 .text(NAME)
+                .rating(5L)
+                .book(createBookDto())
+                .user(createUserDto())
                 .build();
     }
 
@@ -306,6 +320,7 @@ public class Generator {
         return RoleDto.builder()
                 .id(ID)
                 .roleName(NAME)
+                .privileges(Collections.singletonList(createPrivilegeDto()))
                 .build();
     }
 
@@ -321,7 +336,9 @@ public class Generator {
                 .name(NAME)
                 .surname(NAME)
                 .password(NAME)
-                .email(NAME)
+                .email(NAME+"@mail.com")
+                .balance(BigDecimal.valueOf(100))
+                .role(createRoleDto())
                 .build();
     }
 
@@ -330,5 +347,41 @@ public class Generator {
         user.setName(UPDATE_NAME);
         user.setPassword(UPDATE_NAME);
         return user;
+    }
+
+    public CreatePromotionGenreDto createPromotionGenreDto(){
+        return CreatePromotionGenreDto.builder()
+                .genreId(1)
+                .percent(BigDecimal.valueOf(10.00))
+                .promotionName("SomePromotionGenre")
+                .build();
+    }
+
+    public CreatePromotionAuthorDto createPromotionAuthorDto(){
+        return CreatePromotionAuthorDto.builder()
+                .authorName("Boris")
+                .percent(BigDecimal.valueOf(10.00))
+                .promotionName("SomePromotionAuthor")
+                .build();
+    }
+
+    public ReviewCreateDto reviewCreateDto(){
+        return ReviewCreateDto.builder()
+                .text("Some text")
+                .rating(3L)
+                .build();
+    }
+
+    public UserReplenishBalanceDto userReplenishBalanceDto(){
+        return UserReplenishBalanceDto.builder()
+                .balance(BigDecimal.valueOf(100))
+                .build();
+    }
+
+    public UserUpdateDto userUpdateDto(){
+        return UserUpdateDto.builder()
+                .surname(UPDATE_NAME)
+                .name(UPDATE_NAME)
+                .build();
     }
 }

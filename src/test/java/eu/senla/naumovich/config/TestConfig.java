@@ -1,9 +1,10 @@
 package eu.senla.naumovich.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.aspects.LoggingAspect;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,6 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@EnableJpaRepositories(entityManagerFactoryRef = "managerFactoryBean", basePackages = "eu.senla.naumovich.repositories")
 @PropertySource("classpath:application.properties")
 public class TestConfig {
     @Value("${spring.datasource.url}")
@@ -28,11 +30,6 @@ public class TestConfig {
     private String password;
     @Value("${spring.liquibase.change-log}")
     private String changelog;
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 
     @Bean
     public DataSource dataSource() {
@@ -52,6 +49,14 @@ public class TestConfig {
         return liquibase;
     }
 
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.show_sql", "false");
+        return properties;
+    }
+
     @Bean
     @DependsOn("springLiquibase")
     public LocalContainerEntityManagerFactoryBean managerFactoryBean() {
@@ -60,12 +65,7 @@ public class TestConfig {
         managerFactoryBean.setPackagesToScan("eu.senla.naumovich.entities");
         managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-
-        managerFactoryBean.setJpaProperties(properties);
+        managerFactoryBean.setJpaProperties(hibernateProperties());
         return managerFactoryBean;
     }
 

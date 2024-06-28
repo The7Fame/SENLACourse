@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface PrivilegeMapper extends InterfaceMapper<Privilege, PrivilegeDto> {
+public interface PrivilegeMapper extends InterfaceMapper<Privilege, PrivilegeDto, PrivilegeDto> {
     PrivilegeMapper INSTANCE = Mappers.getMapper(PrivilegeMapper.class);
 }

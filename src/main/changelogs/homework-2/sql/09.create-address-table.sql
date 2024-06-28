@@ -3,6 +3,6 @@ CREATE TABLE addresses (
      city varchar(25) not null,
      street varchar(25) not null,
      index integer not null,
-     publisher_id integer,
-     foreign key(publisher_id) references publishers(id)
+     publisher_id bigint,
+     foreign key(publisher_id) references publishers(id) on delete cascade
 )

@@ -16,12 +16,12 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-
 @Configuration
+@EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "eu.senla.naumovich")
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "managerFactoryBean",basePackages = "eu.senla.naumovich.repositories")
+@EnableJpaRepositories(entityManagerFactoryRef = "managerFactoryBean", basePackages = "eu.senla.naumovich.repositories")
 @EnableWebMvc
 public class ApplicationConfig {
     @Value("${spring.datasource.url}")

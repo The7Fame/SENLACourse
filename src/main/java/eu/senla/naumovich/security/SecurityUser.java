@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,25 +18,17 @@ public class SecurityUser implements UserDetails {
     @Getter
     private final long id;
 
-    @Override
-    public String toString() {
-        return "SecurityUser{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
-    }
-
     private final String email;
     private final String password;
     private final Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(List.of(new SimpleGrantedAuthority(role.getRoleName())));
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(
+                List.of(new SimpleGrantedAuthority(role.getRoleName())));
         List<Privilege> privileges = role.getPrivileges();
-        privileges.forEach(privilege -> grantedAuthorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName())));
+        privileges
+                .forEach(privilege -> grantedAuthorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName())));
         return grantedAuthorities;
     }
 
@@ -71,12 +62,11 @@ public class SecurityUser implements UserDetails {
         return true;
     }
 
-    public static UserDetails fromUser(User user){
+    public static UserDetails fromUser(User user) {
         return new SecurityUser(
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRole()
-        );
+                user.getRole());
     }
 }

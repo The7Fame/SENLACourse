@@ -3,6 +3,8 @@ package eu.senla.naumovich.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.naumovich.controller.common.BaseTest;
 import eu.senla.naumovich.data.Generator;
+import eu.senla.naumovich.dto.promotion.CreatePromotionAuthorDto;
+import eu.senla.naumovich.dto.promotion.CreatePromotionGenreDto;
 import eu.senla.naumovich.dto.promotion.PromotionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -16,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PromotionControllerTest extends BaseTest {
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
+    @WithMockUser(username = "user1", authorities = { "ADMIN" })
     public void getAllTest() throws Exception {
         mockMvc.perform(get("/promotion"))
                 .andExpect(status().isOk())
@@ -24,25 +26,25 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getBeIdTest() throws Exception {
+    @WithMockUser(username = "user1", authorities = { "ADMIN" })
+    public void getByIdTest() throws Exception {
         mockMvc.perform(get("/promotion/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
+    @WithMockUser(username = "user1", authorities = { "UPDATE_PROMOTION" })
     public void getUpdateTest() throws Exception {
         PromotionDto promotionDto = Generator.updatePromotionDto();
         mockMvc.perform(put("/promotion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(promotionDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
+    @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
     public void createTest() throws Exception {
         PromotionDto promotionDto = Generator.createPromotionDto();
         mockMvc.perform(post("/promotion")
@@ -52,9 +54,30 @@ public class PromotionControllerTest extends BaseTest {
     }
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
+    @WithMockUser(username = "user1", authorities = { "DELETE_PROMOTION" })
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/promotion/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
+    public void createPromotionByGenre() throws Exception {
+        CreatePromotionGenreDto createPromotionGenreDto = Generator.createPromotionGenreDto();
+        System.out.println(createPromotionGenreDto);
+        mockMvc.perform(post("/promotion/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(createPromotionGenreDto)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
+    public void createPromotionByAuthorName() throws Exception {
+        CreatePromotionAuthorDto createPromotionAuthorDto = Generator.createPromotionAuthorDto();
+        mockMvc.perform(post("/promotion/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(createPromotionAuthorDto)))
+                .andExpect(status().isCreated());
     }
 }

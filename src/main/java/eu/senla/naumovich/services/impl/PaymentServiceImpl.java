@@ -1,28 +1,33 @@
 package eu.senla.naumovich.services.impl;
 
-import eu.senla.naumovich.dao.repository.OrderRepository;
-import eu.senla.naumovich.dao.repository.PaymentRepository;
 import eu.senla.naumovich.dto.order.OrderCreateDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.payment.PaymentDto;
+import eu.senla.naumovich.dto.payment.PaymentShortDto;
 import eu.senla.naumovich.dto.user.UserDto;
-import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.entities.Payment;
-import eu.senla.naumovich.exceptions.NoMoneyOnBankAccount;
-import eu.senla.naumovich.exceptions.NoRecords;
+import eu.senla.naumovich.exceptions.NoMoneyOnBankAccountException;
+import eu.senla.naumovich.exceptions.NoRecordException;
+import eu.senla.naumovich.exceptions.OrderAlreadyPaidException;
+import eu.senla.naumovich.exceptions.RecordExistsException;
 import eu.senla.naumovich.mapper.OrderMapper;
 import eu.senla.naumovich.mapper.PaymentMapper;
+import eu.senla.naumovich.repositories.OrderRepository;
+import eu.senla.naumovich.repositories.PaymentRepository;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.PaymentService;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,30 +39,30 @@ public class PaymentServiceImpl implements PaymentService {
     private final UserService userService;
 
     @Override
-    public List<PaymentDto> getAll(int size, int page) {
-        List<Payment> payments = paymentRepository.getAll(size, page);
-        return paymentMapper.toDtoList(payments);
+    public List<PaymentShortDto> getAll(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
+        Page<Payment> paymentPage = paymentRepository.findAll(pageable);
+        System.out.println(paymentPage.getContent());
+        return paymentMapper.toDtoList(paymentPage.getContent());
     }
 
     @Override
     public PaymentDto getById(Long id) {
         return paymentMapper
-                .toDto(paymentRepository.findById(id).orElseThrow(() -> new NoRecords("No record with such ID " + id)));
+                .toDto(paymentRepository.findById(id).orElseThrow(() -> new NoRecordException("No record with such ID " + id)));
     }
 
     @Override
     public PaymentDto update(PaymentDto payment) {
-        PaymentDto payment2Update = getById(payment.getId());
-        payment2Update.setStatus(true);
-        return paymentMapper.toDto(paymentRepository.update(paymentMapper.toEntity(payment2Update)));
+        return paymentMapper.toDto(paymentRepository.save(paymentMapper.toEntity(payment)));
     }
 
     @Override
     public PaymentDto create(PaymentDto payment) {
         try {
-            return paymentMapper.toDto(paymentRepository.create(paymentMapper.toEntity(payment)));
+            return paymentMapper.toDto(paymentRepository.save(paymentMapper.toEntity(payment)));
         } catch (Exception e) {
-            throw new NoRecords("Cannot create record");
+            throw new RecordExistsException("Record is exists");
         }
     }
 
@@ -71,7 +76,14 @@ public class PaymentServiceImpl implements PaymentService {
         OrderDto orderDto = orderMapper.toDto(orderRepository.getByUserAndOrderById(
                 securityUser.getId(),
                 orderCreateDto.getId())
-                .orElseThrow(() -> new NoRecords("No record with such ID " + orderCreateDto.getId())));
+                .orElseThrow(() -> new NoRecordException("No record with such ID " + orderCreateDto.getId())));
+
+        if (paymentRepository.findByOrderId(orderCreateDto.getId()).isPresent()) {
+            Payment existingPayment = paymentRepository.findByOrderId(orderCreateDto.getId()).get();
+            if (existingPayment.getStatus()) {
+                throw new OrderAlreadyPaidException("Order with ID " + orderCreateDto.getId() + " is already paid.");
+            }
+        }
         UserDto userDto = userService.getById(securityUser.getId());
         BigDecimal orderDtoTotalPrice = orderDto.getTotalPrice();
         BigDecimal userBalance = userDto.getBalance();
@@ -81,11 +93,23 @@ public class PaymentServiceImpl implements PaymentService {
                 .totalPrice(orderDto.getTotalPrice())
                 .user(userDto).build();
         if (userBalance.compareTo(orderDtoTotalPrice) < 0){
-           throw new NoMoneyOnBankAccount("Not enough money on bank account");
+           throw new NoMoneyOnBankAccountException("Not enough money on bank account");
         }
         userDto.setBalance(userBalance.subtract(orderDtoTotalPrice));
-        userService.create(userDto);
+        userService.update(userDto);
         paymentDto.setStatus(true);
         return create(paymentDto);
+    }
+
+    @Override
+    public List<PaymentShortDto> getUserPayments(SecurityUser securityUser, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Payment> paymentPage = paymentRepository.getPaymentsByUserId(securityUser.getId(), pageable);
+        return paymentMapper.toDtoList(paymentPage.getContent());
+    }
+
+    @Override
+    public PaymentDto getUserPaymentById(SecurityUser securityUser, Long paymentId) {
+        return paymentMapper.toDto(paymentRepository.getByUserAndPaymentById(securityUser.getId(), paymentId).orElseThrow(() -> new NoRecordException("No record with such ID " + paymentId)));
     }
 }

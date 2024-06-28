@@ -1,12 +1,11 @@
 package eu.senla.naumovich.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.senla.naumovich.config.WithMockCustomUser;
 import eu.senla.naumovich.controller.common.BaseTest;
-import eu.senla.naumovich.data.Generator;
-import eu.senla.naumovich.dto.payment.PaymentDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PaymentControllerTest extends BaseTest {
-
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
     public void getAllTest() throws Exception {
@@ -25,36 +23,39 @@ public class PaymentControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getBeIdTest() throws Exception {
+    public void getByIdTest() throws Exception {
         mockMvc.perform(get("/payment/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
-    @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getUpdateTest() throws Exception {
-        PaymentDto paymentDto = Generator.updatePaymentDto();
-        mockMvc.perform(put("/payment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(paymentDto)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(username="user1", authorities={"USER"})
-    public void createTest() throws Exception {
-        PaymentDto paymentDto = Generator.createPaymentDto();
-        mockMvc.perform(post("/payment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(paymentDto)))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
+    @Transactional
     @WithMockUser(username="user1", authorities={"ADMIN"})
     public void deleteTest() throws Exception {
         mockMvc.perform(delete("/payment/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void getUserPayment() throws Exception {
+        mockMvc.perform(get("/payment/my/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void tyTryPayPaidPaymentTest() throws Exception{
+        String json = """
+                    {
+                        "id": 1
+                    }
+                """;
+        mockMvc.perform(post("/payment/my")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound());
     }
 }

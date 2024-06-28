@@ -1,6 +1,6 @@
 package eu.senla.naumovich.dto.publisher;
 
-import eu.senla.naumovich.dto.address.AddressDto;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -12,6 +12,6 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class PublisherDto {
     private Long id;
+    @NotBlank(message = "Field must be filled in")
     private String publisherName;
-    private AddressDto address;
 }

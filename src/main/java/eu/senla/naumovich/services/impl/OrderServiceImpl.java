@@ -1,20 +1,24 @@
 package eu.senla.naumovich.services.impl;
 
-import eu.senla.naumovich.dao.repository.OrderRepository;
-import eu.senla.naumovich.dao.repository.UserRepository;
-import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.book.BookShortDto;
 import eu.senla.naumovich.dto.order.OrderDto;
+import eu.senla.naumovich.dto.order.OrderShortDto;
 import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.entities.Promotion;
-import eu.senla.naumovich.exceptions.NoRecords;
+import eu.senla.naumovich.exceptions.NoRecordException;
 import eu.senla.naumovich.mapper.BookMapper;
 import eu.senla.naumovich.mapper.OrderMapper;
+import eu.senla.naumovich.repositories.OrderRepository;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.OrderService;
 import eu.senla.naumovich.services.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,25 +36,26 @@ public class OrderServiceImpl implements OrderService {
         private final BookMapper bookMapper;
 
         @Override
-        public List<OrderDto> getAll(int size, int page) {
-                List<Order> orders = orderRepository.getAll(size, page);
-                return orderMapper.toDtoList(orders);
+        public List<OrderShortDto> getAll(int page, int size, String sort) {
+                Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
+                Page<Order> orderPage = orderRepository.findAll(pageable);
+                return orderMapper.toDtoList(orderPage.getContent());
         }
 
         @Override
         public OrderDto getById(Long id) {
                 return orderMapper.toDto(orderRepository.findById(id)
-                                .orElseThrow(() -> new NoRecords("No record with such ID " + id)));
+                                .orElseThrow(() -> new NoRecordException("No record with such ID " + id)));
         }
 
         @Override
         public OrderDto update(OrderDto order) {
-                return orderMapper.toDto(orderRepository.update(orderMapper.toEntity(order)));
+                return orderMapper.toDto(orderRepository.save(orderMapper.toEntity(order)));
         }
 
         @Override
         public OrderDto create(OrderDto order) {
-                return orderMapper.toDto(orderRepository.create(orderMapper.toEntity(order)));
+                return orderMapper.toDto(orderRepository.save(orderMapper.toEntity(order)));
         }
 
         @Override
@@ -58,13 +63,8 @@ public class OrderServiceImpl implements OrderService {
                 orderRepository.deleteById(id);
         }
 
-        @Override
-        public List<OrderDto> filterOrderByPrice(BigDecimal totalPrice) {
-                return List.of();
-        }
-
         @Transactional
-        public OrderDto createOrderFromBooks(SecurityUser securityUser, List<BookDto> books) {
+        public OrderDto createOrderFromBooks(SecurityUser securityUser, List<BookShortDto> books) {
                 BigDecimal totalPrice = calculateTotalPrice(books);
                 UserDto user = userService.getById(securityUser.getId());
                 OrderDto orderDto = OrderDto.builder()
@@ -74,7 +74,8 @@ public class OrderServiceImpl implements OrderService {
                 return create(orderDto);
         }
 
-        public BigDecimal calculateTotalPrice(List<BookDto> books) {
+        @Override
+        public BigDecimal calculateTotalPrice(List<BookShortDto> books) {
                 BigDecimal totalPrice = BigDecimal.ZERO;
                 for(Book book : bookMapper.toEntityList(books)){
                         BigDecimal bookPrice = book.getPrice();
@@ -90,12 +91,19 @@ public class OrderServiceImpl implements OrderService {
         }
 
         @Override
-        public List<OrderDto> getUserOrders(SecurityUser securityUser, int page, int size) {
-                return orderMapper.toDtoList(orderRepository.getOrdersByUserId(securityUser.getId(), page, size));
+        public List<OrderShortDto> getUserOrders(SecurityUser securityUser, int page, int size) {
+                Pageable pageable = PageRequest.of(page - 1, size);
+                return orderMapper.toDtoList(orderRepository.getOrdersByUserId(securityUser.getId(), pageable).getContent());
         }
 
         @Override
-        public OrderDto getUserOrderById(SecurityUser securityUser, int orderId) {
-                return orderMapper.toDto(orderRepository.getByUserAndOrderById(securityUser.getId(), orderId).orElseThrow(() -> new NoRecords("No record with such ID " + orderId)));
+        public OrderDto getUserOrderById(SecurityUser securityUser, Long orderId) {
+                return orderMapper.toDto(orderRepository.getByUserAndOrderById(securityUser.getId(), orderId).orElseThrow(() -> new NoRecordException("No record with such ID " + orderId)));
+        }
+
+        @Override
+        public void deleteUserOrderById(SecurityUser securityUser, Long orderId) {
+                getUserOrderById(securityUser, orderId);
+                delete(orderId);
         }
 }

@@ -1,15 +1,33 @@
 package eu.senla.naumovich.services.service;
 
-import eu.senla.naumovich.dto.book.BookDto;
+import eu.senla.naumovich.dto.book.BookShortDto;
+import eu.senla.naumovich.dto.book.BookToCartDto;
 import eu.senla.naumovich.dto.cart.CartDto;
+import eu.senla.naumovich.dto.cart.CartShortDto;
 import eu.senla.naumovich.security.SecurityUser;
-import eu.senla.naumovich.services.service.common.AbstractService;
-import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface CartService extends AbstractService<CartDto> {
-    public double booksInCart(long userId);
-    public CartDto addBookToCart(SecurityUser securityUser, BookDto book);
-    public List<BookDto> booksInCart(SecurityUser securityUser);
+@Transactional(readOnly = true)
+public interface CartService {
+    @Transactional
+    public CartDto addBookToCart(SecurityUser securityUser, BookToCartDto book);
+
+    public List<BookShortDto> booksInCart(SecurityUser securityUser, int page, int size);
+
+    public double calculateTotalPrice(long userId);
+
+    public List<CartShortDto> getAll(int page, int size, String sort);
+
+    public List<BookShortDto> getById(Long id, int page, int size);
+
+    @Transactional
+    public CartDto update(CartDto cart);
+
+    @Transactional
+    public CartDto create(CartDto cart);
+
+    @Transactional
+    void delete(Long id);
 }

@@ -1,48 +1,29 @@
 package eu.senla.naumovich.dao;
 
-import eu.senla.naumovich.config.DaoConfig;
-import eu.senla.naumovich.config.TestConfig;
-import eu.senla.naumovich.dao.repository.OrderRepository;
-import eu.senla.naumovich.data.Generator;
+import eu.senla.naumovich.dao.common.BaseRepositoryTest;
 import eu.senla.naumovich.entities.Order;
+import eu.senla.naumovich.repositories.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.domain.Page;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class, DaoConfig.class })
-public class OrderRepositoryTest {
+import java.util.Optional;
+
+
+public class OrderRepositoryTest extends BaseRepositoryTest {
     @Autowired
     OrderRepository repository;
 
     @Test
-    public void getOrderByUserId(){
-        System.out.println(repository.getOrdersByUserId(1, 1, 10));
-    }
-    @Test
-    public void createRecord() {
-        Order order = Generator.createOrder();
-        repository.create(order);
-        Assertions.assertTrue(repository.findById(order.getId()).isPresent());
-        Assertions.assertEquals(order, repository.findById(order.getId()).get());
-    }
+    public void getOrdersByUserId(){
+        Page<Order> orderPage = repository.getOrdersByUserId(1, applyPage());
+        Assertions.assertEquals(orderPage.getTotalElements(), 1);
+    };
 
     @Test
-    public void updateRecord() {
-        Order order = Generator.updateOrder();
-        repository.update(order);
-        Assertions.assertTrue(repository.findById(order.getId()).isPresent());
-        Assertions.assertEquals(order, repository.findById(order.getId()).get());
-    }
-
-    @Test
-    public void deleteTest() {
-        Order order = Generator.createOrder();
-        repository.create(order);
-        repository.deleteById(order.getId());
-        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
-    }
+    public void getByUserAndOrderById(){
+        Optional<Order> order = repository.getByUserAndOrderById(1, 1);
+        Assertions.assertTrue(order.isPresent());
+    };
 }

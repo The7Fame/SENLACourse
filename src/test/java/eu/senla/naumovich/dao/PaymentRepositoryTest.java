@@ -1,44 +1,33 @@
 package eu.senla.naumovich.dao;
 
-import eu.senla.naumovich.config.DaoConfig;
-import eu.senla.naumovich.config.TestConfig;
-import eu.senla.naumovich.dao.repository.PaymentRepository;
-import eu.senla.naumovich.data.Generator;
+import eu.senla.naumovich.dao.common.BaseRepositoryTest;
 import eu.senla.naumovich.entities.Payment;
+import eu.senla.naumovich.repositories.PaymentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.domain.Page;
+import java.util.Optional;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { TestConfig.class, DaoConfig.class })
-public class PaymentRepositoryTest {
+public class PaymentRepositoryTest extends BaseRepositoryTest {
     @Autowired
     PaymentRepository repository;
 
     @Test
-    public void createRecord() {
-        Payment payment = Generator.createPayment();
-        repository.create(payment);
-        Assertions.assertTrue(repository.findById(payment.getId()).isPresent());
-        Assertions.assertEquals(payment, repository.findById(payment.getId()).get());
-    }
+    public void getPaymentsByUserId(){
+        Page<Payment> paymentPage = repository.getPaymentsByUserId(1, applyPage());
+        Assertions.assertEquals(paymentPage.getTotalElements(), 1);
+    };
 
     @Test
-    public void updateRecord() {
-        Payment payment = Generator.updatePayment();
-        repository.update(payment);
-        Assertions.assertTrue(repository.findById(payment.getId()).isPresent());
-        Assertions.assertEquals(payment, repository.findById(payment.getId()).get());
-    }
+    public void getByUserAndPaymentById(){
+        Optional<Payment> payment = repository.getByUserAndPaymentById(1,1);
+        Assertions.assertTrue(payment.isPresent());
+    };
 
     @Test
-    public void deleteTest() {
-        Payment payment = Generator.createPayment();
-        repository.create(payment);
-        repository.deleteById(payment.getId());
-        Assertions.assertEquals(repository.getAll(1,2).size(), 2);
-    }
+    public void findByOrderId(){
+        Optional<Payment> payment = repository.findByOrderId(1L);
+        Assertions.assertTrue(payment.isPresent());
+    };
 }

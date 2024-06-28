@@ -1,10 +1,10 @@
 package eu.senla.naumovich.service;
 
-import eu.senla.naumovich.dao.repository.PrivilegeRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.privilege.PrivilegeDto;
 import eu.senla.naumovich.entities.Privilege;
 import eu.senla.naumovich.mapper.PrivilegeMapper;
+import eu.senla.naumovich.repositories.PrivilegeRepository;
 import eu.senla.naumovich.services.impl.PrivilegeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,11 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -31,9 +34,17 @@ public class PrivilegeServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
-        List<PrivilegeDto> result = service.getAll(1,2);
-        Assertions.assertTrue(result.isEmpty());
+        String sort = "id";
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
+        Privilege privilege = new Privilege();
+        Page<Privilege> privilegePage = new PageImpl<>(Collections.singletonList(privilege));
+        when(repository.findAll(pageable)).thenReturn(privilegePage);
+        when(mapper.toDtoList(anyList())).thenReturn(Collections.singletonList(PrivilegeDto.builder().build()));
+        List<PrivilegeDto> result = service.getAll(1, 5, sort);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(repository).findAll(pageable);
+        verify(mapper).toDtoList(anyList());
     }
 
     @Test
@@ -53,11 +64,11 @@ public class PrivilegeServiceTest {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(mapper.toEntity(privilegeDto)).thenReturn(privilege);
-        when(repository.update(privilege)).thenReturn(privilege);
+        when(repository.save(privilege)).thenReturn(privilege);
         when(mapper.toDto(privilege)).thenReturn(privilegeDto);
         PrivilegeDto result = service.update(privilegeDto);
         Assertions.assertEquals(privilegeDto, result);
-        verify(repository).update(privilege);
+        verify(repository).save(privilege);
         verify(mapper).toEntity(privilegeDto);
         verify(mapper).toDto(privilege);
     }
@@ -67,11 +78,11 @@ public class PrivilegeServiceTest {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(mapper.toEntity(privilegeDto)).thenReturn(privilege);
-        when(repository.create(privilege)).thenReturn(privilege);
+        when(repository.save(privilege)).thenReturn(privilege);
         when(mapper.toDto(privilege)).thenReturn(privilegeDto);
         PrivilegeDto result = service.create(privilegeDto);
         Assertions.assertEquals(privilegeDto, result);
-        verify(repository).create(privilege);
+        verify(repository).save(privilege);
         verify(mapper).toEntity(privilegeDto);
         verify(mapper).toDto(privilege);
     }

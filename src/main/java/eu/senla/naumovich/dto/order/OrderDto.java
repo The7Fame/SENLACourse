@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import eu.senla.naumovich.dto.user.UserDto;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

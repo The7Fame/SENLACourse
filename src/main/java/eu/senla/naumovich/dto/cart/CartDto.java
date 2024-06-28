@@ -2,6 +2,7 @@ package eu.senla.naumovich.dto.cart;
 
 import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.dto.book.BookDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;

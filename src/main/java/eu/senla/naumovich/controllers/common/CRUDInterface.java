@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface CRUDInterface<T> {
-    ResponseEntity<List<T>> getAll(int page, int size);
+public interface CRUDInterface<T, S> {
+    ResponseEntity<List<S>> getAll(int page, int size, String sort);
 
     ResponseEntity<T> getById(Long id);
 

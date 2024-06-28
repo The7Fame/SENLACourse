@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface PublisherMapper extends InterfaceMapper<Publisher, PublisherDto> {
+public interface PublisherMapper extends InterfaceMapper<Publisher, PublisherDto, PublisherDto> {
 
     PublisherMapper INSTANCE = Mappers.getMapper(PublisherMapper.class);
 }

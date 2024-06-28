@@ -80,34 +80,394 @@
     <changeSet id="homework-2-constraint-review" author="Maksim Naumovich">
         <sqlFile encoding="utf8" path="./sql/24.add-constraint-on-review-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-    <changeSet id="homework-2-change-address" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/25.change-type-on-addresses.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-constraint-book" author="Maksim Naumovich">
+        <sqlFile encoding="utf8" path="./sql/25.add-constraint-on-book-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-    <changeSet id="homework-2-change-book-author" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/26.change-type-on-book-author.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-roles" author="Maksim Naumovich">
+        <insert tableName="roles">
+            <column name="role_name" value="USER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_name" value="ADMIN"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_name" value="MANAGER"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-book" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/27.change-type-on-book.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-privileges" author="Maksim Naumovich">
+        <insert tableName="privileges">
+            <column name="privilege_name" value="CREATE_BOOK"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_BOOK"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_BOOK"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_USER"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_USER"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_PROMOTION"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_PROMOTION"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="CREATE_PROMOTION"/>
+        </insert>
+
+        <insert tableName="privileges">
+            <column name="privilege_name" value="CREATE_ADDRESS"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_ADDRESS"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_ADDRESS"/>
+        </insert>
+
+        <insert tableName="privileges">
+            <column name="privilege_name" value="CREATE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="GET_PROFILE"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-book-promotion" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/28.change-type-on-book-promotion.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-roles_privileges" author="Maksim Naumovich">
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="15"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-cart" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/29.change-type-on-cart.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-users" author="Maksim Naumovich">
+        <insert tableName="users">
+            <column name="name" value="Alex"/>
+            <column name="surname" value="Filtch"/>
+            <column name="email" value="1@example.com"/>
+            <column name="balance" value="10.00" />
+            <column name="hash_password" value="$2a$12$jHsW2SXan.dyFAK64yPSXOKlrUMyz//tSDKFn4tQ2cGYxqF56w/96"/>
+            <column name="role_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="David"/>
+            <column name="surname" value="Stern"/>
+            <column name="email" value="2@example.com"/>
+            <column name="balance" value="10.00" />
+            <column name="hash_password" value="$2a$12$jHsW2SXan.dyFAK64yPSXOKlrUMyz//tSDKFn4tQ2cGYxqF56w/96"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="Michael"/>
+            <column name="surname" value="Von"/>
+            <column name="email" value="3@example.com"/>
+            <column name="balance" value="10.00" />
+            <column name="hash_password" value="$2a$12$jHsW2SXan.dyFAK64yPSXOKlrUMyz//tSDKFn4tQ2cGYxqF56w/96"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-order" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/30.change-type-on-order.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-authors" author="Maksim Naumovich">
+        <insert tableName="authors">
+            <column name="name" value="Ivan"/>
+            <column name="surname" value="Bunin"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Boris"/>
+            <column name="surname" value="Pasternak"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Ernest"/>
+            <column name="surname" value="Hemingway"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="George"/>
+            <column name="surname" value="Orwell"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Aldous"/>
+            <column name="surname" value="Huxley"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-payment" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/31.change-type-on-payment.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-publishers" author="Maksim Naumovich">
+        <insert tableName="publishers">
+            <column name="publisher_name" value="publisher1"/>
+        </insert>
+        <insert tableName="publishers">
+            <column name="publisher_name" value="publisher2"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-role-privilege" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/32.change-type-type-on-role-privilege.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-addresses" author="Maksim Naumovich">
+        <insert tableName="addresses">
+            <column name="city" value="city1"/>
+            <column name="street" value="street1"/>
+            <column name="index" valueNumeric="000000"/>
+            <column name="publisher_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="addresses">
+            <column name="city" value="city2"/>
+            <column name="street" value="street2"/>
+            <column name="index" valueNumeric="000000"/>
+            <column name="publisher_id" valueNumeric="2"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-review" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/33.change-type-on-review.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-genres" author="Maksim Naumovich">
+        <insert tableName="genres">
+            <column name="genre_name" value="POETRY"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="genre_name" value="FUTURISM"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="genre_name" value="PROSE"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="genre_name" value="DYSTOPIA"/>
+        </insert>
     </changeSet>
-    <changeSet id="homework-2-change-user" author="Maksim Naumovich">
-        <sqlFile encoding="utf8" path="./sql/34.change-type-on-user.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="insert-books" author="Maksim Naumovich">
+        <insert tableName="books">
+            <column name="title" value="Evening"/>
+            <column name="price" valueNumeric="12.00"/>
+            <column name="isbn" value="3213213213213"/>
+            <column name="genre_id" valueNumeric="1"/>
+            <column name="publisher_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="My sister - life"/>
+            <column name="price" valueNumeric="14.00"/>
+            <column name="isbn" value="3313213213213"/>
+            <column name="genre_id" valueNumeric="2"/>
+            <column name="publisher_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="The old man and the sea"/>
+            <column name="price" valueNumeric="16.00"/>
+            <column name="isbn" value="3333213213213"/>
+            <column name="genre_id" valueNumeric="3"/>
+            <column name="publisher_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="1984"/>
+            <column name="price" valueNumeric="18.00"/>
+            <column name="isbn" value="3333313213213"/>
+            <column name="genre_id" valueNumeric="4"/>
+            <column name="publisher_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="Crome Yellow"/>
+            <column name="price" valueNumeric="20.00"/>
+            <column name="isbn" value="3333332312321"/>
+            <column name="genre_id" valueNumeric="4"/>
+            <column name="publisher_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-authors_books" author="Maksim Naumovich">
+        <insert tableName="authors_books">
+            <column name="author_id" valueNumeric="1"/>
+            <column name="book_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="authors_books">
+            <column name="author_id" valueNumeric="2"/>
+            <column name="book_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="authors_books">
+            <column name="author_id" valueNumeric="3"/>
+            <column name="book_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="authors_books">
+            <column name="author_id" valueNumeric="4"/>
+            <column name="book_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="authors_books">
+            <column name="author_id" valueNumeric="5"/>
+            <column name="book_id" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-promotions" author="Maksim Naumovich">
+        <insert tableName="promotions">
+            <column name="promotion_name" value="Promotion for poetry"/>
+            <column name="percent" valueNumeric="10.00"/>
+        </insert>
+        <insert tableName="promotions">
+            <column name="promotion_name" value="Promotion new edition"/>
+            <column name="percent" valueNumeric="15.00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-books_promotions" author="Maksim Naumovich">
+        <insert tableName="books_promotions">
+            <column name="book_id" valueNumeric="1"/>
+            <column name="promotion_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="books_promotions">
+            <column name="book_id" valueNumeric="1"/>
+            <column name="promotion_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-reviews" author="Maksim Naumovich">
+        <insert tableName="reviews">
+            <column name="text" value="Nice book"/>
+            <column name="rating" valueNumeric="3"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="book_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-carts" author="Maksim Naumovich">
+        <insert tableName="carts">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="book_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-orders" author="Maksim Naumovich">
+        <insert tableName="orders">
+            <column name="order_date" valueComputed="NOW()"/>
+            <column name="total_price" valueNumeric="10.00"/>
+            <column name="user_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-payments" author="Maksim Naumovich">
+        <insert tableName="payments">
+            <column name="status" valueBoolean="true"/>
+            <column name="payment_date" valueComputed="NOW()"/>
+            <column name="total_price" valueNumeric="10.00"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="order_id" valueNumeric="1"/>
+        </insert>
     </changeSet>
 </databaseChangeLog> 

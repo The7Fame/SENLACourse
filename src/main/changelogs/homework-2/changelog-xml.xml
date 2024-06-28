@@ -44,8 +44,28 @@
         <insert tableName="privileges">
             <column name="privilege_name" value="CREATE_PROMOTION"/>
         </insert>
+
         <insert tableName="privileges">
-            <column name="privilege_name" value="GET_PAYMENT"/>
+            <column name="privilege_name" value="CREATE_ADDRESS"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_ADDRESS"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_ADDRESS"/>
+        </insert>
+
+        <insert tableName="privileges">
+            <column name="privilege_name" value="CREATE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="UPDATE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="DELETE_AUTHOR"/>
+        </insert>
+        <insert tableName="privileges">
+            <column name="privilege_name" value="GET_PROFILE"/>
         </insert>
     </changeSet>
 
@@ -111,8 +131,60 @@
             <column name="privilege_id" valueNumeric="9"/>
         </insert>
         <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="roles_privileges">
             <column name="role_id" valueNumeric="2"/>
             <column name="privilege_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="privilege_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="roles_privileges">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="15"/>
         </insert>
     </changeSet>
 

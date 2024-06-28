@@ -1,10 +1,11 @@
 package eu.senla.naumovich.service;
 
-import eu.senla.naumovich.dao.repository.PromotionRepository;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.promotion.PromotionDto;
+import eu.senla.naumovich.dto.promotion.PromotionShortDto;
 import eu.senla.naumovich.entities.Promotion;
 import eu.senla.naumovich.mapper.PromotionMapper;
+import eu.senla.naumovich.repositories.PromotionRepository;
 import eu.senla.naumovich.services.impl.PromotionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -31,9 +35,17 @@ public class PromotionServiceTest {
 
     @Test
     public void getAllTest() {
-        when(repository.getAll(1,2)).thenReturn(Collections.emptyList());
-        List<PromotionDto> result = service.getAll(1,2);
-        Assertions.assertTrue(result.isEmpty());
+        String sort = "id";
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
+        Promotion promotion = new Promotion();
+        Page<Promotion> promotionPage = new PageImpl<>(Collections.singletonList(promotion));
+        when(repository.findAll(pageable)).thenReturn(promotionPage);
+        when(mapper.toDtoList(anyList())).thenReturn(Collections.singletonList(PromotionShortDto.builder().build()));
+        List<PromotionShortDto> result = service.getAll(1, 5, sort);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(repository).findAll(pageable);
+        verify(mapper).toDtoList(anyList());
     }
 
     @Test
@@ -53,11 +65,11 @@ public class PromotionServiceTest {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(mapper.toEntity(promotionDto)).thenReturn(promotion);
-        when(repository.update(promotion)).thenReturn(promotion);
+        when(repository.save(promotion)).thenReturn(promotion);
         when(mapper.toDto(promotion)).thenReturn(promotionDto);
         PromotionDto result = service.update(promotionDto);
         Assertions.assertEquals(promotionDto, result);
-        verify(repository).update(promotion);
+        verify(repository).save(promotion);
         verify(mapper).toEntity(promotionDto);
         verify(mapper).toDto(promotion);
     }
@@ -67,11 +79,11 @@ public class PromotionServiceTest {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(mapper.toEntity(promotionDto)).thenReturn(promotion);
-        when(repository.create(promotion)).thenReturn(promotion);
+        when(repository.save(promotion)).thenReturn(promotion);
         when(mapper.toDto(promotion)).thenReturn(promotionDto);
         PromotionDto result = service.create(promotionDto);
         Assertions.assertEquals(promotionDto, result);
-        verify(repository).create(promotion);
+        verify(repository).save(promotion);
         verify(mapper).toEntity(promotionDto);
         verify(mapper).toDto(promotion);
     }
