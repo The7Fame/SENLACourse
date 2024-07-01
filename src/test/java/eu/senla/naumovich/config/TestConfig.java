@@ -1,6 +1,5 @@
 package eu.senla.naumovich.config;
 
-import eu.senla.naumovich.aspects.LoggingAspect;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
