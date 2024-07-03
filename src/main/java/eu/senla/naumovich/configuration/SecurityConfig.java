@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/sign-in", "/actuator/**").permitAll()
+                        .requestMatchers("/auth/sign-in", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html/**", "/swagger-ui/index.html/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
