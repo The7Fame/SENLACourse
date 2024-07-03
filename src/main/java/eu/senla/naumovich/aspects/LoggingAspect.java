@@ -1,14 +1,13 @@
 package eu.senla.naumovich.aspects;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.Arrays;
 
 @Aspect
 @Slf4j
@@ -21,11 +20,12 @@ public class LoggingAspect {
 
     @Around("controller()")
     public Object loggingRequest(ProceedingJoinPoint joinPoint) throws Throwable {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        String httpMethod = request.getMethod();
-        String endpoint = request.getRequestURI();
-        log.info("Method: {} URL: {}", httpMethod, endpoint);
-        return joinPoint.proceed();
+        long start = System.currentTimeMillis();
+        Object res = joinPoint.proceed();
+        long finish = System.currentTimeMillis() - start;
+        log.info("Invoked method {}, with args {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        log.info("Result of method {}", res);
+        log.info("Execution time {} milliseconds", finish);
+        return res;
     }
 }
