@@ -1,6 +1,11 @@
 package eu.senla.naumovich.configuration;
 
 import eu.senla.naumovich.security.JwtConfigure;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -43,12 +48,26 @@ public class SecurityConfig {
     }
 
     @Bean
+    OpenAPI bearerAuthorization(){
+        return new OpenAPI()
+                .info(new Info().title("API title").version("API version"))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer"))
+                .components(
+                        new Components()
+                                .addSecuritySchemes("Bearer", new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT"))
+                );
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/sign-in", "/actuator/**").permitAll()
+                        .requestMatchers("/auth/sign-in", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html/**", "/swagger-ui/index.html/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
