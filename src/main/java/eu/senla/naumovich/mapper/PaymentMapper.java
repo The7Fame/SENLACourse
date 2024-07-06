@@ -5,9 +5,10 @@ import eu.senla.naumovich.dto.payment.PaymentShortDto;
 import eu.senla.naumovich.entities.Payment;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentMapper extends InterfaceMapper<Payment, PaymentDto, PaymentShortDto> {
     PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
 }

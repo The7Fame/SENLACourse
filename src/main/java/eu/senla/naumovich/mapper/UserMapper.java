@@ -5,9 +5,10 @@ import eu.senla.naumovich.dto.user.UserShortDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper extends InterfaceMapper<User, UserDto, UserShortDto> {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 }
