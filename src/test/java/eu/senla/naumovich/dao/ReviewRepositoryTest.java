@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class ReviewRepositoryTest extends BaseRepositoryTest {
+class ReviewRepositoryTest extends BaseRepositoryTest {
     @Autowired
-    ReviewRepository repository;
+    private ReviewRepository repository;
 
     @Test
-    public void getByUserAndReviewById(){
+    void getByUserAndReviewById(){
         Optional<Review> review = repository.getByUserAndReviewById(1, 1);
         Assertions.assertTrue(review.isPresent());
     };

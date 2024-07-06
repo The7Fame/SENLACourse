@@ -24,16 +24,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PrivilegeServiceTest {
+class PrivilegeServiceTest {
     @Mock
     private PrivilegeMapper mapper;
     @Mock
-    PrivilegeRepository repository;
+    private PrivilegeRepository repository;
     @InjectMocks
     private PrivilegeServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Privilege privilege = new Privilege();
@@ -48,7 +48,7 @@ public class PrivilegeServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(privilege));
@@ -60,7 +60,7 @@ public class PrivilegeServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(mapper.toEntity(privilegeDto)).thenReturn(privilege);
@@ -74,7 +74,7 @@ public class PrivilegeServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Privilege privilege = Generator.createPrivilege();
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         when(mapper.toEntity(privilegeDto)).thenReturn(privilege);
@@ -88,7 +88,7 @@ public class PrivilegeServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Privilege privilege = Generator.createPrivilege();
         doNothing().when(repository).deleteById(privilege.getId());
         service.delete(privilege.getId());

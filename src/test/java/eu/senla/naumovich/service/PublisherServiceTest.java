@@ -25,16 +25,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PublisherServiceTest {
+class PublisherServiceTest {
     @Mock
     private PublisherMapper mapper;
     @Mock
-    PublisherRepository repository;
+    private PublisherRepository repository;
     @InjectMocks
     private PublisherServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Publisher publisher = new Publisher();
@@ -49,7 +49,7 @@ public class PublisherServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Publisher publisher = Generator.createPublisher();
         PublisherDto publisherDto = Generator.createPublisherDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(publisher));
@@ -61,7 +61,7 @@ public class PublisherServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Publisher publisher = Generator.createPublisher();
         PublisherDto publisherDto = Generator.createPublisherDto();
         when(mapper.toEntity(publisherDto)).thenReturn(publisher);
@@ -75,7 +75,7 @@ public class PublisherServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Publisher publisher = Generator.createPublisher();
         PublisherDto publisherDto = Generator.createPublisherDto();
         when(mapper.toEntity(publisherDto)).thenReturn(publisher);
@@ -89,7 +89,7 @@ public class PublisherServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Publisher publisher = Generator.createPublisher();
         doNothing().when(repository).deleteById(publisher.getId());
         service.delete(publisher.getId());

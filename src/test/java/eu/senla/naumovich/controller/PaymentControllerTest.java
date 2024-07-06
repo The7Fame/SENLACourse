@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PaymentControllerTest extends BaseTest {
+class PaymentControllerTest extends BaseTest {
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/payment"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -23,7 +23,7 @@ public class PaymentControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/payment/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -32,14 +32,14 @@ public class PaymentControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void deleteTest() throws Exception {
+    void deleteTest() throws Exception {
         mockMvc.perform(delete("/payment/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockCustomUser
-    public void getUserPayment() throws Exception {
+    void getUserPayment() throws Exception {
         mockMvc.perform(get("/payment/my/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -47,7 +47,7 @@ public class PaymentControllerTest extends BaseTest {
 
     @Test
     @WithMockCustomUser
-    public void tyTryPayPaidPaymentTest() throws Exception{
+    void tyTryPayPaidPaymentTest() throws Exception{
         String json = """
                     {
                         "id": 1

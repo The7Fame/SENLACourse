@@ -29,11 +29,11 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
     @Mock
     private UserMapper mapper;
     @Mock
-    UserRepository repository;
+    private UserRepository repository;
 
     @InjectMocks
     private UserServiceImpl service;
@@ -42,7 +42,7 @@ public class UserServiceTest {
     PasswordEncoder passwordEncoder;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         User user = new User();
@@ -57,7 +57,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         User user = Generator.createUser();
         UserDto userDto = Generator.createUserDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(user));
@@ -69,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         User user = Generator.createUser();
         UserDto userDto = Generator.createUserDto();
         when(mapper.toEntity(userDto)).thenReturn(user);
@@ -83,7 +83,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         User user = Generator.createUser();
         UserDto userDto = Generator.createUserDto();
         when(mapper.toEntity(userDto)).thenReturn(user);
@@ -97,7 +97,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         User user = Generator.createUser();
         doNothing().when(repository).deleteById(user.getId());
         service.delete(user.getId());
@@ -105,7 +105,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void authenticateTest() {
+    void authenticateTest() {
         User user = Generator.createUser();
         SecurityUser securityUser = (SecurityUser) SecurityUser.fromUser(user);
         UserDto expectedUserDto = Generator.createUserDto();

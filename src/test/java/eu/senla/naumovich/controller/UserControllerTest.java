@@ -16,11 +16,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerTest extends BaseTest {
+class UserControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -28,7 +28,7 @@ public class UserControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/user/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -37,14 +37,14 @@ public class UserControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username = "user1", authorities = { "DELETE_USER" })
-    public void deleteTest() throws Exception {
+    void deleteTest() throws Exception {
         mockMvc.perform(delete("/user/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockCustomUser
-    public void getUserProfileTest() throws Exception {
+    void getUserProfileTest() throws Exception {
         mockMvc.perform(get("/user/my"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -52,7 +52,7 @@ public class UserControllerTest extends BaseTest {
 
     @Test
     @WithMockCustomUser
-    public void replenishBalanceUserTest() throws Exception {
+    void replenishBalanceUserTest() throws Exception {
         UserReplenishBalanceDto balanceDto = Generator.userReplenishBalanceDto();
         mockMvc.perform(post("/user/my/balance")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -62,7 +62,7 @@ public class UserControllerTest extends BaseTest {
 
     @Test
     @WithMockCustomUser
-    public void tryToUpdateUserTest() throws Exception {
+    void tryToUpdateUserTest() throws Exception {
         UserUpdateDto userUpdateDto = Generator.userUpdateDto();
         mockMvc.perform(put("/user/my")
                 .contentType(MediaType.APPLICATION_JSON)

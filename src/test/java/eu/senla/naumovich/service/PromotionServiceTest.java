@@ -25,16 +25,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PromotionServiceTest {
+class PromotionServiceTest {
     @Mock
     private PromotionMapper mapper;
     @Mock
-    PromotionRepository repository;
+    private PromotionRepository repository;
     @InjectMocks
     private PromotionServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Promotion promotion = new Promotion();
@@ -49,7 +49,7 @@ public class PromotionServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(promotion));
@@ -61,7 +61,7 @@ public class PromotionServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(mapper.toEntity(promotionDto)).thenReturn(promotion);
@@ -75,7 +75,7 @@ public class PromotionServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Promotion promotion = Generator.createPromotion();
         PromotionDto promotionDto = Generator.createPromotionDto();
         when(mapper.toEntity(promotionDto)).thenReturn(promotion);
@@ -89,7 +89,7 @@ public class PromotionServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Promotion promotion = Generator.createPromotion();
         doNothing().when(repository).deleteById(promotion.getId());
         service.delete(promotion.getId());

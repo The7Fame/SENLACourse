@@ -17,11 +17,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class OrderControllerTest extends BaseTest {
+class OrderControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/order"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -29,7 +29,7 @@ public class OrderControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/order/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -38,14 +38,14 @@ public class OrderControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getDeleteTest() throws Exception {
+    void getDeleteTest() throws Exception {
         mockMvc.perform(delete("/order/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockCustomUser
-    public void getUserOrders() throws Exception {
+    void getUserOrders() throws Exception {
         mockMvc.perform(get("/order/my"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -53,7 +53,7 @@ public class OrderControllerTest extends BaseTest {
 
     @Test
     @WithMockCustomUser
-    public void getUserOrder() throws Exception {
+    void getUserOrder() throws Exception {
         mockMvc.perform(get("/order/my/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -62,7 +62,7 @@ public class OrderControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockCustomUser
-    public void getCreateTest() throws Exception {
+    void getCreateTest() throws Exception {
         BookDto book = Generator.createBookDto();
         List<BookDto> books = Collections.singletonList(book);
         mockMvc.perform(post("/order/my")
@@ -74,7 +74,7 @@ public class OrderControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockCustomUser
-    public void getDeleteUserOrder() throws Exception {
+    void getDeleteUserOrder() throws Exception {
         mockMvc.perform(delete("/order/my/1"))
                 .andExpect(status().isNoContent());
     }

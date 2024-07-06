@@ -13,11 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PublisherControllerTest extends BaseTest {
+class PublisherControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/publisher"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -25,7 +25,7 @@ public class PublisherControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/publisher/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -33,7 +33,7 @@ public class PublisherControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "MANAGER" })
-    public void getUpdateTest() throws Exception {
+    void getUpdateTest() throws Exception {
         PublisherDto publisherDto = Generator.updatePublisherDto();
         mockMvc.perform(put("/publisher")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ public class PublisherControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void deleteTest() throws Exception {
+    void deleteTest() throws Exception {
         mockMvc.perform(delete("/publisher/1"))
                 .andExpect(status().isNoContent());
     }
