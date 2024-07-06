@@ -17,15 +17,15 @@ import java.util.List;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "publisher_name")
-    String publisherName;
+    private String publisherName;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "publisher")
-    Address address;
+    private Address address;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher")
-    List<Book> books;
+    private List<Book> books;
 }

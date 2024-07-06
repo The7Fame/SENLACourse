@@ -15,16 +15,16 @@ import lombok.*;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "city")
-    String city;
+    private String city;
     @Column(name = "street")
-    String street;
+    private String street;
     @Column(name = "index")
-    Integer index;
+    private Integer index;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "publisher_id")
-    Publisher publisher;
+    private Publisher publisher;
 }
