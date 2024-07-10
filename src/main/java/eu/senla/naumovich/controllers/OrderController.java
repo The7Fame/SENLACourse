@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -83,5 +84,12 @@ public class OrderController {
             @PathVariable("id") Long id) {
         orderService.deleteUserOrderById(securityUser, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<OrderShortDto>> getGreaterThan(@RequestParam(name = "price") BigDecimal totalPrice){
+        log.info("An attempt to get orders greater than {} price", totalPrice);
+        List<OrderShortDto> orderDto = orderService.getGreaterThan(totalPrice);
+        return ResponseEntity.ok(orderDto);
     }
 }

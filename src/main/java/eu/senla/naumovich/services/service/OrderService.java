@@ -20,4 +20,6 @@ public interface OrderService extends AbstractService<OrderDto, OrderShortDto> {
     OrderDto getUserOrderById(SecurityUser securityUser, Long orderId);
 
     void deleteUserOrderById(SecurityUser securityUser, Long orderId);
+
+    List<OrderShortDto> getGreaterThan(BigDecimal totalPrice);
 }

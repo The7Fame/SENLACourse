@@ -11,6 +11,7 @@ import eu.senla.naumovich.exceptions.NoRecordException;
 import eu.senla.naumovich.mapper.BookMapper;
 import eu.senla.naumovich.mapper.OrderMapper;
 import eu.senla.naumovich.repositories.OrderRepository;
+import eu.senla.naumovich.repositories.specification.OrderSpecifications;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.OrderService;
 import eu.senla.naumovich.services.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,5 +107,11 @@ public class OrderServiceImpl implements OrderService {
         public void deleteUserOrderById(SecurityUser securityUser, Long orderId) {
                 getUserOrderById(securityUser, orderId);
                 delete(orderId);
+        }
+
+        @Override
+        public List<OrderShortDto> getGreaterThan(BigDecimal totalPrice) {
+                Specification<Order> specification = OrderSpecifications.totalPriceGreaterThan(totalPrice);
+                return orderMapper.toDtoList(orderRepository.findAll(specification));
         }
 }
