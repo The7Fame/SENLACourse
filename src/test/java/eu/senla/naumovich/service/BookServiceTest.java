@@ -28,18 +28,18 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTest {
+class BookServiceTest {
     @Mock
     private BookMapper mapper;
     @Mock
     private ReviewMapper reviewMapper;
     @Mock
-    BookRepository repository;
+    private BookRepository repository;
     @InjectMocks
     private BookServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Book book = new Book();
@@ -54,7 +54,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Book book = Generator.createBook();
         BookDto bookDto = Generator.createBookDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(book));
@@ -66,7 +66,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Book book = Generator.createBook();
         BookDto bookDto = Generator.createBookDto();
         when(mapper.toEntity(bookDto)).thenReturn(book);
@@ -80,7 +80,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Book book = Generator.createBook();
         BookDto bookDto = Generator.createBookDto();
         when(mapper.toEntity(bookDto)).thenReturn(book);
@@ -94,7 +94,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Book book = Generator.createBook();
         doNothing().when(repository).deleteById(book.getId());
         service.delete(book.getId());
@@ -102,7 +102,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void getReviewsByBookIdTest(){
+    void getReviewsByBookIdTest(){
         Long bookId = 1L;
         Page<Review> reviewPage = new PageImpl<>(Collections.emptyList());
         when(repository.getReviewsByBookId(bookId, PageRequest.of(0, 5))).thenReturn(reviewPage);

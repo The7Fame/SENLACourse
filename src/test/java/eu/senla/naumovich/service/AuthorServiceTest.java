@@ -29,20 +29,20 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceTest {
+class AuthorServiceTest {
     @Mock
     private AuthorMapper mapper;
     @Mock
     private BookMapper bookMapper;
     @Mock
-    AuthorRepository repository;
+    private AuthorRepository repository;
     @Mock
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     @InjectMocks
     private AuthorServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Author author = new Author();
@@ -57,7 +57,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Author author = Generator.createAuthor();
         AuthorDto authorDto = Generator.createAuthorDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(author));
@@ -69,7 +69,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Author author = Generator.createAuthor();
         AuthorDto authorDto = Generator.createAuthorDto();
         when(mapper.toEntity(authorDto)).thenReturn(author);
@@ -83,7 +83,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Author author = Generator.createAuthor();
         AuthorDto authorDto = Generator.createAuthorDto();
         when(mapper.toEntity(authorDto)).thenReturn(author);
@@ -97,7 +97,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Author author = Generator.createAuthor();
         doNothing().when(repository).deleteById(author.getId());
         service.delete(author.getId());
@@ -105,7 +105,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void getAuthorBooksTest() {
+    void getAuthorBooksTest() {
         String authorName = "SomeAuthor";
         Pageable pageable = PageRequest.of(0, 5);
         Book book = new Book();

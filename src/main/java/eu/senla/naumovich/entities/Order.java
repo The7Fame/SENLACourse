@@ -18,14 +18,14 @@ import java.util.Date;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "order_date")
-    Date orderDate;
+    private Date orderDate;
     @Column(name = "total_price")
-    BigDecimal totalPrice;
+    private BigDecimal totalPrice;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 }

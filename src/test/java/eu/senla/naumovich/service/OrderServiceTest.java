@@ -28,16 +28,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderServiceTest {
+class OrderServiceTest {
     @Mock
     private OrderMapper mapper;
     @Mock
-    OrderRepository repository;
+    private OrderRepository repository;
     @InjectMocks
     private OrderServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Order order = new Order();
@@ -52,7 +52,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Order order = Generator.createOrder();
         OrderDto orderDto = Generator.createOrderDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(order));
@@ -64,7 +64,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Order order = Generator.createOrder();
         OrderDto orderDto = Generator.createOrderDto();
         when(mapper.toEntity(orderDto)).thenReturn(order);
@@ -78,7 +78,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Order order = Generator.createOrder();
         OrderDto orderDto = Generator.createOrderDto();
         when(mapper.toEntity(orderDto)).thenReturn(order);
@@ -92,7 +92,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Order order = Generator.createOrder();
         doNothing().when(repository).deleteById(order.getId());
         service.delete(order.getId());
@@ -100,7 +100,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void getUserOrdersTest(){
+    void getUserOrdersTest(){
         Pageable pageable = PageRequest.of(0, 5);
         User user = Generator.createUser();
         SecurityUser securityUser = (SecurityUser) SecurityUser.fromUser(user);

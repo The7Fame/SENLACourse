@@ -25,13 +25,13 @@ import jakarta.persistence.Table;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "surname")
-    String surname;
+    private String surname;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
-    List<Book> books;
+    private List<Book> books;
 }

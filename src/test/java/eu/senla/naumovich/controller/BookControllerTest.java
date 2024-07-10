@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class BookControllerTest extends BaseTest {
+class BookControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/book"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(5)));
@@ -27,7 +27,7 @@ public class BookControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/book/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -36,7 +36,7 @@ public class BookControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username = "user1", authorities = { "CREATE_BOOK" })
-    public void getCreateTest() throws Exception {
+    void getCreateTest() throws Exception {
         BookDto bookDto = Generator.createBookDto();
         mockMvc.perform(post("/book")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +47,7 @@ public class BookControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username = "user1", authorities = { "UPDATE_BOOK" })
-    public void getUpdateTest() throws Exception {
+    void getUpdateTest() throws Exception {
         BookDto bookDto = Generator.updateBookDto();
         mockMvc.perform(put("/book")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,14 +58,14 @@ public class BookControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username = "user1", authorities = { "DELETE_BOOK" })
-    public void deleteTest() throws Exception {
+    void deleteTest() throws Exception {
         mockMvc.perform(delete("/book/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getBookReviewsByIdTest() throws Exception {
+    void getBookReviewsByIdTest() throws Exception {
         mockMvc.perform(get("/book/1/reviews"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -73,7 +73,7 @@ public class BookControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getSearchBookByTitleAndGenreTest() throws Exception {
+    void getSearchBookByTitleAndGenreTest() throws Exception {
         mockMvc.perform(get("/book/search?genre=1&title=Eve"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -81,7 +81,7 @@ public class BookControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getPopularBooksTest() throws Exception {
+    void getPopularBooksTest() throws Exception {
         mockMvc.perform(get("/book/popular"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());

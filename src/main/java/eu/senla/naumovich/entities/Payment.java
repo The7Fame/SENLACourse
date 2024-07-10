@@ -28,21 +28,21 @@ import jakarta.persistence.Table;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "status")
-    Boolean status;
+    private Boolean status;
     @Column(name = "payment_date")
-    Date paymentDate;
+    private Date paymentDate;
     @Column(name = "total_price")
-    BigDecimal totalPrice;
+    private BigDecimal totalPrice;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    Order order;
+    private Order order;
 }

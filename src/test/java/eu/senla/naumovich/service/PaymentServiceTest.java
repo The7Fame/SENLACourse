@@ -27,16 +27,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PaymentServiceTest {
+class PaymentServiceTest {
     @Mock
     private PaymentMapper mapper;
     @Mock
-    PaymentRepository repository;
+    private PaymentRepository repository;
     @InjectMocks
     private PaymentServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Payment payment = new Payment();
@@ -51,7 +51,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Payment payment = Generator.createPayment();
         PaymentDto paymentDto = Generator.createPaymentDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(payment));
@@ -63,7 +63,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Payment payment = Generator.createPayment();
         PaymentDto paymentDto = Generator.createPaymentDto();
         when(mapper.toEntity(paymentDto)).thenReturn(payment);
@@ -77,7 +77,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Payment payment = Generator.createPayment();
         PaymentDto paymentDto = Generator.createPaymentDto();
         when(mapper.toEntity(paymentDto)).thenReturn(payment);
@@ -91,7 +91,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Payment payment = Generator.createPayment();
         doNothing().when(repository).deleteById(payment.getId());
         service.delete(payment.getId());
@@ -99,7 +99,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void getUserPaymentsTest(){
+    void getUserPaymentsTest(){
         Pageable pageable = PageRequest.of(0, 5);
         User user = Generator.createUser();
         SecurityUser securityUser = (SecurityUser) SecurityUser.fromUser(user);

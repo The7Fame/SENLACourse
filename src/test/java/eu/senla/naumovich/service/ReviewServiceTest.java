@@ -26,16 +26,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ReviewServiceTest {
+class ReviewServiceTest {
     @Mock
     private ReviewMapper mapper;
     @Mock
-    ReviewRepository repository;
+    private ReviewRepository repository;
     @InjectMocks
     private ReviewServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Review review = new Review();
@@ -50,7 +50,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(review));
@@ -62,7 +62,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(mapper.toEntity(reviewDto)).thenReturn(review);
@@ -76,7 +76,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Review review = Generator.createReview();
         ReviewDto reviewDto = Generator.createReviewDto();
         when(mapper.toEntity(reviewDto)).thenReturn(review);
@@ -90,7 +90,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Review review = Generator.createReview();
         doNothing().when(repository).deleteById(review.getId());
         service.delete(review.getId());

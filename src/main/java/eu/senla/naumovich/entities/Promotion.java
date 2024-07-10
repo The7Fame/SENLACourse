@@ -18,11 +18,11 @@ import java.util.List;
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "promotion_name")
-    String promotionName;
+    private String promotionName;
     @Column(name = "percent")
-    BigDecimal percent;
+    private BigDecimal percent;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
@@ -31,5 +31,5 @@ public class Promotion {
             joinColumns = @JoinColumn(name = "promotion_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    List<Book> books;
+    private List<Book> books;
 }

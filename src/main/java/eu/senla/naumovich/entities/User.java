@@ -25,38 +25,38 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "surname")
-    String surname;
+    private String surname;
     @Column(name = "email")
-    String email;
+    private String email;
     @ToString.Exclude
     @Column(name = "balance")
-    BigDecimal balance;
+    private BigDecimal balance;
     @ToString.Exclude
     @Column(name = "hash_password")
-    String password;
+    private String password;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    Role role;
+    private Role role;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    List<Review> reviews;
+    private List<Review> reviews;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    List<Cart> carts;
+    private List<Cart> carts;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    List<Order> orders;
+    private List<Order> orders;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    List<Payment> payments;
+    private List<Payment> payments;
 }

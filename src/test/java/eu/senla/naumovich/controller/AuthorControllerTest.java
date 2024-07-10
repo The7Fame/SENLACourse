@@ -13,11 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AuthorControllerTest extends BaseTest {
+class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/author"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(5)));
@@ -25,7 +25,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/author/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -33,7 +33,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "UPDATE_AUTHOR" })
-    public void getUpdateTest() throws Exception {
+    void getUpdateTest() throws Exception {
         AuthorDto authorDto = Generator.updateAuthorDto();
         mockMvc.perform(put("/author")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "CREATE_AUTHOR" })
-    public void createTest() throws Exception {
+    void createTest() throws Exception {
         AuthorDto authorDto = Generator.createAuthorDto();
         System.out.println(new ObjectMapper().writeValueAsString(authorDto));
         mockMvc.perform(post("/author")
@@ -54,7 +54,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getAuthorBooksTest() throws Exception {
+    void getAuthorBooksTest() throws Exception {
         mockMvc.perform(get("/author?name=Boris"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -62,7 +62,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void getUnknownAuthorBooksTest() throws Exception {
+    void getUnknownAuthorBooksTest() throws Exception {
         mockMvc.perform(get("/author/search?name=Unknown"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -70,7 +70,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void userTryUpdateTest() throws Exception {
+    void userTryUpdateTest() throws Exception {
         AuthorDto authorDto = Generator.updateAuthorDto();
         mockMvc.perform(put("/author")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ public class AuthorControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "USER" })
-    public void userTryCreateTest() throws Exception {
+    void userTryCreateTest() throws Exception {
         AuthorDto authorDto = Generator.createAuthorDto();
         System.out.println(new ObjectMapper().writeValueAsString(authorDto));
         mockMvc.perform(post("/author")

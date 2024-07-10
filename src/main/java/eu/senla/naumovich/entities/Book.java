@@ -28,39 +28,39 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "title")
-    String title;
+    private String title;
     @Column(name = "price")
-    BigDecimal price;
+    private BigDecimal price;
     @Column(name = "isbn")
-    String isbn;
+    private String isbn;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Convert(converter = GenreConverter.class)
     @Column(name = "genre_id")
-    Genre genre;
+    private Genre genre;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
-    Publisher publisher;
+    private Publisher publisher;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
-    List<Author> authors;
+    private List<Author> authors;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
-    List<Review> reviews;
+    private List<Review> reviews;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "books_promotions", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
-    List<Promotion> promotions;
+    private List<Promotion> promotions;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
-    List<Cart> carts;
+    private List<Cart> carts;
 }

@@ -9,24 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import java.util.Optional;
 
-public class PaymentRepositoryTest extends BaseRepositoryTest {
+class PaymentRepositoryTest extends BaseRepositoryTest {
     @Autowired
-    PaymentRepository repository;
+    private PaymentRepository repository;
 
     @Test
-    public void getPaymentsByUserId(){
+    void getPaymentsByUserId(){
         Page<Payment> paymentPage = repository.getPaymentsByUserId(1, applyPage());
         Assertions.assertEquals(paymentPage.getTotalElements(), 1);
     };
 
     @Test
-    public void getByUserAndPaymentById(){
+    void getByUserAndPaymentById(){
         Optional<Payment> payment = repository.getByUserAndPaymentById(1,1);
         Assertions.assertTrue(payment.isPresent());
     };
 
     @Test
-    public void findByOrderId(){
+    void findByOrderId(){
         Optional<Payment> payment = repository.findByOrderId(1L);
         Assertions.assertTrue(payment.isPresent());
     };

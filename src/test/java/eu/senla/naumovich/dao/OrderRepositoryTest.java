@@ -10,19 +10,18 @@ import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
-
-public class OrderRepositoryTest extends BaseRepositoryTest {
+class OrderRepositoryTest extends BaseRepositoryTest {
     @Autowired
-    OrderRepository repository;
+    private OrderRepository repository;
 
     @Test
-    public void getOrdersByUserId(){
+    void getOrdersByUserId(){
         Page<Order> orderPage = repository.getOrdersByUserId(1, applyPage());
         Assertions.assertEquals(orderPage.getTotalElements(), 1);
     };
 
     @Test
-    public void getByUserAndOrderById(){
+    void getByUserAndOrderById(){
         Optional<Order> order = repository.getByUserAndOrderById(1, 1);
         Assertions.assertTrue(order.isPresent());
     };

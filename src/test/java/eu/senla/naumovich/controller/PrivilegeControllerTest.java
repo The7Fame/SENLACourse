@@ -13,11 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PrivilegeControllerTest extends BaseTest {
+class PrivilegeControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/privilege"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -25,7 +25,7 @@ public class PrivilegeControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/privilege/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -34,7 +34,7 @@ public class PrivilegeControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void getUpdateTest() throws Exception {
+    void getUpdateTest() throws Exception {
         PrivilegeDto privilegeDto = Generator.updatePrivilegeDto();
         mockMvc.perform(put("/privilege")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +45,7 @@ public class PrivilegeControllerTest extends BaseTest {
     @Test
     @Transactional
     @WithMockUser(username="user1", authorities={"ADMIN"})
-    public void createTest() throws Exception {
+    void createTest() throws Exception {
         PrivilegeDto privilegeDto = Generator.createPrivilegeDto();
         mockMvc.perform(post("/privilege")
                 .contentType(MediaType.APPLICATION_JSON)

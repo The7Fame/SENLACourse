@@ -24,16 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AddressServiceTest {
+class AddressServiceTest {
     @Mock
     private AddressMapper mapper;
     @Mock
-    AddressRepository repository;
+    private AddressRepository repository;
     @InjectMocks
     private AddressServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Address address = new Address();
@@ -48,7 +48,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(address));
@@ -60,7 +60,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(mapper.toEntity(addressDto)).thenReturn(address);
@@ -74,7 +74,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Address address = Generator.createAddress();
         AddressDto addressDto = Generator.createAddressDto();
         when(mapper.toEntity(addressDto)).thenReturn(address);
@@ -88,7 +88,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Address address = Generator.createAddress();
         doNothing().when(repository).deleteById(address.getId());
         service.delete(address.getId());

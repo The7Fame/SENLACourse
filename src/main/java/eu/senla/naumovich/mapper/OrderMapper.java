@@ -5,9 +5,10 @@ import eu.senla.naumovich.dto.order.OrderShortDto;
 import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.mapper.common.InterfaceMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper extends InterfaceMapper<Order, OrderDto, OrderShortDto> {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 

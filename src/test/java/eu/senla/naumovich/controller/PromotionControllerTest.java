@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PromotionControllerTest extends BaseTest {
+class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getAllTest() throws Exception {
+    void getAllTest() throws Exception {
         mockMvc.perform(get("/promotion"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -27,7 +27,7 @@ public class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "ADMIN" })
-    public void getByIdTest() throws Exception {
+    void getByIdTest() throws Exception {
         mockMvc.perform(get("/promotion/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
@@ -35,7 +35,7 @@ public class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "UPDATE_PROMOTION" })
-    public void getUpdateTest() throws Exception {
+    void getUpdateTest() throws Exception {
         PromotionDto promotionDto = Generator.updatePromotionDto();
         mockMvc.perform(put("/promotion")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +45,7 @@ public class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
-    public void createTest() throws Exception {
+    void createTest() throws Exception {
         PromotionDto promotionDto = Generator.createPromotionDto();
         mockMvc.perform(post("/promotion")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,14 +55,14 @@ public class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "DELETE_PROMOTION" })
-    public void deleteTest() throws Exception {
+    void deleteTest() throws Exception {
         mockMvc.perform(delete("/promotion/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
-    public void createPromotionByGenre() throws Exception {
+    void createPromotionByGenre() throws Exception {
         CreatePromotionGenreDto createPromotionGenreDto = Generator.createPromotionGenreDto();
         System.out.println(createPromotionGenreDto);
         mockMvc.perform(post("/promotion/genre")
@@ -73,7 +73,7 @@ public class PromotionControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = { "CREATE_PROMOTION" })
-    public void createPromotionByAuthorName() throws Exception {
+    void createPromotionByAuthorName() throws Exception {
         CreatePromotionAuthorDto createPromotionAuthorDto = Generator.createPromotionAuthorDto();
         mockMvc.perform(post("/promotion/author")
                 .contentType(MediaType.APPLICATION_JSON)

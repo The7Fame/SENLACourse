@@ -24,11 +24,11 @@ import java.util.List;
 public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @Column(name = "privilege_name")
-    String privilegeName;
+    private String privilegeName;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privileges")
-    List<Role> roles;
+    private List<Role> roles;
 }

@@ -25,16 +25,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class RoleServiceTest {
+class RoleServiceTest {
     @Mock
     private RoleMapper mapper;
     @Mock
-    RoleRepository repository;
+    private RoleRepository repository;
     @InjectMocks
     private RoleServiceImpl service;
 
     @Test
-    public void getAllTest() {
+    void getAllTest() {
         String sort = "id";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(sort));
         Role role = new Role();
@@ -49,7 +49,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void getByIdTest() {
+    void getByIdTest() {
         Role role = Generator.createRole();
         RoleDto roleDto = Generator.createRoleDto();
         when(repository.findById(1L)).thenReturn(Optional.ofNullable(role));
@@ -61,7 +61,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    void updateTest() {
         Role role = Generator.createRole();
         RoleDto roleDto = Generator.createRoleDto();
         when(mapper.toEntity(roleDto)).thenReturn(role);
@@ -75,7 +75,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         Role role = Generator.createRole();
         RoleDto roleDto = Generator.createRoleDto();
         when(mapper.toEntity(roleDto)).thenReturn(role);
@@ -89,7 +89,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    void deleteTest() {
         Role role = Generator.createRole();
         doNothing().when(repository).deleteById(role.getId());
         service.delete(role.getId());
