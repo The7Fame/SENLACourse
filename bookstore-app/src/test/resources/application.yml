@@ -5,3 +5,16 @@ spring:
     driver-class-name: org.h2.Driver
     password: sa
   liquibase.change-log: classpath:changelog-master.xml
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: 375333113410@ya.ru
+    password: ndqhekcmhndmnixj
+    sender-address: 375333113410@ya.ru
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          ssl:
+            enable: true
