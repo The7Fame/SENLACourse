@@ -1,5 +1,6 @@
 package eu.senla.naumovich.services.impl;
 
+import eu.senla.naumovich.service.MailService;
 import eu.senla.naumovich.dto.order.OrderCreateDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.payment.PaymentDto;
@@ -37,6 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final OrderMapper orderMapper;
     private final UserService userService;
+    private final MailService mailService;
 
     @Override
     public List<PaymentShortDto> getAll(int page, int size, String sort) {
@@ -73,6 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     public PaymentDto createPayment(SecurityUser securityUser, OrderCreateDto orderCreateDto) {
+        System.out.println("HERE");
         OrderDto orderDto = orderMapper.toDto(orderRepository.getByUserAndOrderById(
                 securityUser.getId(),
                 orderCreateDto.getId())
@@ -95,6 +98,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (userBalance.compareTo(orderDtoTotalPrice) < 0){
            throw new NoMoneyOnBankAccountException("Not enough money on bank account");
         }
+        mailService.sendMsg(userDto.getEmail(), "Order","Your order is paid successfully");
         userDto.setBalance(userBalance.subtract(orderDtoTotalPrice));
         userService.update(userDto);
         paymentDto.setStatus(true);

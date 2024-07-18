@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long>, OrderDao {
+public interface OrderRepository extends JpaRepository<Order, Long>, OrderDao, JpaSpecificationExecutor<Order> {
     @Query("select o from Order o where o.user.id = :userId")
     Page<Order> getOrdersByUserId(@Param("userId") long userId, Pageable pageable);
 }

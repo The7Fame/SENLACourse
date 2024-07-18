@@ -13,7 +13,9 @@ services:
       - ./data/:/var/lib/postgresql/data
   app:
     container_name: book_app
-    build: .
+    build:
+      context: bookstore-app
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:

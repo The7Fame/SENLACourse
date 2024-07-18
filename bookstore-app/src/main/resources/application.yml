@@ -1,0 +1,22 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/book_store
+    username: admin
+    driver-class-name: org.postgresql.Driver
+    password: admin
+  liquibase.change-log: classpath:changelog-master.xml
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: 375333113410@ya.ru
+    password: ndqhekcmhndmnixj
+    sender-address: 375333113410@ya.ru
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          ssl:
+            enable: true
