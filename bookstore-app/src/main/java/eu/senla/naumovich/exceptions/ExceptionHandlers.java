@@ -93,4 +93,10 @@ public class ExceptionHandlers{
         log.error("Bad Request {}", e.getMessage());
         return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NoUserException.class)
+    public ResponseEntity<Object> handleNoUserException(NoUserException e) {
+        log.error(e.getMessage());
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
 }

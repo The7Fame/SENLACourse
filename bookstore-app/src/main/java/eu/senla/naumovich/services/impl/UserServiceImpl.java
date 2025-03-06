@@ -6,6 +6,7 @@ import eu.senla.naumovich.dto.user.UserShortDto;
 import eu.senla.naumovich.dto.user.UserUpdateDto;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.exceptions.NoRecordException;
+import eu.senla.naumovich.exceptions.NoUserException;
 import eu.senla.naumovich.exceptions.RecordExistsException;
 import eu.senla.naumovich.mapper.UserMapper;
 import eu.senla.naumovich.repositories.UserRepository;
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
         @Override
         public UserDto getById(Long id) {
                 return userMapper.toDto(userRepository.findById(id)
-                                .orElseThrow(() -> new NoRecordException("No record with such ID " + id)));
+                                .orElseThrow(() -> new NoUserException(id)));
         }
 
         @Override
