@@ -1,8 +1,10 @@
 package eu.senla.naumovich.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import eu.senla.naumovich.dto.book.BookShortDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.order.OrderShortDto;
+import eu.senla.naumovich.dto.order.view.View;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.OrderService;
 import jakarta.validation.Valid;
@@ -24,6 +26,7 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    @JsonView(View.WithPayment.class)
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<OrderShortDto>> getAll(@RequestParam(name = "page", defaultValue = "1") int page,
@@ -50,6 +53,7 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @JsonView(View.WithoutPayment.class)
     @GetMapping("/my")
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<List<OrderShortDto>> getUserOrders(@AuthenticationPrincipal SecurityUser securityUser,
@@ -86,6 +90,7 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @JsonView(View.WithoutPayment.class)
     @GetMapping("/filter")
     public ResponseEntity<List<OrderShortDto>> getGreaterThan(@RequestParam(name = "price") BigDecimal totalPrice){
         log.info("An attempt to get orders greater than {} price", totalPrice);
