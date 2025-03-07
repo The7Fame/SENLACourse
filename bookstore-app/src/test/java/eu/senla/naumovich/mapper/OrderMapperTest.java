@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.order.OrderShortDto;
+import eu.senla.naumovich.dto.order.view.View;
 import eu.senla.naumovich.entities.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,15 +32,26 @@ public class OrderMapperTest {
         List<Order> orders = List.of(Generator.createOrder());
         List<OrderShortDto> ordersDto = OrderMapper.INSTANCE.toDtoList(orders);
 
-        assertEquals(readFromFile("/order/order.json"), mapper.writeValueAsString(ordersDto));
+        assertEquals(readFromFile(View.WithPayment.class, "/order/order.json"), mapper
+                .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
     }
 
-    private String readFromFile(String fileName) {
+    @Test
+    void ordersToOrderShortDtoWithoutPaymentMapping() throws JsonProcessingException {
+        List<Order> orders = List.of(Generator.createOrder());
+        List<OrderShortDto> ordersDto = OrderMapper.INSTANCE.toDtoList(orders);
+
+        assertEquals(readFromFile(View.WithoutPayment.class, "/order/orderWithoutPayment.json"), mapper
+                .writerWithView(View.WithoutPayment.class).writeValueAsString(ordersDto));
+    }
+
+    private String readFromFile(Class<?> view, String fileName) {
         try {
             URL resource = getClass().getResource(fileName);
             String result = Files.readString(Paths.get(resource.toURI()));
             List<OrderShortDto> ordersFromFile = mapper.readValue(result,
-                    mapper.getTypeFactory().constructCollectionType(List.class, OrderShortDto.class));
+                    mapper.writerWithView(view)
+                            .getTypeFactory().constructCollectionType(List.class, OrderShortDto.class));
 
             return mapper.writeValueAsString(ordersFromFile);
         } catch (IOException | URISyntaxException e) {
