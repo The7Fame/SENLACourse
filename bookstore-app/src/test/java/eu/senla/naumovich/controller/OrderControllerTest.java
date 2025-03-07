@@ -24,7 +24,10 @@ class OrderControllerTest extends BaseTest {
     void getAllTest() throws Exception {
         mockMvc.perform(get("/order"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].payment").exists())
+                .andExpect(jsonPath("$[0].payment.status").exists())
+                .andExpect(jsonPath("$[0].payment.totalPrice").exists());
     }
 
     @Test

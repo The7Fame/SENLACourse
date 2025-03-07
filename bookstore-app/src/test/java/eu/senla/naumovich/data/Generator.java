@@ -162,6 +162,8 @@ public class Generator {
                 .id(ID)
                 .orderDate(Date.valueOf("2024-04-15"))
                 .totalPrice(new BigDecimal("30.00"))
+                .payment(createPayment())
+                .user(createUser())
                 .build();
     }
 
@@ -175,6 +177,7 @@ public class Generator {
         return Payment.builder()
                 .id(ID)
                 .status(false)
+                .totalPrice(new BigDecimal("30.00"))
                 .build();
     }
 
