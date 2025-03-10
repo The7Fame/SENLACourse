@@ -31,7 +31,8 @@ public class OrderMapperTest {
     void ordersToOrderShortDtoMapping() throws JsonProcessingException {
         List<Order> orders = List.of(Generator.createOrder());
         List<OrderShortDto> ordersDto = OrderMapper.INSTANCE.toDtoList(orders);
-
+        System.out.println(mapper
+                .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
         assertEquals(readFromFile(View.WithPayment.class, "/order/order.json"), mapper
                 .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
     }

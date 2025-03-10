@@ -28,7 +28,7 @@ public class OrderShortDto {
     @JsonView(View.WithoutPayment.class)
     private BigDecimal totalPrice;
     @JsonView(View.WithoutPayment.class)
-    private UserShortDto user;
+    private UserShortDto userInfo;
     @JsonView(View.WithPayment.class)
     private PaymentForOrderDto payment;
 }
