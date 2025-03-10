@@ -22,6 +22,7 @@ import lombok.experimental.UtilityClass;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 @UtilityClass
 public class Generator {
@@ -383,5 +384,9 @@ public class Generator {
                 .surname(UPDATE_NAME)
                 .name(UPDATE_NAME)
                 .build();
+    }
+
+    public Stream<Long> notExpectedUserId() {
+        return Stream.of(4L, 5L, 6L);
     }
 }
