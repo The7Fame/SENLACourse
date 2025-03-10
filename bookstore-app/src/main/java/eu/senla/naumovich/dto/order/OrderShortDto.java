@@ -20,14 +20,16 @@ import java.util.Date;
 @Jacksonized
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderShortDto {
-    @JsonView(View.WithoutPayment.class)
+    @JsonView({View.WithoutPayment.class, View.WithPayment.class})
     private Long id;
-    @JsonView(View.WithoutPayment.class)
+    @JsonView({View.WithoutPayment.class, View.WithPayment.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private Date orderDate;
-    @JsonView(View.WithoutPayment.class)
+    @JsonView({View.WithoutPayment.class, View.WithPayment.class})
     private BigDecimal totalPrice;
     @JsonView(View.WithoutPayment.class)
+    private UserShortDto user;
+    @JsonView(View.WithPayment.class)
     private UserShortDto userInfo;
     @JsonView(View.WithPayment.class)
     private PaymentForOrderDto payment;
