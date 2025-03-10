@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.order.OrderShortDto;
+import eu.senla.naumovich.dto.order.OrderWithPaymentDto;
 import eu.senla.naumovich.dto.order.view.View;
 import eu.senla.naumovich.entities.Order;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,29 +31,18 @@ public class OrderMapperTest {
     @Test
     void ordersToOrderShortDtoMapping() throws JsonProcessingException {
         List<Order> orders = List.of(Generator.createOrder());
-        List<OrderShortDto> ordersDto = OrderMapper.INSTANCE.toDtoList(orders);
+        List<OrderWithPaymentDto> ordersDto = OrderMapper.INSTANCE.toOrderWithPaymentDtoList(orders);
         System.out.println(mapper
                 .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
-        assertEquals(readFromFile(View.WithPayment.class, "/order/order.json"), mapper
-                .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
+        assertEquals(readFromFile("/order/order.json"), mapper.writeValueAsString(ordersDto));
     }
 
-    @Test
-    void ordersToOrderShortDtoWithoutPaymentMapping() throws JsonProcessingException {
-        List<Order> orders = List.of(Generator.createOrder());
-        List<OrderShortDto> ordersDto = OrderMapper.INSTANCE.toDtoList(orders);
-
-        assertEquals(readFromFile(View.WithoutPayment.class, "/order/orderWithoutPayment.json"), mapper
-                .writerWithView(View.WithoutPayment.class).writeValueAsString(ordersDto));
-    }
-
-    private String readFromFile(Class<?> view, String fileName) {
+    private String readFromFile(String fileName) {
         try {
             URL resource = getClass().getResource(fileName);
             String result = Files.readString(Paths.get(resource.toURI()));
             List<OrderShortDto> ordersFromFile = mapper.readValue(result,
-                    mapper.writerWithView(view)
-                            .getTypeFactory().constructCollectionType(List.class, OrderShortDto.class));
+                    mapper.getTypeFactory().constructCollectionType(List.class, OrderWithPaymentDto.class));
 
             return mapper.writeValueAsString(ordersFromFile);
         } catch (IOException | URISyntaxException e) {

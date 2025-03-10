@@ -3,6 +3,7 @@ package eu.senla.naumovich.service;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.order.OrderShortDto;
+import eu.senla.naumovich.dto.order.OrderWithPaymentDto;
 import eu.senla.naumovich.entities.Order;
 import eu.senla.naumovich.entities.User;
 import eu.senla.naumovich.mapper.OrderMapper;
@@ -44,7 +45,7 @@ class OrderServiceTest {
         Page<Order> orderPage = new PageImpl<>(Collections.singletonList(order));
         when(repository.findAll(pageable)).thenReturn(orderPage);
         when(mapper.toDtoList(anyList())).thenReturn(Collections.singletonList(OrderShortDto.builder().build()));
-        List<OrderShortDto> result = service.getAll(1, 5, sort);
+        List<OrderWithPaymentDto> result = service.getAll(1, 5, sort);
         assertNotNull(result);
         assertFalse(result.isEmpty());
         verify(repository).findAll(pageable);
