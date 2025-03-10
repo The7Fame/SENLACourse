@@ -1,11 +1,9 @@
 package eu.senla.naumovich.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import eu.senla.naumovich.dto.book.BookShortDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.order.OrderShortDto;
 import eu.senla.naumovich.dto.order.OrderWithPaymentDto;
-import eu.senla.naumovich.dto.order.view.View;
 import eu.senla.naumovich.security.SecurityUser;
 import eu.senla.naumovich.services.service.OrderService;
 import jakarta.validation.Valid;

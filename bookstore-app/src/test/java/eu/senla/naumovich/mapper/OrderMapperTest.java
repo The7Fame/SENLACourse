@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.order.OrderShortDto;
 import eu.senla.naumovich.dto.order.OrderWithPaymentDto;
-import eu.senla.naumovich.dto.order.view.View;
 import eu.senla.naumovich.entities.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,7 @@ public class OrderMapperTest {
     void ordersToOrderShortDtoMapping() throws JsonProcessingException {
         List<Order> orders = List.of(Generator.createOrder());
         List<OrderWithPaymentDto> ordersDto = OrderMapper.INSTANCE.toOrderWithPaymentDtoList(orders);
-        System.out.println(mapper
-                .writerWithView(View.WithPayment.class).writeValueAsString(ordersDto));
+
         assertEquals(readFromFile("/order/order.json"), mapper.writeValueAsString(ordersDto));
     }
 

@@ -1,10 +1,6 @@
 package eu.senla.naumovich.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonView;
-import eu.senla.naumovich.dto.order.view.View;
-import eu.senla.naumovich.dto.payment.PaymentForOrderDto;
 import eu.senla.naumovich.dto.user.UserShortDto;
 import lombok.Builder;
 import lombok.Getter;
