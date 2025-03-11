@@ -3,6 +3,7 @@ package eu.senla.naumovich.services.impl;
 import eu.senla.naumovich.dto.book.BookShortDto;
 import eu.senla.naumovich.dto.order.OrderDto;
 import eu.senla.naumovich.dto.order.OrderShortDto;
+import eu.senla.naumovich.dto.order.OrderWithPaymentDto;
 import eu.senla.naumovich.dto.user.UserDto;
 import eu.senla.naumovich.entities.Book;
 import eu.senla.naumovich.entities.Order;
@@ -38,10 +39,10 @@ public class OrderServiceImpl implements OrderService {
         private final BookMapper bookMapper;
 
         @Override
-        public List<OrderShortDto> getAll(int page, int size, String sort) {
+        public List<OrderWithPaymentDto> getAll(int page, int size, String sort) {
                 Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
                 Page<Order> orderPage = orderRepository.findAll(pageable);
-                return orderMapper.toDtoList(orderPage.getContent());
+                return orderMapper.toOrderWithPaymentDtoList(orderPage.getContent());
         }
 
         @Override

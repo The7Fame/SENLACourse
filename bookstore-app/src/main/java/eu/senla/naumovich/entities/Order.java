@@ -19,13 +19,20 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "order_date")
     private Date orderDate;
+
     @Column(name = "total_price")
     private BigDecimal totalPrice;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "order")
+    private Payment payment;
 }
