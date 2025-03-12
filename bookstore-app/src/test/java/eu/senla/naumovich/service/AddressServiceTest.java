@@ -4,6 +4,7 @@ import eu.senla.naumovich.data.Generator;
 import eu.senla.naumovich.dto.address.AddressDto;
 import eu.senla.naumovich.dto.address.AddressShortDto;
 import eu.senla.naumovich.entities.Address;
+import eu.senla.naumovich.kafka.KafkaSenderService;
 import eu.senla.naumovich.repositories.AddressRepository;
 import eu.senla.naumovich.services.impl.AddressServiceImpl;
 import eu.senla.naumovich.mapper.AddressMapper;
@@ -29,6 +30,8 @@ class AddressServiceTest {
     private AddressMapper mapper;
     @Mock
     private AddressRepository repository;
+    @Mock
+    private KafkaSenderService kafkaSenderService;
     @InjectMocks
     private AddressServiceImpl service;
 
@@ -71,6 +74,8 @@ class AddressServiceTest {
         verify(repository).save(address);
         verify(mapper).toEntity(addressDto);
         verify(mapper).toDto(address);
+        verify(kafkaSenderService).sendAddress(eq(addressDto));
+
     }
 
     @Test
