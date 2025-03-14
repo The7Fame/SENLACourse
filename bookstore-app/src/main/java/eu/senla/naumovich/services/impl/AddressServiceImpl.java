@@ -4,6 +4,7 @@ import eu.senla.naumovich.dto.address.AddressDto;
 import eu.senla.naumovich.dto.address.AddressShortDto;
 import eu.senla.naumovich.entities.Address;
 import eu.senla.naumovich.exceptions.NoRecordException;
+import eu.senla.naumovich.kafka.KafkaSenderService;
 import eu.senla.naumovich.mapper.AddressMapper;
 import eu.senla.naumovich.repositories.AddressRepository;
 import eu.senla.naumovich.services.service.AddressService;
@@ -21,6 +22,7 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final KafkaSenderService kafkaSenderService;
 
     @Override
     public List<AddressShortDto> getAll(int page, int size, String sort) {
@@ -37,7 +39,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto update(AddressDto address) {
-        return addressMapper.toDto(addressRepository.save(addressMapper.toEntity(address)));
+        AddressDto updatedAddress = addressMapper.toDto(addressRepository.save(addressMapper.toEntity(address)));
+        kafkaSenderService.sendAddress(updatedAddress);
+        return updatedAddress;
     }
 
     @Override
