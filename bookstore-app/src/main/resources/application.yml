@@ -1,5 +1,6 @@
 server:
   port: 8000
+
 spring:
   datasource:
     url: jdbc:postgresql://db:5432/book_store
