@@ -15,8 +15,7 @@ import java.util.Arrays;
 public class LoggingAspect {
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-    public void controller() {
-    }
+    public void controller() {}
 
     @Around("controller()")
     public Object loggingRequest(ProceedingJoinPoint joinPoint) throws Throwable {
